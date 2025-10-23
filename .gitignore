@@ -27,3 +27,7 @@ yarn-error.log
 # Backup files
 *.bak
 *.backup
+
+# Arquivos com instruções locais (não devem ir para o GitHub)
+COMO-PUBLICAR.md
+INSTRUCOES-LOCAIS.md
