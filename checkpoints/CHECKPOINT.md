@@ -1,8 +1,8 @@
 # 🎯 CHECKPOINT - Manual WhatsApp Atendimento
 
 **Última atualização:** 2025-10-23
-**Status:** ✅ Implementação completa com 2 versões: vídeo background e parallax de estrelas
-**Versão atual:** v1.3.0
+**Status:** ✅ Implementação com estrelas + bolas orbitais animadas
+**Versão atual:** v1.4.0
 
 > **Nota:** Este é um checkpoint VIVO que é atualizado continuamente.
 > O Git mantém o histórico completo de todas as mudanças (`git log checkpoints/CHECKPOINT.md`)
@@ -13,7 +13,23 @@
 
 ### ✨ Features Atuais
 
-#### 🆕 v1.3.0 (Hoje - 2025-10-23)
+#### 🆕 v1.4.0 (Hoje - 2025-10-23) 🌊
+1. **Bolas Orbitais Animadas** (substituindo gradientes estáticos)
+   - 3 bolas com movimento orbital complexo
+   - Animação de 360° em trajetórias não-lineares
+   - Cada bola com velocidade diferente (15s/20s/25s)
+   - Gradiente: Azul brand (#4c9fff) → Verde WhatsApp (#128C7E)
+   - Blur de 10vw para efeito difuso
+   - Opacity 50% para sutileza
+   - CSS puro, sem JavaScript!
+
+2. **Background Sólido Limpo**
+   - Removido gradiente com quebras visuais
+   - Background simples: #0b0c0f (--bg do tema)
+   - Bolas animadas criam dinamismo orgânico
+   - Estrelas parallax continuam funcionando
+
+#### 📦 v1.3.0
 1. **Versão Parallax com Estrelas Animadas** ⭐
    - Criados `index-parallax.html` e `style-parallax.css`
    - 3 camadas de estrelas com velocidades diferentes
