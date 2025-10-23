@@ -1,8 +1,8 @@
 # 🎯 CHECKPOINT - Manual WhatsApp Atendimento
 
 **Última atualização:** 2025-10-23
-**Status:** ✅ Implementação completa de UI/UX com animações e chat style WhatsApp
-**Versão atual:** v1.2.0
+**Status:** ✅ Implementação completa com 2 versões: vídeo background e parallax de estrelas
+**Versão atual:** v1.3.0
 
 > **Nota:** Este é um checkpoint VIVO que é atualizado continuamente.
 > O Git mantém o histórico completo de todas as mudanças (`git log checkpoints/CHECKPOINT.md`)
@@ -13,7 +13,18 @@
 
 ### ✨ Features Atuais
 
-#### 🆕 v1.2.0 (Hoje - 2025-10-23)
+#### 🆕 v1.3.0 (Hoje - 2025-10-23)
+1. **Versão Parallax com Estrelas Animadas** ⭐
+   - Criados `index-parallax.html` e `style-parallax.css`
+   - 3 camadas de estrelas com velocidades diferentes
+   - Estrelas pequenas (1px) - 80s de animação
+   - Estrelas médias (2px) - 120s de animação
+   - Estrelas grandes (3px, azul brand) - 180s de animação
+   - Background: `radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%)`
+   - Efeito inspirado em campo estelar animado
+   - Mantém todas as features do v1.2.0 (chat WhatsApp, animações 3D)
+
+#### 📦 v1.2.0
 1. **Chat Style WhatsApp na Seção de Exemplo**
    - Bolhas de chat autênticas estilo WhatsApp
    - Mensagens do usuário (direita) em verde (#128C7E)
@@ -58,21 +69,30 @@
 
 ---
 
-## 📦 Arquivos Modificados
+## 📦 Arquivos do Projeto
+
+### 🎬 Versões Disponíveis
+
+**Versão Original (Vídeo Background):**
+```
+✅ index.html          → Vídeo background + chat WhatsApp + animações 3D
+✅ style.css           → Estilos completos com WhatsApp chat style
+✅ background.mp4      → Vídeo de background (4.1MB - local apenas)
+```
+
+**Versão Parallax (Estrelas Animadas):** ⭐ NOVO
+```
+✅ index-parallax.html → Estrelas animadas + chat WhatsApp + animações 3D
+✅ style-parallax.css  → CSS com 3 camadas de estrelas em movimento
+```
+
+### 📄 Documentação
 
 ```
-✅ index.html          → Vídeo background + JavaScript de animações
-✅ style.css           → Variáveis CSS + animações + acessibilidade + responsividade
-✅ .gitignore          → Adiciona *.mp4 e .claude/
-✅ COMO-PUBLICAR.md    → Seção sobre vídeo de background
-✅ CHECKPOINT-v1.1.0.md → Este arquivo
-```
-
-### Arquivos Novos (locais apenas):
-
-```
-✅ background.mp4      → Vídeo de background (4.1MB - não vai pro GitHub)
-✅ GUIA-ANIMACOES.md   → Guia completo de animações (já existia)
+✅ checkpoints/CHECKPOINT.md → Este arquivo (versionado no git)
+✅ COMO-PUBLICAR.md          → Guia de deploy (local apenas)
+✅ GUIA-ANIMACOES.md         → Documentação de animações (local apenas)
+✅ README.md                 → Readme minimalista do projeto
 ```
 
 ---
