@@ -1,0 +1,29 @@
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+*.swo
+*~
+
+# Node.js (caso adicione no futuro)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+~*
+
+# Backup files
+*.bak
+*.backup
