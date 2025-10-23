@@ -26,6 +26,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Vídeo de background sutil -->
+  <video class="video-bg" autoplay loop muted playsinline>
+    <source src="background.mp4" type="video/mp4">
+  </video>
+
   <main class="wrap">
     <section class="hero">
       <h1>Atendimento Automático no WhatsApp</h1>
@@ -63,18 +68,39 @@
       <article class="card">
         <div class="eyebrow">Exemplo de conversa</div>
         <h2>Da sua dúvida à solução, em poucas mensagens</h2>
-        <div class="bubbles">
-          <div class="msg user">
-            <h4>Você</h4>
-            <p>Oi! Estou sem acesso ao curso de Nutrição Clínica. Podem verificar?</p>
+        <div class="chat-container">
+          <!-- Mensagem do usuário -->
+          <div class="msg">
+            <div class="bubble alt">
+              <div class="txt">
+                <span class="name alt">Você</span>
+                <span class="timestamp">14:32</span>
+                <p class="message">Oi! Estou sem acesso ao curso de Nutrição Clínica. Podem verificar?</p>
+              </div>
+              <div class="bubble-arrow alt"></div>
+            </div>
           </div>
-          <div class="msg agent">
-            <h4>Assistente</h4>
-            <p>Recebi seu pedido. Pode me confirmar o e-mail cadastrado para liberar o acesso?</p>
+
+          <!-- Resposta do assistente -->
+          <div class="msg">
+            <div class="bubble">
+              <div class="txt">
+                <span class="name">Assistente</span>
+                <span class="timestamp">14:33</span>
+                <p class="message">Recebi seu pedido. Pode me confirmar o e-mail cadastrado para liberar o acesso?</p>
+              </div>
+              <div class="bubble-arrow"></div>
+            </div>
           </div>
-          <div class="msg agent">
-            <h4>Assistente</h4>
-            <p>📢 Tivemos uma atualização na sua solicitação:<br><br><em>[Acesso ao curso de Nutrição Clínica]</em><br><br>Seu acesso foi liberado. Tente novamente e me avise se está tudo certo.</p>
+
+          <!-- Atualização do assistente -->
+          <div class="msg">
+            <div class="bubble follow">
+              <div class="txt">
+                <span class="timestamp">14:45</span>
+                <p class="message follow">📢 Tivemos uma atualização na sua solicitação:<br><br><em>[Acesso ao curso de Nutrição Clínica]</em><br><br>Seu acesso foi liberado. Tente novamente e me avise se está tudo certo.</p>
+              </div>
+            </div>
           </div>
         </div>
       </article>
@@ -116,5 +142,46 @@
       <p>Este manual descreve o uso do sistema de atendimento automático via WhatsApp. Conteúdo preparado para usuários finais, com foco em clareza e autonomia.</p>
     </footer>
   </main>
+
+  <!-- JavaScript para animações -->
+  <script>
+    // Intersection Observer para reveal 3D nos cards
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        e.target.classList.toggle('in-view', e.isIntersecting);
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.card').forEach(el => io.observe(el));
+
+    // Hero também pode ter reveal, mas mais discreto
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.hero').forEach(el => heroObserver.observe(el));
+
+    // Parallax leve no vídeo de background
+    let ticking = false;
+    const video = document.querySelector('.video-bg');
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset;
+          if (video) {
+            // Movimento muito sutil (máximo 8% de deslocamento)
+            video.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.08}px))`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
 </body>
 </html>

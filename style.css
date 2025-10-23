@@ -13,6 +13,25 @@
   --warn: #ffd166;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   --radius: 18px;
+
+  /* Durações de animação */
+  --t-fast: 200ms;
+  --t-medium: 350ms;
+  --t-slow: 450ms;
+  --t-slower: 600ms;
+
+  /* Easings */
+  --ease-spring: cubic-bezier(.16, 1, .3, 1);
+  --ease-smooth: cubic-bezier(.4, 0, .2, 1);
+  --ease-snappy: cubic-bezier(.25, .46, .45, .94);
+
+  /* Transforms */
+  --scale-up: 1.01;
+  --scale-down: 0.98;
+  --translate-hover: -12px;
+
+  /* Perspective */
+  --persp: 900px;
 }
 
 /* ============================================
@@ -29,15 +48,44 @@ body {
 
 body {
   margin: 0;
+  position: relative;
+  overflow-x: hidden;
+  color: var(--text);
+  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+    "Helvetica Neue", Arial, system-ui, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Vídeo de background fixo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
   background: radial-gradient(
     1200px 800px at 80% -10%,
     #152238 0%,
     #0b0c0f 45%,
     #0b0c0f 100%
   );
-  color: var(--text);
-  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
-    "Helvetica Neue", Arial, system-ui, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.video-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0.15;
+  filter: blur(2px) brightness(0.7);
+  object-fit: cover;
+  pointer-events: none;
 }
 
 /* ============================================
@@ -63,6 +111,20 @@ body {
   border-radius: calc(var(--radius) + 6px);
   padding: 40px;
   box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+
+  /* Animação de entrada mais suave que os cards */
+  transform: translateY(-60px) scale(.95);
+  opacity: 0;
+  transition: transform var(--t-slower) var(--ease-spring),
+              opacity var(--t-slower) var(--ease-spring);
+  will-change: transform, opacity;
+}
+
+.hero.in-view {
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 .hero h1 {
@@ -91,11 +153,16 @@ body {
   border-radius: 14px;
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: 0.2s transform ease;
+  transform: translateX(0) scale(1);
+  transition: transform var(--t-slow) var(--ease-spring),
+              filter var(--t-slow) var(--ease-spring),
+              background var(--t-medium) var(--ease-smooth);
+  will-change: transform;
 }
 
 .cta:hover {
-  transform: translateY(-1px);
+  transform: translateX(var(--translate-hover)) scale(var(--scale-up));
+  filter: brightness(1.03);
   background: var(--brand-ink);
   color: white;
 }
@@ -117,6 +184,20 @@ body {
   border-radius: var(--radius);
   padding: 28px;
   box-shadow: var(--shadow);
+
+  /* Animação reveal 3D */
+  transform-style: preserve-3d;
+  perspective: var(--persp);
+  transform: translateY(-116px) rotateX(40deg) scale(.9);
+  opacity: 0;
+  transition: transform var(--t-slow) var(--ease-spring),
+              opacity var(--t-slow) var(--ease-spring);
+  will-change: transform, opacity;
+}
+
+.card.in-view {
+  transform: translateY(0) rotateX(0) scale(1);
+  opacity: 1;
 }
 
 @media (min-width: 800px) {
@@ -166,39 +247,134 @@ p {
 }
 
 /* ============================================
-   SIMULAÇÃO DE CONVERSA (BUBBLES)
+   SIMULAÇÃO DE CONVERSA (WhatsApp Style)
    ============================================ */
-.bubbles {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 12px;
+.chat-container {
+  width: 100%;
+  margin: 20px auto 0;
+  padding: 20px;
+  background: rgba(18, 20, 26, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .msg {
-  max-width: 720px;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: var(--soft);
-  box-shadow: var(--shadow);
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
-.msg.user {
-  background: #0f1a2b;
-  border-color: #1f3352;
+.bubble {
+  float: left;
+  max-width: 75%;
+  width: auto;
+  height: auto;
+  display: block;
+  background: rgba(30, 35, 45, 0.9);
+  border: 1px solid rgba(76, 159, 255, 0.2);
+  border-radius: 8px;
+  position: relative;
+  margin: 10px 0 3px 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.msg.agent {
-  background: #0f261a;
-  border-color: #1e3a2a;
+.bubble.alt {
+  margin: 10px 25px 3px 0;
+  background: rgba(15, 38, 26, 0.9);
+  border: 1px solid rgba(61, 220, 132, 0.25);
+  float: right;
 }
 
-.msg h4 {
-  margin: 0 0 4px;
-  font-size: 13px;
-  color: var(--muted);
+.bubble.follow {
+  margin: 2px 0 3px 25px;
+}
+
+.bubble.altfollow {
+  margin: 2px 25px 3px 0;
+  background: rgba(15, 38, 26, 0.9);
+  border: 1px solid rgba(61, 220, 132, 0.25);
+  float: right;
+}
+
+.bubble .txt {
+  padding: 8px 0;
+  width: 100%;
+}
+
+.bubble .txt .name {
   font-weight: 600;
+  font-size: 13px;
+  display: inline-table;
+  padding: 0 0 0 15px;
+  margin: 0 0 4px 0;
+  color: var(--brand);
+}
+
+.bubble .txt .name.alt {
+  color: var(--ok);
+}
+
+.bubble .txt .message {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0 15px;
+  margin: 6px 0;
+  color: var(--text);
+  display: table;
+  line-height: 1.5;
+}
+
+.bubble .txt .timestamp {
+  font-size: 10px;
+  margin: auto;
+  padding: 0 15px 0 0;
+  display: table;
+  float: right;
+  position: relative;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.bubble-arrow {
+  position: absolute;
+  float: left;
+  left: -8px;
+  top: 0;
+}
+
+.bubble-arrow.alt {
+  left: auto;
+  right: -8px;
+  float: right;
+}
+
+.bubble-arrow:after {
+  content: "";
+  position: absolute;
+  border-top: 12px solid rgba(30, 35, 45, 0.9);
+  border-left: 12px solid transparent;
+  border-radius: 4px 0 0 0;
+  width: 0;
+  height: 0;
+}
+
+.bubble-arrow.alt:after {
+  border-top: 12px solid rgba(15, 38, 26, 0.9);
+  transform: scaleX(-1);
+}
+
+/* Responsividade para chat */
+@media only screen and (max-width: 450px) {
+  .bubble {
+    max-width: 85%;
+  }
+
+  .bubble .txt .timestamp {
+    display: none;
+  }
 }
 
 /* ============================================
@@ -243,4 +419,58 @@ footer {
   color: var(--muted);
   margin-top: 28px;
   font-size: 13px;
+}
+
+/* ============================================
+   ACESSIBILIDADE
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Desabilita parallax no vídeo */
+  .video-bg {
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Cards e hero aparecem imediatamente */
+  .card,
+  .hero {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ============================================
+   RESPONSIVIDADE MOBILE
+   ============================================ */
+@media (max-width: 799px) {
+  .hero {
+    padding: 28px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  /* Reduz intensidade das animações em mobile */
+  .card {
+    transform: translateY(-60px) scale(.95);
+  }
+
+  /* Vídeo mais discreto em mobile */
+  .video-bg {
+    opacity: 0.08;
+    filter: blur(3px) brightness(0.6);
+  }
 }

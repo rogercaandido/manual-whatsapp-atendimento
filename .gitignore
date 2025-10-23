@@ -6,6 +6,7 @@ desktop.ini
 # Editores e IDEs
 .vscode/
 .idea/
+.claude/
 *.sublime-*
 *.swp
 *.swo
@@ -31,3 +32,11 @@ yarn-error.log
 # Arquivos com instruções locais (não devem ir para o GitHub)
 COMO-PUBLICAR.md
 INSTRUCOES-LOCAIS.md
+GUIA-ANIMACOES.md
+CHECKPOINT-*.md
+
+# Arquivos de mídia grandes
+background.mp4
+*.mp4
+*.mov
+*.avi
