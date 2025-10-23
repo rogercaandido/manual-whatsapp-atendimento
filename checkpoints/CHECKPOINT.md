@@ -1,8 +1,8 @@
 # 🎯 CHECKPOINT - Manual WhatsApp Atendimento
 
 **Última atualização:** 2025-10-23
-**Status:** ✅ Implementação com estrelas + bolas orbitais animadas
-**Versão atual:** v1.4.0
+**Status:** ✅ Tipografia premium com Orbitron + Inter Tight
+**Versão atual:** v1.5.0
 
 > **Nota:** Este é um checkpoint VIVO que é atualizado continuamente.
 > O Git mantém o histórico completo de todas as mudanças (`git log checkpoints/CHECKPOINT.md`)
@@ -13,7 +13,15 @@
 
 ### ✨ Features Atuais
 
-#### 🆕 v1.4.0 (Hoje - 2025-10-23) 🌊
+#### 🆕 v1.5.0 (Hoje - 2025-10-23) 🔤
+1. **Tipografia Premium** (Google Fonts)
+   - **Orbitron** para títulos e destaques (h1, h2, eyebrow, CTA, numbers)
+   - **Inter Tight** para body e textos corridos
+   - Letter-spacing ajustado para melhor legibilidade
+   - Preconnect para carregamento otimizado
+   - Fallbacks system fonts mantidos
+
+#### 📦 v1.4.0
 1. **Bolas Orbitais Animadas** (substituindo gradientes estáticos)
    - 3 bolas com movimento orbital complexo
    - Animação de 360° em trajetórias não-lineares
