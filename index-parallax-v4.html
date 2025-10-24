@@ -44,6 +44,18 @@
     spline-viewer::part(logo) {
       display: none !important;
     }
+
+    /* Forçar canvas Spline ocupar todo espaço expandido */
+    .hero-spline spline-viewer {
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    .hero-spline spline-viewer canvas,
+    .hero-spline spline-viewer #container {
+      height: 100% !important;
+      width: 100% !important;
+    }
   </style>
 </head>
 <body>
