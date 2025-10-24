@@ -355,6 +355,13 @@ body {
   transform: translateY(0);
 }
 
+/* Hero section aparece imediatamente (já está na viewport) */
+.hero-section {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: none !important;
+}
+
 /* ============================================
    HERO SECTION COM GRID
    ============================================ */
@@ -363,96 +370,129 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 0 80px 0;
-  overflow: visible !important;
-  /* Garante espaço extra para animação 3D */
-  margin-bottom: 40px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  /* Máscara para cortar conteúdo que sai da viewport */
+  clip-path: inset(0 0 0 0);
 }
 
 body {
-  overflow-x: visible; /* Permite que o robô 3D expanda lateralmente */
+  overflow-x: clip; /* Permite overflow mas sem scroll */
   overflow-y: auto;
-  /* Previne scroll horizontal com max-width no conteúdo */
   max-width: 100vw;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 0;
-  align-items: center;
-  justify-items: center; /* Centraliza itens dentro das colunas */
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  overflow: visible !important;
-  contain: none !important;
-  position: relative;
-}
-
-/* Conteúdo (esquerda) */
-.hero-content {
+/* Hero Circular Layout */
+.hero-circular-layout {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding-right: 0;
-  max-width: 650px;
+  min-height: 100vh;
   position: relative;
   z-index: 1;
-  /* Empurra o conteúdo um pouco para a direita */
-  margin-left: 10%;
+  padding: 0;
 }
 
-/* Spline (direita) */
-.hero-spline {
-  width: 150%;
-  height: 85vh;
-  max-height: 850px;
-  min-height: 650px;
+/* Semicírculo de fundo */
+.hero-semicircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vh;
+  height: 80vh;
+  max-width: 800px;
+  max-height: 800px;
+  background: radial-gradient(circle at center, rgba(116, 210, 0, 0.15) 0%, rgba(116, 210, 0, 0.05) 50%, transparent 70%);
+  border-radius: 50%;
+  border: 2px solid rgba(116, 210, 0, 0.2);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Container do texto curvado */
+.curved-text-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vh;
+  height: 90vh;
+  max-width: 900px;
+  max-height: 900px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.curved-text-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.curved-text {
+  fill: var(--text);
+  font-family: "Figtree", sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.15;
+}
+
+/* Robô 3D no centro */
+.hero-robot-center {
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible !important;
-  /* Ajusta margin para centralizar melhor */
-  margin: 0 -25% 0 -45%; /* -45% ao invés de -60% */
-  padding: 0;
-  contain: none !important;
-  z-index: 10;
+  overflow: hidden;
+  z-index: 5;
+  margin-bottom: 0;
+  /* Máscara para cortar pernas do robô */
+  clip-path: inset(0 0 0 0);
 }
 
-.hero-spline spline-viewer {
+.hero-robot-center spline-viewer {
   width: 100%;
   height: 100%;
   max-width: none !important;
   max-height: none !important;
   display: block;
-  transform: scale(1.2);
+  transform: scale(1.3) !important;
   transform-origin: center center;
-  overflow: visible !important;
+  overflow: hidden;
   position: relative;
-  clip-path: none !important;
-  contain: none !important;
-  /* Remove mask do shadow DOM */
-  mask: none !important;
-  -webkit-mask: none !important;
+  transition: none !important;
 }
 
-.hero-spline spline-viewer canvas {
+.hero-robot-center spline-viewer canvas {
   width: 100% !important;
-  height: 100% !important;
+  height: 100vh !important;
   max-width: none !important;
   max-height: none !important;
   min-width: 100% !important;
-  min-height: 100% !important;
+  min-height: 100vh !important;
   display: block !important;
   object-fit: contain !important;
   object-position: center !important;
-  overflow: visible !important;
-  clip-path: none !important;
-  contain: none !important;
-  mask: none !important;
-  -webkit-mask: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Conteúdo textual abaixo */
+.hero-content-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  position: relative;
+  z-index: 3;
 }
 
 /* Títulos com Figtree */
@@ -1114,49 +1154,32 @@ body {
     padding: 0 48px;
   }
 
-  /* Hero mantém lado a lado mas com overlap permitido */
-  .hero-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
-    max-width: 100%;
-    position: relative;
+  /* Hero responsivo */
+  .hero-circular-layout {
+    padding: 6rem 2rem 3rem;
   }
 
-  .hero-content {
-    padding-right: 0;
-    max-width: 100%;
-    z-index: 2;
-    position: relative;
+  .hero-semicircle {
+    width: 500px;
+    height: 500px;
   }
 
-  .hero-spline {
-    width: 130%;
-    height: 80vh;
-    max-height: 750px;
-    min-height: 550px;
-    margin: 0 -15% 0 -15%;
-    z-index: 1;
-    overflow: visible !important;
-    padding: 0;
+  .curved-text-container {
+    width: 600px;
+    height: 600px;
   }
 
-  .hero-spline spline-viewer {
-    width: 100%;
-    height: 100%;
-    max-width: none !important;
-    max-height: none !important;
-    transform: scale(1.1);
-    overflow: visible !important;
-    position: relative;
-    clip-path: none !important;
+  .curved-text {
+    font-size: 36px;
   }
 
-  .hero-spline spline-viewer canvas {
-    max-width: none !important;
-    max-height: none !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    clip-path: none !important;
+  .hero-robot-center {
+    width: 420px;
+    height: 420px;
+  }
+
+  .hero-content-bottom {
+    max-width: 700px;
   }
 
   .hero-title {
@@ -1202,42 +1225,28 @@ body {
   }
 
   /* Grid ainda mais compacto com overlap maior */
-  .hero-grid {
-    grid-template-columns: 1fr 0.8fr;
-    gap: 20px;
+  /* Hero mais compacto */
+  .hero-circular-layout {
+    padding: 5rem 2rem 2rem;
   }
 
-  .hero-content {
-    padding-right: 0;
+  .hero-semicircle {
+    width: 450px;
+    height: 450px;
   }
 
-  .hero-spline {
-    width: 140%;
-    height: 75vh;
-    max-height: 650px;
-    min-height: 500px;
-    margin: 0 -20% 0 -20%;
-    overflow: visible !important;
-    padding: 0;
+  .curved-text-container {
+    width: 550px;
+    height: 550px;
   }
 
-  .hero-spline spline-viewer {
-    width: 100%;
-    height: 100%;
-    max-width: none !important;
-    max-height: none !important;
-    transform: scale(1.0);
-    overflow: visible !important;
-    position: relative;
-    clip-path: none !important;
+  .curved-text {
+    font-size: 32px;
   }
 
-  .hero-spline spline-viewer canvas {
-    max-width: none !important;
-    max-height: none !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    clip-path: none !important;
+  .hero-robot-center {
+    width: 380px;
+    height: 380px;
   }
 
   .hero-title {
@@ -1283,43 +1292,39 @@ body {
     min-height: auto;
   }
 
-  /* Mantém lado a lado com overlap total */
-  .hero-grid {
-    grid-template-columns: 1fr 0.6fr;
-    gap: 10px;
+  /* Hero mobile */
+  .hero-circular-layout {
+    padding: 4rem 1.5rem 2rem;
+    min-height: auto;
   }
 
-  .hero-content {
-    padding-right: 0;
+  .hero-semicircle {
+    width: 350px;
+    height: 350px;
   }
 
-  .hero-spline {
-    width: 160%;
-    height: 65vh;
-    max-height: 550px;
-    min-height: 400px;
-    margin: 0 -30% 0 -30%;
-    overflow: visible !important;
-    padding: 0;
+  .curved-text-container {
+    width: 450px;
+    height: 450px;
   }
 
-  .hero-spline spline-viewer {
-    width: 100%;
-    height: 100%;
-    max-width: none !important;
-    max-height: none !important;
-    transform: scale(0.85);
-    overflow: visible !important;
-    position: relative;
-    clip-path: none !important;
+  .curved-text {
+    font-size: 24px;
+    letter-spacing: 0.1em;
   }
 
-  .hero-spline spline-viewer canvas {
-    max-width: none !important;
-    max-height: none !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    clip-path: none !important;
+  .hero-robot-center {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-robot-center spline-viewer {
+    transform: scale(1.2) !important;
+  }
+
+  .hero-content-bottom {
+    max-width: 100%;
   }
 
   .hero-title {
@@ -1438,39 +1443,34 @@ body {
     padding: 70px 0 40px 0;
   }
 
-  /* Máximo overlap em mobile pequeno */
-  .hero-grid {
-    grid-template-columns: 1fr 0.5fr;
-    gap: 5px;
+  /* Hero mobile pequeno */
+  .hero-circular-layout {
+    padding: 3rem 1rem 1.5rem;
   }
 
-  .hero-spline {
-    width: 180%;
-    height: 60vh;
-    max-height: 500px;
-    min-height: 350px;
-    margin: 0 -40% 0 -40%;
-    overflow: visible !important;
-    padding: 0;
+  .hero-semicircle {
+    width: 280px;
+    height: 280px;
   }
 
-  .hero-spline spline-viewer {
-    width: 100%;
-    height: 100%;
-    max-width: none !important;
-    max-height: none !important;
-    transform: scale(0.75);
-    overflow: visible !important;
-    position: relative;
-    clip-path: none !important;
+  .curved-text-container {
+    width: 350px;
+    height: 350px;
   }
 
-  .hero-spline spline-viewer canvas {
-    max-width: none !important;
-    max-height: none !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    clip-path: none !important;
+  .curved-text {
+    font-size: 18px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-robot-center {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 1rem;
+  }
+
+  .hero-robot-center spline-viewer {
+    transform: scale(1.1) !important;
   }
 
   .hero-title {
