@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- SEO Meta Tags -->
+  <title>Manual do Sistema de Atendimento Automático – WhatsApp</title>
+  <meta name="description" content="Manual simples e acessível para usuários finais: o que é, para que serve e como usar o atendimento automático via WhatsApp." />
+  <meta name="author" content="webdev_" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
+  <meta property="og:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
+  <meta name="twitter:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Figtree: Para títulos -->
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Inter: Para body e textos -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- JetBrains Mono: Para elementos tech/code -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Spline Viewer -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style-parallax-v4.css" />
+
+  <style>
+    /* Inline CSS para garantir remoção do logo Spline */
+    spline-viewer::part(logo) {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo webdev_ no header -->
+  <div class="logo-nav">webdev_</div>
+
+  <!-- Bolas animadas com movimento orbital -->
+  <div class="glow-container">
+    <div class="ball"></div>
+    <div class="ball" style="--delay:-12s;--size:0.35;--speed:25s;"></div>
+    <div class="ball" style="--delay:-10s;--size:0.3;--speed:15s;"></div>
+  </div>
+
+  <!-- Camadas de estrelas animadas para efeito parallax -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+
+  <!-- HERO SECTION com Grid 2 colunas -->
+  <section class="section hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Lado esquerdo: Conteúdo -->
+        <div class="hero-content">
+          <h1 class="hero-title">Tudo <strong class="sparkles-text" data-text="resolvido">resolvido</strong> no WhatsApp</h1>
+          <p class="hero-subtitle">
+            Fale e receba atualizações no mesmo lugar.<br>
+            <span class="underlined">Rápido, claro e sem burocracia.</span>
+          </p>
+          <div class="hero-cta">
+            <a class="btn-primary" href="https://wa.me/5519995492389?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">
+              Falar no WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Lado direito: Spline 3D -->
+        <div class="hero-spline">
+          <spline-viewer
+            url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            hide-controls="true"
+            loading-anim-type="spinner-small-dark">
+          </spline-viewer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAT EXAMPLE SECTION -->
+  <section class="section chat-section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="eyebrow">Exemplo</span>
+        <h2 class="section-title">Da sua dúvida à solução</h2>
+      </div>
+
+      <div class="chat-container">
+        <div class="msg">
+          <div class="bubble alt">
+            <div class="txt">
+              <span class="name alt">Você</span>
+              <span class="timestamp">14:32</span>
+              <p class="message">Oi! Estou sem acesso ao curso de Nutrição Clínica. Podem verificar?</p>
+            </div>
+            <div class="bubble-arrow alt"></div>
+          </div>
+        </div>
+
+        <div class="msg">
+          <div class="bubble">
+            <div class="txt">
+              <span class="name">Assistente</span>
+              <span class="timestamp">14:33</span>
+              <p class="message">Recebi seu pedido. Pode me confirmar o e-mail cadastrado para liberar o acesso?</p>
+            </div>
+            <div class="bubble-arrow"></div>
+          </div>
+        </div>
+
+        <div class="msg">
+          <div class="bubble follow">
+            <div class="txt">
+              <span class="timestamp">14:45</span>
+              <p class="message follow">📢 Tivemos uma atualização na sua solicitação:<br><br><em>[Acesso ao curso de Nutrição Clínica]</em><br><br>Seu acesso foi liberado. Tente novamente e me avise se está tudo certo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="section features-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Recursos</span>
+        <h2 class="section-title">Como <strong>funciona</strong></h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Um <strong>assistente</strong> que conversa com você</h3>
+          <p class="feature-description">É um sistema que entende sua mensagem, registra o pedido para a equipe e avisa você quando houver novidade. Funciona por texto, imagem, áudio ou documento.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3 class="feature-title"><strong>Comunicação simples</strong>, ponta a ponta</h3>
+          <p class="feature-description">Você informa o que precisa e acompanha o andamento sem sair do WhatsApp. Quando a equipe atualiza o pedido, o sistema traduz e envia automaticamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE SECTION -->
+  <section class="section how-to-section">
+    <div class="container">
+      <div class="content-layout">
+        <div class="content-text">
+          <span class="eyebrow">Como usar</span>
+          <h2 class="section-title">Converse como você <strong>sempre conversa</strong></h2>
+          <p>Abra uma conversa no número informado e explique o que precisa. Se quiser, anexe uma foto, um documento ou envie um áudio. O sistema entende o conteúdo, pede só o essencial e confirma os próximos passos no mesmo chat.</p>
+          <p>Quando houver avanço, você recebe uma atualização automática. Não é necessário acompanhar portais ou abrir tickets manualmente.</p>
+
+          <div class="badge-group">
+            <span class="badge">Texto</span>
+            <span class="badge">Imagem com print</span>
+            <span class="badge">Documento</span>
+            <span class="badge">Áudio curto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section class="section benefits-section">
+    <div class="container">
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="eyebrow">Quando você recebe retorno</span>
+          <h3 class="benefit-title">Atualizações no <strong>momento certo</strong></h3>
+          <p>Você recebe mensagem quando o pedido é resolvido, quando há uma ação pendente de sua parte ou quando a equipe precisa informar algo importante.</p>
+          <p class="highlight">Não é obrigatório responder. Se quiser, pode confirmar que deu certo.</p>
+        </div>
+
+        <div class="benefit-card">
+          <span class="eyebrow">Boas práticas</span>
+          <h3 class="benefit-title"><strong>Mensagens</strong> que ajudam</h3>
+          <p>Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis.</p>
+          <p class="highlight warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL SECTION -->
+  <section class="section cta-section">
+    <div class="container-narrow">
+      <div class="cta-content">
+        <span class="eyebrow">Começar agora</span>
+        <h2 class="section-title"><strong>Canal oficial</strong> de atendimento</h2>
+        <p>Salve o número no seu celular e inicie a conversa. A resposta chega no mesmo chat, sem burocracia e sem fila invisível.</p>
+        <div class="cta-number">19 9 9549-2389</div>
+        <a class="btn-primary large" href="https://wa.me/5519995492389?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">
+          Abrir conversa no WhatsApp
+        </a>
+        <p class="cta-note">Se preferir, envie um "Oi" e descreva em uma frase o que deseja. O assistente conduz o restante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">webdev_</div>
+        <div class="footer-contact">
+          <span class="footer-label">Precisa de ajuda?</span>
+          <div class="footer-contact-item">
+            <svg class="phone-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>19 9 9549-2389 - Roger</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 webdev_. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript para animações e sparkles -->
+  <script>
+    // Intersection Observer para reveal suave
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observar todas as sections
+    document.querySelectorAll('.section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Observar cards individuais
+    document.querySelectorAll('.feature-card, .benefit-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    // Remove logo do Spline via Shadow DOM
+    function removeSplineLogo() {
+      const viewer = document.querySelector('spline-viewer');
+      if (viewer && viewer.shadowRoot) {
+        const logo = viewer.shadowRoot.querySelector('#logo');
+        if (logo) {
+          logo.style.display = 'none';
+        }
+      }
+    }
+
+    // Tenta remover o logo em múltiplos momentos
+    setTimeout(removeSplineLogo, 100);
+    setTimeout(removeSplineLogo, 500);
+    setTimeout(removeSplineLogo, 1000);
+    setTimeout(removeSplineLogo, 2000);
+
+    // Observer para detectar quando o Spline carrega
+    const splineViewer = document.querySelector('spline-viewer');
+    if (splineViewer) {
+      const splineObserver = new MutationObserver(removeSplineLogo);
+      splineObserver.observe(splineViewer, { childList: true, subtree: true });
+
+      splineViewer.addEventListener('load', removeSplineLogo);
+    }
+  </script>
+</body>
+</html>
