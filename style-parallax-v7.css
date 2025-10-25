@@ -435,27 +435,29 @@ body {
 
 /* Robô 3D à esquerda */
 .hero-robot-left {
-  width: clamp(400px, 40vw, 716px); /* Width responsivo */
-  max-width: 716px;
+  width: clamp(420px, 42vw, 750px); /* Aumentado para dar mais espaço à direita */
+  max-width: 750px;
   height: 100%;
   position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  overflow: visible;
+  overflow: visible !important; /* Garante que não corta a animação */
   flex-shrink: 0;
   z-index: 10;
+  padding-right: 30px; /* Espaço extra à direita para animação da mão */
 }
 
 .hero-robot-left #spline-canvas {
-  width: 105% !important; /* Reduzido de 115% para 105% */
-  height: 105% !important; /* Reduzido de 115% para 105% */
+  width: 110% !important; /* Aumentado de 105% para 110% para dar espaço à direita */
+  height: 105% !important;
   display: block !important;
   object-fit: contain !important;
   object-position: center bottom !important;
   outline: none !important;
-  transform: translateX(clamp(0px, 3vw, 50px)); /* Transform responsivo */
+  transform: translateX(clamp(-10px, 1vw, 20px)); /* Ajustado para compensar o espaço extra */
   transform-origin: center bottom;
+  overflow: visible !important; /* Permite que a animação ultrapasse os limites */
 }
 
 /* Conteúdo à direita */
