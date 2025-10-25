@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- SEO Meta Tags -->
+  <title>Manual do Sistema de Atendimento Automático – WhatsApp</title>
+  <meta name="description" content="Manual simples e acessível para usuários finais: o que é, para que serve e como usar o atendimento automático via WhatsApp." />
+  <meta name="author" content="webdev_" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
+  <meta property="og:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
+  <meta name="twitter:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Figtree: Para títulos -->
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Inter: Para body e textos -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- JetBrains Mono: Para elementos tech/code -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Six Caps: Para texto de fundo -->
+  <link href="https://fonts.googleapis.com/css2?family=Six+Caps&display=swap" rel="stylesheet">
+  <!-- Bebas Neue: Para hero section do Figma -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet (carrega primeiro para evitar FOUC) -->
+  <link rel="stylesheet" href="style-parallax-v7.css" />
+
+  <!-- Spline Viewer com preload -->
+  <link rel="modulepreload" href="https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js">
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js"></script>
+
+  <style>
+    /* Inline CSS para garantir remoção do logo Spline */
+    spline-viewer::part(logo) {
+      display: none !important;
+    }
+
+    /* Força ocultação agressiva do logo */
+    spline-viewer a[href*="spline.design"] {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo webdev_ no header -->
+  <div class="logo-nav">webdev_</div>
+
+  <!-- Bolas animadas com movimento orbital -->
+  <div class="glow-container">
+    <div class="ball"></div>
+    <div class="ball" style="--delay:-12s;--size:0.35;--speed:25s;"></div>
+    <div class="ball" style="--delay:-10s;--size:0.3;--speed:15s;"></div>
+  </div>
+
+  <!-- Camadas de estrelas animadas para efeito parallax -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+
+  <!-- HERO SECTION - Design do Figma -->
+  <section class="section hero-section">
+    <!-- Texto de fundo repetido -->
+    <div class="hero-background-repeated">
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+    </div>
+
+    <!-- Container principal da hero -->
+    <div class="hero-container">
+      <!-- Robô 3D à esquerda -->
+      <div class="hero-robot-left">
+        <spline-viewer
+          url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          hide-controls="true"
+          loading-anim-type="spinner-small-dark"
+          loading-anim="false">
+        </spline-viewer>
+      </div>
+
+      <!-- Conteúdo à direita -->
+      <div class="hero-content-right">
+        <h1 class="hero-title-large">COMEÇAR</h1>
+        <a class="hero-cta-button" href="https://wa.me/5519995492389?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">
+          ABRIR CONVERSA NO WHATSAPP
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMBINED CHAT + FEATURES SECTION -->
+  <section class="section combined-section">
+    <div class="container">
+      <!-- Título único para toda a seção -->
+      <div class="section-header center">
+        <span class="eyebrow">Recursos</span>
+        <h2 class="section-title">Como <strong>funciona</strong></h2>
+      </div>
+
+      <div class="combined-grid">
+
+        <!-- Coluna Esquerda: Chat Example -->
+        <div class="combined-column chat-column">
+          <!-- Chat container animado -->
+          <div id="animated-chat" class="chat-container">
+            <!-- Mensagens serão inseridas dinamicamente via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Features -->
+        <div class="combined-column features-column">
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon"></div>
+              <h3 class="feature-title">Um assistente que conversa com você</h3>
+              <p class="feature-description">É um sistema que entende sua mensagem, registra o pedido para a equipe e avisa você quando houver novidade. Funciona por texto, imagem, áudio ou documento.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon"></div>
+              <h3 class="feature-title">Comunicação simples, ponta a ponta</h3>
+              <p class="feature-description">Você informa o que precisa e acompanha o andamento sem sair do WhatsApp. Quando houver avanço, você recebe uma atualização automática. Não é necessário acompanhar portais ou abrir tickets manualmente.</p>
+              <div class="badge-group">
+                <span class="badge">Texto</span>
+                <span class="badge">Imagem com print</span>
+                <span class="badge">Documento</span>
+                <span class="badge">Áudio curto</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section class="section benefits-section">
+    <div class="container">
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="eyebrow">Quando você recebe retorno</span>
+          <h3 class="benefit-title">Atualizações no <strong>momento certo</strong></h3>
+          <p>Você recebe mensagem quando o pedido é resolvido, quando há uma ação pendente de sua parte ou quando a equipe precisa informar algo importante.</p>
+          <p class="highlight">Não é obrigatório responder. Se quiser, pode confirmar que deu certo.</p>
+        </div>
+
+        <div class="benefit-card">
+          <span class="eyebrow">Boas práticas</span>
+          <h3 class="benefit-title"><strong>Mensagens</strong> que ajudam</h3>
+          <p>Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis.</p>
+          <p class="highlight warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL SECTION -->
+  <section class="section cta-section">
+    <div class="container-narrow">
+      <div class="cta-content">
+        <span class="eyebrow">Começar agora</span>
+        <h2 class="section-title"><strong>Canal oficial</strong> de atendimento</h2>
+        <p>Salve o número no seu celular e inicie a conversa. A resposta chega no mesmo chat, sem burocracia e sem fila invisível.</p>
+        <div class="cta-number">19 9 9549-2389</div>
+        <a class="btn-primary large" href="https://wa.me/5519995492389?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">
+          Abrir conversa no WhatsApp
+        </a>
+        <p class="cta-note">Se preferir, envie um "Oi" e descreva em uma frase o que deseja. O assistente conduz o restante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">webdev_</div>
+        <div class="footer-contact">
+          <span class="footer-label">Precisa de ajuda?</span>
+          <div class="footer-contact-item">
+            <svg class="phone-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>19 9 9549-2389 - Roger</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 webdev_. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript para animações e sparkles -->
+  <script>
+    // Intersection Observer para reveal suave
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observar todas as sections (exceto hero que já está visível)
+    document.querySelectorAll('.section:not(.hero-section)').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Observar cards individuais
+    document.querySelectorAll('.feature-card, .benefit-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    // Remove logo e máscaras do Spline via Shadow DOM
+    function removeSplineLogo() {
+      const viewer = document.querySelector('spline-viewer');
+      if (!viewer) return false;
+
+      let cleanupDone = false;
+
+      if (viewer.shadowRoot) {
+        // Remove logo de todas as formas possíveis
+        const logo = viewer.shadowRoot.querySelector('#logo');
+        if (logo) {
+          logo.style.display = 'none';
+          logo.style.opacity = '0';
+          logo.style.visibility = 'hidden';
+          logo.style.pointerEvents = 'none';
+          logo.remove(); // Remove do DOM completamente
+          cleanupDone = true;
+        }
+
+        // Remove todos os links do Spline
+        const links = viewer.shadowRoot.querySelectorAll('a[href*="spline.design"]');
+        links.forEach(link => {
+          link.style.display = 'none';
+          link.style.opacity = '0';
+          link.style.visibility = 'hidden';
+          link.style.pointerEvents = 'none';
+          link.remove(); // Remove do DOM completamente
+          cleanupDone = true;
+        });
+
+        // Remove máscaras e clipping do shadow DOM
+        const canvas = viewer.shadowRoot.querySelector('canvas');
+        if (canvas) {
+          canvas.style.clipPath = 'none';
+          canvas.style.mask = 'none';
+          canvas.style.webkitMask = 'none';
+          canvas.style.overflow = 'visible';
+          canvas.style.contain = 'none';
+          cleanupDone = true;
+        }
+
+        // Remove do container também
+        const container = viewer.shadowRoot.querySelector('#canvas-container, .canvas-container, div');
+        if (container) {
+          container.style.clipPath = 'none';
+          container.style.mask = 'none';
+          container.style.webkitMask = 'none';
+          container.style.overflow = 'visible';
+          container.style.contain = 'none';
+        }
+      }
+
+      // Também aplica no elemento principal
+      viewer.style.clipPath = 'none';
+      viewer.style.mask = 'none';
+      viewer.style.webkitMask = 'none';
+      viewer.style.overflow = 'visible';
+      viewer.style.contain = 'none';
+
+      return cleanupDone;
+    }
+
+    // Setup Spline com estratégia otimizada
+    const splineViewer = document.querySelector('spline-viewer');
+    if (splineViewer) {
+      let cleanupComplete = false;
+      let mutationObserver = null;
+
+      // Função para cleanup final e parar observers
+      function finalizeCleanup() {
+        if (cleanupComplete) return;
+
+        if (removeSplineLogo()) {
+          cleanupComplete = true;
+          if (mutationObserver) {
+            mutationObserver.disconnect();
+          }
+
+          // Força o tamanho correto imediatamente após cleanup
+          if (splineViewer.shadowRoot) {
+            const canvas = splineViewer.shadowRoot.querySelector('canvas');
+            if (canvas) {
+              canvas.style.transform = 'none';
+              canvas.style.transition = 'none';
+            }
+          }
+
+          // Bloqueia qualquer transformação no spline-viewer
+          splineViewer.style.transform = 'scale(1.2)';
+          splineViewer.style.transition = 'none';
+        }
+      }
+
+      // Tenta imediatamente
+      finalizeCleanup();
+
+      // Observer para mudanças no shadow DOM
+      mutationObserver = new MutationObserver(() => {
+        if (!cleanupComplete) {
+          finalizeCleanup();
+        }
+      });
+
+      mutationObserver.observe(splineViewer, {
+        childList: true,
+        subtree: true
+      });
+
+      // Evento de load (mais confiável)
+      splineViewer.addEventListener('load', finalizeCleanup, { once: true });
+
+      // Fallback com timeouts progressivos (para em 2s)
+      const timeouts = [100, 300, 600, 1000, 2000];
+      timeouts.forEach(delay => {
+        setTimeout(() => {
+          if (!cleanupComplete) {
+            finalizeCleanup();
+          }
+        }, delay);
+      });
+    }
+
+    // ============================================================================
+    // ANIMATED CHAT SYSTEM
+    // ============================================================================
+
+    // Configuração das mensagens
+    const chatMessages = [
+      {
+        sender: 'user',
+        name: 'Cliente',
+        timestamp: '14:32',
+        content: 'Uma cliente aqui falou que não consegue baixar o material e certificado no integra',
+        delay: 800,
+        typingDuration: 1500
+      },
+      {
+        sender: 'assistant',
+        name: 'Agente',
+        timestamp: '14:33',
+        content: 'Certo! Me envia a ficha por favor',
+        delay: 600,
+        typingDuration: 1200
+      },
+      {
+        sender: 'user',
+        name: 'Cliente',
+        timestamp: '14:34',
+        content: '📎 <em>documento.pdf</em>',
+        delay: 700,
+        typingDuration: 800,
+        isFile: true
+      },
+      {
+        sender: 'assistant',
+        name: 'Agente',
+        timestamp: '14:42',
+        content: '📢 Tivemos uma atualização na sua solicitação:<br><br>Acesso corrigido!! Tente novamente e me avise se está tudo certo.',
+        delay: 600,
+        typingDuration: 2000,
+        isUpdate: true
+      }
+    ];
+
+    // Função para criar indicador de digitação (typing dots)
+    function createTypingIndicator(sender) {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = `msg ${sender}-msg typing-message`;
+
+      const indicator = document.createElement('div');
+      indicator.className = `typing-indicator ${sender === 'user' ? 'user-typing' : ''}`;
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'typing-dot';
+        indicator.appendChild(dot);
+      }
+
+      typingDiv.appendChild(indicator);
+      return typingDiv;
+    }
+
+    // Função para criar mensagem
+    function createMessage(message) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${message.sender}-msg`;
+
+      const bubble = document.createElement('div');
+
+      // Determinar classe do bubble
+      if (message.isUpdate) {
+        bubble.className = 'bubble update-bubble';
+      } else if (message.isFile) {
+        bubble.className = message.sender === 'user' ? 'bubble user-bubble file-bubble' : 'bubble assistant-bubble file-bubble';
+      } else {
+        bubble.className = message.sender === 'user' ? 'bubble user-bubble' : 'bubble assistant-bubble';
+      }
+
+      const txt = document.createElement('div');
+      txt.className = 'txt';
+
+      // Adicionar nome apenas se não for mensagem de update
+      if (!message.isUpdate) {
+        const nameSpan = document.createElement('span');
+        nameSpan.className = message.sender === 'user' ? 'name user-name' : 'name';
+        nameSpan.textContent = message.name;
+        txt.appendChild(nameSpan);
+      }
+
+      const messagePara = document.createElement('p');
+      messagePara.className = 'message';
+      messagePara.innerHTML = message.content;
+      txt.appendChild(messagePara);
+
+      const timestampSpan = document.createElement('span');
+      timestampSpan.className = 'timestamp';
+      timestampSpan.textContent = message.timestamp;
+      txt.appendChild(timestampSpan);
+
+      bubble.appendChild(txt);
+      msgDiv.appendChild(bubble);
+      return msgDiv;
+    }
+
+    // Função principal para animar chat
+    async function animateChat() {
+      const chatContainer = document.getElementById('animated-chat');
+      if (!chatContainer) return;
+
+      // Limpar chat container
+      chatContainer.innerHTML = '';
+
+      // Delay inicial antes de começar
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      for (const message of chatMessages) {
+        // Mostrar typing indicator
+        const typingIndicator = createTypingIndicator(message.sender);
+        chatContainer.appendChild(typingIndicator);
+
+        // Scroll suave para o final
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Aguardar duração do typing
+        await new Promise(resolve => setTimeout(resolve, message.typingDuration));
+
+        // Remover typing indicator
+        typingIndicator.remove();
+
+        // Adicionar mensagem real
+        const messageElement = createMessage(message);
+        chatContainer.appendChild(messageElement);
+
+        // Scroll suave para o final
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Aguardar delay antes da próxima mensagem
+        await new Promise(resolve => setTimeout(resolve, message.delay));
+      }
+    }
+
+    // Observer para iniciar animação quando o chat entrar na viewport
+    const chatObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateChat();
+          chatObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.3
+    });
+
+    // Observar o chat container
+    const chatContainer = document.getElementById('animated-chat');
+    if (chatContainer) {
+      chatObserver.observe(chatContainer);
+    }
+  </script>
+</body>
+</html>
