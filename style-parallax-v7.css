@@ -371,7 +371,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 230px 0 106px; /* Padding do Figma */
+  padding: 0 230px 0 230px; /* Padding equalizado */
   overflow: hidden;
   position: relative;
   background: transparent; /* Sem cor sólida, usa o background do body */
@@ -383,28 +383,30 @@ body {
   max-width: 100vw;
 }
 
-/* Texto de fundo repetido com gradiente */
+/* Texto de fundo repetido com gradiente - cobrindo toda a página */
 .hero-background-repeated {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 1440px;
-  height: 1024px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
   gap: 9px;
   opacity: 0.11;
   z-index: 0; /* Abaixo das estrelas e bolas (z-index: 1) */
   pointer-events: none;
+  overflow: hidden;
 }
 
 .bg-text-line {
-  width: 1324px;
+  width: 100%;
   height: auto;
   font-family: "Bebas Neue", sans-serif;
-  font-size: 146.14px;
+  font-size: clamp(80px, 10vw, 146.14px);
   font-weight: 400;
   line-height: 1.2em;
   text-align: center;
@@ -412,6 +414,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  white-space: nowrap;
 }
 
 /* Container principal - layout row */
@@ -438,28 +441,18 @@ body {
   justify-content: center;
   overflow: visible;
   flex-shrink: 0;
+  z-index: 10; /* Z-index maior para sobrepor */
 }
 
-.hero-robot-left spline-viewer {
-  width: 100%; /* Aumentado para compensar e manter altura */
-  height: 100%; /* Aumentado para compensar e manter altura */
-  display: block;
-  overflow: visible !important;
-  position: relative;
-}
-
-.hero-robot-left spline-viewer canvas {
-  width: 100% !important;
-  height: 100% !important;
+.hero-robot-left #spline-canvas {
+  width: 115% !important; /* +15% de tamanho */
+  height: 115% !important; /* +15% de tamanho */
   display: block !important;
   object-fit: contain !important;
-  object-position: center bottom !important; /* Alinha na base */
-  clip-path: none !important;
-  mask: none !important;
-  overflow: visible !important;
-  contain: none !important;
-  transform: none !important;
-  transition: none !important;
+  object-position: center bottom !important;
+  outline: none !important;
+  transform: translateX(50px); /* Avança 50px para a direita */
+  transform-origin: center bottom;
 }
 
 /* Conteúdo à direita */
@@ -611,11 +604,41 @@ body {
 }
 
 /* ============================================
+   COMBINED CHAT + FEATURES SECTION
+   ============================================ */
+.combined-section {
+  padding: 80px 0;
+}
+
+.combined-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.combined-column {
+  width: 100%;
+}
+
+.chat-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ============================================
    FEATURES GRID
    ============================================ */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: 3rem;
 }
 
@@ -1241,6 +1264,12 @@ body {
 
   .section {
     padding: 56px 0;
+  }
+
+  /* Combined section em coluna única no mobile */
+  .combined-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
 
   .hero-section {

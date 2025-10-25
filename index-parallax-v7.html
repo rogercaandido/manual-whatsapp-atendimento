@@ -40,24 +40,8 @@
   <!-- Stylesheet (carrega primeiro para evitar FOUC) -->
   <link rel="stylesheet" href="style-parallax-v7.css" />
 
-  <!-- Spline Viewer com preload -->
-  <link rel="modulepreload" href="https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js">
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js"></script>
-
-  <style>
-    /* Inline CSS para garantir remoção do logo Spline */
-    spline-viewer::part(logo) {
-      display: none !important;
-    }
-
-    /* Força ocultação agressiva do logo */
-    spline-viewer a[href*="spline.design"] {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-  </style>
+  <!-- Spline Runtime (sem loader) -->
+  <link rel="preload" href="https://unpkg.com/@splinetool/runtime@1.2.6/build/runtime.js" as="script">
 </head>
 <body>
   <!-- Logo webdev_ no header -->
@@ -90,13 +74,8 @@
     <!-- Container principal da hero -->
     <div class="hero-container">
       <!-- Robô 3D à esquerda -->
-      <div class="hero-robot-left">
-        <spline-viewer
-          url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          hide-controls="true"
-          loading-anim-type="spinner-small-dark"
-          loading-anim="false">
-        </spline-viewer>
+      <div class="hero-robot-left" id="spline-container">
+        <canvas id="spline-canvas"></canvas>
       </div>
 
       <!-- Conteúdo à direita -->
@@ -133,12 +112,6 @@
           <div class="features-grid">
             <div class="feature-card">
               <div class="feature-icon"></div>
-              <h3 class="feature-title">Um assistente que conversa com você</h3>
-              <p class="feature-description">É um sistema que entende sua mensagem, registra o pedido para a equipe e avisa você quando houver novidade. Funciona por texto, imagem, áudio ou documento.</p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon"></div>
               <h3 class="feature-title">Comunicação simples, ponta a ponta</h3>
               <p class="feature-description">Você informa o que precisa e acompanha o andamento sem sair do WhatsApp. Quando houver avanço, você recebe uma atualização automática. Não é necessário acompanhar portais ou abrir tickets manualmente.</p>
               <div class="badge-group">
@@ -148,30 +121,16 @@
                 <span class="badge">Áudio curto</span>
               </div>
             </div>
+
+            <div class="feature-card">
+              <span class="eyebrow">Boas práticas</span>
+              <h3 class="feature-title"><strong>Mensagens</strong> que ajudam</h3>
+              <p class="feature-description">Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis.</p>
+              <p class="feature-description highlight warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
+            </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- BENEFITS SECTION -->
-  <section class="section benefits-section">
-    <div class="container">
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <span class="eyebrow">Quando você recebe retorno</span>
-          <h3 class="benefit-title">Atualizações no <strong>momento certo</strong></h3>
-          <p>Você recebe mensagem quando o pedido é resolvido, quando há uma ação pendente de sua parte ou quando a equipe precisa informar algo importante.</p>
-          <p class="highlight">Não é obrigatório responder. Se quiser, pode confirmar que deu certo.</p>
-        </div>
-
-        <div class="benefit-card">
-          <span class="eyebrow">Boas práticas</span>
-          <h3 class="benefit-title"><strong>Mensagens</strong> que ajudam</h3>
-          <p>Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis.</p>
-          <p class="highlight warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -225,126 +184,34 @@
       observer.observe(card);
     });
 
-    // Remove logo e máscaras do Spline via Shadow DOM
-    function removeSplineLogo() {
-      const viewer = document.querySelector('spline-viewer');
-      if (!viewer) return false;
+    // Inicializa Spline com Runtime JS (sem loader)
+    function initSpline() {
+      const splineCanvas = document.getElementById('spline-canvas');
+      const splineSceneUrl = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
 
-      let cleanupDone = false;
+      if (!splineCanvas) return;
 
-      if (viewer.shadowRoot) {
-        // Remove logo de todas as formas possíveis
-        const logo = viewer.shadowRoot.querySelector('#logo');
-        if (logo) {
-          logo.style.display = 'none';
-          logo.style.opacity = '0';
-          logo.style.visibility = 'hidden';
-          logo.style.pointerEvents = 'none';
-          logo.remove(); // Remove do DOM completamente
-          cleanupDone = true;
-        }
-
-        // Remove todos os links do Spline
-        const links = viewer.shadowRoot.querySelectorAll('a[href*="spline.design"]');
-        links.forEach(link => {
-          link.style.display = 'none';
-          link.style.opacity = '0';
-          link.style.visibility = 'hidden';
-          link.style.pointerEvents = 'none';
-          link.remove(); // Remove do DOM completamente
-          cleanupDone = true;
+      import('https://unpkg.com/@splinetool/runtime@1.2.6/build/runtime.js')
+        .then(({ Application }) => {
+          const app = new Application(splineCanvas);
+          app.load(splineSceneUrl)
+            .then(() => {
+              console.log('Spline 3D carregado com sucesso!');
+            })
+            .catch((error) => {
+              console.error('Erro ao carregar Spline:', error);
+            });
+        })
+        .catch((error) => {
+          console.error('Erro ao importar Spline Runtime:', error);
         });
-
-        // Remove máscaras e clipping do shadow DOM
-        const canvas = viewer.shadowRoot.querySelector('canvas');
-        if (canvas) {
-          canvas.style.clipPath = 'none';
-          canvas.style.mask = 'none';
-          canvas.style.webkitMask = 'none';
-          canvas.style.overflow = 'visible';
-          canvas.style.contain = 'none';
-          cleanupDone = true;
-        }
-
-        // Remove do container também
-        const container = viewer.shadowRoot.querySelector('#canvas-container, .canvas-container, div');
-        if (container) {
-          container.style.clipPath = 'none';
-          container.style.mask = 'none';
-          container.style.webkitMask = 'none';
-          container.style.overflow = 'visible';
-          container.style.contain = 'none';
-        }
-      }
-
-      // Também aplica no elemento principal
-      viewer.style.clipPath = 'none';
-      viewer.style.mask = 'none';
-      viewer.style.webkitMask = 'none';
-      viewer.style.overflow = 'visible';
-      viewer.style.contain = 'none';
-
-      return cleanupDone;
     }
 
-    // Setup Spline com estratégia otimizada
-    const splineViewer = document.querySelector('spline-viewer');
-    if (splineViewer) {
-      let cleanupComplete = false;
-      let mutationObserver = null;
-
-      // Função para cleanup final e parar observers
-      function finalizeCleanup() {
-        if (cleanupComplete) return;
-
-        if (removeSplineLogo()) {
-          cleanupComplete = true;
-          if (mutationObserver) {
-            mutationObserver.disconnect();
-          }
-
-          // Força o tamanho correto imediatamente após cleanup
-          if (splineViewer.shadowRoot) {
-            const canvas = splineViewer.shadowRoot.querySelector('canvas');
-            if (canvas) {
-              canvas.style.transform = 'none';
-              canvas.style.transition = 'none';
-            }
-          }
-
-          // Bloqueia qualquer transformação no spline-viewer
-          splineViewer.style.transform = 'scale(1.2)';
-          splineViewer.style.transition = 'none';
-        }
-      }
-
-      // Tenta imediatamente
-      finalizeCleanup();
-
-      // Observer para mudanças no shadow DOM
-      mutationObserver = new MutationObserver(() => {
-        if (!cleanupComplete) {
-          finalizeCleanup();
-        }
-      });
-
-      mutationObserver.observe(splineViewer, {
-        childList: true,
-        subtree: true
-      });
-
-      // Evento de load (mais confiável)
-      splineViewer.addEventListener('load', finalizeCleanup, { once: true });
-
-      // Fallback com timeouts progressivos (para em 2s)
-      const timeouts = [100, 300, 600, 1000, 2000];
-      timeouts.forEach(delay => {
-        setTimeout(() => {
-          if (!cleanupComplete) {
-            finalizeCleanup();
-          }
-        }, delay);
-      });
+    // Inicia Spline quando o DOM estiver pronto
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSpline);
+    } else {
+      initSpline();
     }
 
     // ============================================================================
