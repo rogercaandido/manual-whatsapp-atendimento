@@ -3,177 +3,375 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no">
 
   <!-- SEO Meta Tags -->
   <title>Manual do Sistema de Atendimento Automático – WhatsApp</title>
   <meta name="description" content="Manual simples e acessível para usuários finais: o que é, para que serve e como usar o atendimento automático via WhatsApp." />
-  <meta name="author" content="Sua Empresa" />
+  <meta name="author" content="webdev_" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
-  <meta property="og:description" content="Fale e receba atualizações no mesmo lugar. Rápido, claro e sem burocracia." />
+  <meta property="og:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Manual do Sistema de Atendimento Automático – WhatsApp" />
-  <meta name="twitter:description" content="Fale e receba atualizações no mesmo lugar. Rápido, claro e sem burocracia." />
+  <meta name="twitter:description" content="Tudo resolvido no WhatsApp. Rápido, claro e sem burocracia." />
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
 
-  <!-- Stylesheet -->
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Figtree: Para títulos -->
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Inter: Para body e textos -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- JetBrains Mono: Para elementos tech/code -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Six Caps: Para texto de fundo -->
+  <link href="https://fonts.googleapis.com/css2?family=Six+Caps&display=swap" rel="stylesheet">
+  <!-- Bebas Neue: Para hero section do Figma -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet (carrega primeiro para evitar FOUC) -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Spline Runtime (sem loader) -->
+  <link rel="preload" href="https://unpkg.com/@splinetool/runtime@1.2.6/build/runtime.js" as="script">
 </head>
 <body>
-  <!-- Vídeo de background sutil -->
-  <video class="video-bg" autoplay loop muted playsinline>
-    <source src="background.mp4" type="video/mp4">
-  </video>
+  <!-- Logo webdev_ no header -->
+  <div class="logo-nav">webdev_</div>
 
-  <main class="wrap">
-    <section class="hero">
-      <h1>Atendimento Automático no WhatsApp</h1>
-      <p>Fale e receba atualizações no mesmo lugar. Rápido, claro e sem burocracia.</p>
-      <a class="cta" href="https://wa.me/5519953330043?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">Falar no WhatsApp</a>
-      <div class="number">Contato direto: +55 19 95333-0043</div>
-    </section>
+  <!-- Bolas animadas com movimento orbital -->
+  <div class="glow-container">
+    <div class="ball"></div>
+    <div class="ball" style="--delay:-12s;--size:0.35;--speed:25s;"></div>
+    <div class="ball" style="--delay:-10s;--size:0.3;--speed:15s;"></div>
+  </div>
 
-    <section class="grid">
-      <article class="card half">
-        <div class="eyebrow">O que é</div>
-        <h2>Um assistente que conversa com você</h2>
-        <p>É um sistema que entende sua mensagem, registra o pedido para a equipe e avisa você quando houver novidade. Funciona por texto, imagem, áudio ou documento. A resposta chega no próprio WhatsApp.</p>
-        <p class="muted">Não há formulários. Não há fila de e-mail. Você conversa normalmente e recebe retorno no mesmo canal.</p>
-      </article>
+  <!-- Camadas de estrelas animadas para efeito parallax -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
 
-      <article class="card half">
-        <div class="eyebrow">Para que serve</div>
-        <h2>Comunicação simples, ponta a ponta</h2>
-        <p>Você informa o que precisa e acompanha o andamento sem sair do WhatsApp. Quando a equipe atualiza o pedido, o sistema traduz o comentário técnico para uma mensagem direta e envia para você automaticamente.</p>
-        <p class="muted">O foco é tirar atrito, acelerar respostas e manter tudo claro e rastreável.</p>
-      </article>
+  <!-- HERO SECTION - Design do Figma -->
+  <section class="section hero-section">
+    <!-- Texto de fundo repetido -->
+    <div class="hero-background-repeated">
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+      <div class="bg-text-line">tudo resolvido no whasapp</div>
+    </div>
 
-      <article class="card">
-        <div class="eyebrow">Como usar</div>
-        <h2>Converse como você sempre conversa</h2>
-        <p>Abra uma conversa no número informado e explique o que precisa. Se quiser, anexe uma foto, um documento ou envie um áudio. O sistema entende o conteúdo, pede só o essencial e confirma os próximos passos no mesmo chat.</p>
-        <p>Quando houver avanço, você recebe uma atualização automática. Não é necessário acompanhar portais ou abrir tickets manualmente.</p>
-        <div class="badge">Texto</div>
-        <div class="badge">Imagem com print</div>
-        <div class="badge">Documento</div>
-        <div class="badge">Áudio curto</div>
-      </article>
+    <!-- Container principal da hero -->
+    <div class="hero-container">
+      <!-- Robô 3D à esquerda -->
+      <div class="hero-robot-left" id="spline-container">
+        <canvas id="spline-canvas"></canvas>
+      </div>
 
-      <article class="card">
-        <div class="eyebrow">Exemplo de conversa</div>
-        <h2>Da sua dúvida à solução, em poucas mensagens</h2>
-        <div class="chat-container">
-          <!-- Mensagem do usuário -->
-          <div class="msg">
-            <div class="bubble alt">
-              <div class="txt">
-                <span class="name alt">Você</span>
-                <span class="timestamp">14:32</span>
-                <p class="message">Oi! Estou sem acesso ao curso de Nutrição Clínica. Podem verificar?</p>
-              </div>
-              <div class="bubble-arrow alt"></div>
-            </div>
+      <!-- Conteúdo à direita -->
+      <div class="hero-content-right">
+        <h1 class="hero-title-large">COMEÇAR</h1>
+        <a class="hero-cta-button" href="https://wa.me/5519995492389?text=Oi!%20Quero%20falar%20com%20o%20atendimento." target="_blank" rel="noopener">
+          ABRIR CONVERSA NO WHATSAPP
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMBINED CHAT + FEATURES SECTION -->
+  <section class="section combined-section">
+    <div class="container">
+      <!-- Título único para toda a seção -->
+      <div class="section-header center">
+        <span class="eyebrow">Recursos</span>
+        <h2 class="section-title">Como <strong>funciona</strong></h2>
+      </div>
+
+      <div class="combined-grid">
+
+        <!-- Coluna Esquerda: Chat Example -->
+        <div class="combined-column chat-column">
+          <!-- Chat container animado -->
+          <div id="animated-chat" class="chat-container">
+            <!-- Mensagens serão inseridas dinamicamente via JavaScript -->
           </div>
+        </div>
 
-          <!-- Resposta do assistente -->
-          <div class="msg">
-            <div class="bubble">
-              <div class="txt">
-                <span class="name">Assistente</span>
-                <span class="timestamp">14:33</span>
-                <p class="message">Recebi seu pedido. Pode me confirmar o e-mail cadastrado para liberar o acesso?</p>
+        <!-- Coluna Direita: Features -->
+        <div class="combined-column features-column">
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon"></div>
+              <h3 class="feature-title">Comunicação simples, ponta a ponta</h3>
+              <p class="feature-description">Você informa o que precisa e acompanha o andamento sem sair do WhatsApp. Quando houver avanço, você recebe uma atualização automática. Não é necessário acompanhar portais ou abrir tickets manualmente.</p>
+              <div class="badge-group">
+                <span class="badge">Texto</span>
+                <span class="badge">Imagem com print</span>
+                <span class="badge">Documento</span>
+                <span class="badge">Áudio curto</span>
               </div>
-              <div class="bubble-arrow"></div>
             </div>
-          </div>
 
-          <!-- Atualização do assistente -->
-          <div class="msg">
-            <div class="bubble follow">
-              <div class="txt">
-                <span class="timestamp">14:45</span>
-                <p class="message follow">📢 Tivemos uma atualização na sua solicitação:<br><br><em>[Acesso ao curso de Nutrição Clínica]</em><br><br>Seu acesso foi liberado. Tente novamente e me avise se está tudo certo.</p>
-              </div>
+            <div class="feature-card">
+              <span class="eyebrow">Boas práticas</span>
+              <h3 class="feature-title"><strong>Mensagens</strong> que ajudam</h3>
+              <p class="feature-description">Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis.</p>
+              <p class="feature-description highlight warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
             </div>
           </div>
         </div>
-      </article>
 
-      <article class="card half">
-        <div class="eyebrow">Quando você recebe retorno</div>
-        <h2>Atualizações no momento certo</h2>
-        <p>Você recebe mensagem quando o pedido é resolvido, quando há uma ação pendente de sua parte ou quando a equipe precisa informar algo importante. A mensagem é objetiva e chega direto no WhatsApp.</p>
-        <p class="ok">Não é obrigatório responder. Se quiser, pode confirmar que deu certo.</p>
-      </article>
+      </div>
+    </div>
+  </section>
 
-      <article class="card half">
-        <div class="eyebrow">Boas práticas</div>
-        <h2>Mensagens que ajudam</h2>
-        <p>Explique de forma simples o que precisa. Se tiver, envie o nome do curso, um link ou um print. Para documento, prefira arquivos legíveis. Para áudio, fale de forma direta. O sistema entende linguagem natural; você não precisa decorar comandos.</p>
-        <p class="warning">Evite disparar a mesma mensagem muitas vezes em sequência. O processamento ocorre na ordem de chegada.</p>
-      </article>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">webdev_</div>
+        <div class="footer-contact">
+          <span class="footer-label">Precisa de ajuda?</span>
+          <div class="footer-contact-item">
+            <svg class="phone-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>19 9 9549-2389 - Roger</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 webdev_. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
 
-      <article class="card">
-        <div class="eyebrow">Privacidade e segurança</div>
-        <h2>Informações protegidas</h2>
-        <p>As mensagens trafegam em ambiente seguro e são usadas apenas para identificar o seu pedido e responder com precisão. O sistema não compartilha seus dados com terceiros e não exige informações sensíveis além do necessário para o atendimento.</p>
-        <div class="kpi">Conversa no WhatsApp</div>
-        <div class="kpi">Registro interno automático</div>
-        <div class="kpi">Histórico acessível à equipe</div>
-      </article>
-
-    </section>
-
-    <footer>
-      <p>Este manual descreve o uso do sistema de atendimento automático via WhatsApp. Conteúdo preparado para usuários finais, com foco em clareza e autonomia.</p>
-    </footer>
-  </main>
-
-  <!-- JavaScript para animações -->
+  <!-- JavaScript para animações e sparkles -->
   <script>
-    // Intersection Observer para reveal 3D nos cards
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        e.target.classList.toggle('in-view', e.isIntersecting);
-      });
-    }, { threshold: 0.15 });
+    // Intersection Observer para reveal suave
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
 
-    document.querySelectorAll('.card').forEach(el => io.observe(el));
-
-    // Hero também pode ter reveal, mas mais discreto
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in-view');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, observerOptions);
 
-    document.querySelectorAll('.hero').forEach(el => heroObserver.observe(el));
-
-    // Parallax leve no vídeo de background
-    let ticking = false;
-    const video = document.querySelector('.video-bg');
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.pageYOffset;
-          if (video) {
-            // Movimento muito sutil (máximo 8% de deslocamento)
-            video.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.08}px))`;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+    // Observar todas as sections (exceto hero que já está visível)
+    document.querySelectorAll('.section:not(.hero-section)').forEach(section => {
+      observer.observe(section);
     });
+
+    // Observar cards individuais
+    document.querySelectorAll('.feature-card, .benefit-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    // Inicializa Spline com Runtime JS (sem loader)
+    function initSpline() {
+      const splineCanvas = document.getElementById('spline-canvas');
+      const splineSceneUrl = "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
+
+      if (!splineCanvas) return;
+
+      import('https://unpkg.com/@splinetool/runtime@1.2.6/build/runtime.js')
+        .then(({ Application }) => {
+          const app = new Application(splineCanvas);
+          app.load(splineSceneUrl)
+            .then(() => {
+              console.log('Spline 3D carregado com sucesso!');
+            })
+            .catch((error) => {
+              console.error('Erro ao carregar Spline:', error);
+            });
+        })
+        .catch((error) => {
+          console.error('Erro ao importar Spline Runtime:', error);
+        });
+    }
+
+    // Inicia Spline quando o DOM estiver pronto
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSpline);
+    } else {
+      initSpline();
+    }
+
+    // ============================================================================
+    // ANIMATED CHAT SYSTEM
+    // ============================================================================
+
+    // Configuração das mensagens
+    const chatMessages = [
+      {
+        sender: 'user',
+        name: 'Cliente',
+        timestamp: '14:32',
+        content: 'Uma cliente aqui falou que não consegue baixar o material e certificado no integra',
+        delay: 800,
+        typingDuration: 1500
+      },
+      {
+        sender: 'assistant',
+        name: 'Agente',
+        timestamp: '14:33',
+        content: 'Certo! Me envia a ficha por favor',
+        delay: 600,
+        typingDuration: 1200
+      },
+      {
+        sender: 'user',
+        name: 'Cliente',
+        timestamp: '14:34',
+        content: '📎 <em>documento.pdf</em>',
+        delay: 700,
+        typingDuration: 800,
+        isFile: true
+      },
+      {
+        sender: 'assistant',
+        name: 'Agente',
+        timestamp: '14:42',
+        content: '📢 Tivemos uma atualização na sua solicitação:<br><br>Acesso corrigido!! Tente novamente e me avise se está tudo certo.',
+        delay: 600,
+        typingDuration: 2000,
+        isUpdate: true
+      }
+    ];
+
+    // Função para criar indicador de digitação (typing dots)
+    function createTypingIndicator(sender) {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = `msg ${sender}-msg typing-message`;
+
+      const indicator = document.createElement('div');
+      indicator.className = `typing-indicator ${sender === 'user' ? 'user-typing' : ''}`;
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'typing-dot';
+        indicator.appendChild(dot);
+      }
+
+      typingDiv.appendChild(indicator);
+      return typingDiv;
+    }
+
+    // Função para criar mensagem
+    function createMessage(message) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `msg ${message.sender}-msg`;
+
+      const bubble = document.createElement('div');
+
+      // Determinar classe do bubble
+      if (message.isUpdate) {
+        bubble.className = 'bubble update-bubble';
+      } else if (message.isFile) {
+        bubble.className = message.sender === 'user' ? 'bubble user-bubble file-bubble' : 'bubble assistant-bubble file-bubble';
+      } else {
+        bubble.className = message.sender === 'user' ? 'bubble user-bubble' : 'bubble assistant-bubble';
+      }
+
+      const txt = document.createElement('div');
+      txt.className = 'txt';
+
+      // Adicionar nome apenas se não for mensagem de update
+      if (!message.isUpdate) {
+        const nameSpan = document.createElement('span');
+        nameSpan.className = message.sender === 'user' ? 'name user-name' : 'name';
+        nameSpan.textContent = message.name;
+        txt.appendChild(nameSpan);
+      }
+
+      const messagePara = document.createElement('p');
+      messagePara.className = 'message';
+      messagePara.innerHTML = message.content;
+      txt.appendChild(messagePara);
+
+      const timestampSpan = document.createElement('span');
+      timestampSpan.className = 'timestamp';
+      timestampSpan.textContent = message.timestamp;
+      txt.appendChild(timestampSpan);
+
+      bubble.appendChild(txt);
+      msgDiv.appendChild(bubble);
+      return msgDiv;
+    }
+
+    // Função principal para animar chat
+    async function animateChat() {
+      const chatContainer = document.getElementById('animated-chat');
+      if (!chatContainer) return;
+
+      // Limpar chat container
+      chatContainer.innerHTML = '';
+
+      // Delay inicial antes de começar
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      for (const message of chatMessages) {
+        // Mostrar typing indicator
+        const typingIndicator = createTypingIndicator(message.sender);
+        chatContainer.appendChild(typingIndicator);
+
+        // Scroll suave para o final
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Aguardar duração do typing
+        await new Promise(resolve => setTimeout(resolve, message.typingDuration));
+
+        // Remover typing indicator
+        typingIndicator.remove();
+
+        // Adicionar mensagem real
+        const messageElement = createMessage(message);
+        chatContainer.appendChild(messageElement);
+
+        // Scroll suave para o final
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Aguardar delay antes da próxima mensagem
+        await new Promise(resolve => setTimeout(resolve, message.delay));
+      }
+    }
+
+    // Observer para iniciar animação quando o chat entrar na viewport
+    const chatObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateChat();
+          chatObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.3
+    });
+
+    // Observar o chat container
+    const chatContainer = document.getElementById('animated-chat');
+    if (chatContainer) {
+      chatObserver.observe(chatContainer);
+    }
   </script>
 </body>
 </html>
