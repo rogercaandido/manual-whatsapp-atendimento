@@ -56,7 +56,7 @@ body {
   font-weight: 300;
   line-height: 1.5; /* 150% */
   letter-spacing: 0em;
-  background: #0b0c0f;
+  background: #171717; /* Mesma cor da hero */
   color: var(--body-text);
   overflow-x: hidden;
   position: relative;
@@ -129,7 +129,7 @@ body {
   min-height: 100vh;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 1; /* Acima do bg, mas abaixo do conteúdo */
   pointer-events: none;
 }
 
@@ -206,7 +206,7 @@ body {
     900px 300px #FFF, 1100px 1700px #FFF, 400px 1200px #FFF, 1900px 700px #FFF,
     600px 1600px #FFF, 1300px 100px #FFF, 100px 1000px #FFF, 1500px 1400px #FFF;
   animation: animStar 80s linear infinite;
-  z-index: 0;
+  z-index: 1; /* Acima do bg, mas abaixo do conteúdo */
 }
 
 #stars:after {
@@ -246,7 +246,7 @@ body {
     300px 900px rgba(255,255,255,0.9), 1200px 300px rgba(255,255,255,0.9),
     800px 1500px rgba(255,255,255,0.9), 1700px 600px rgba(255,255,255,0.9);
   animation: animStar 120s linear infinite;
-  z-index: 0;
+  z-index: 1; /* Acima do bg, mas abaixo do conteúdo */
 }
 
 #stars2:after {
@@ -283,7 +283,7 @@ body {
     634px 415px rgba(116,210,0,0.8), 1702px 1576px rgba(116,210,0,0.8),
     900px 700px rgba(116,210,0,0.8), 1500px 1100px rgba(116,210,0,0.8);
   animation: animStar 180s linear infinite;
-  z-index: 0;
+  z-index: 1; /* Acima do bg, mas abaixo do conteúdo */
 }
 
 #stars3:after {
@@ -374,7 +374,7 @@ body {
   padding: 0 230px 0 106px; /* Padding do Figma */
   overflow: hidden;
   position: relative;
-  background: #171717;
+  background: transparent; /* Sem cor sólida, usa o background do body */
 }
 
 body {
@@ -396,7 +396,7 @@ body {
   align-items: stretch;
   gap: 9px;
   opacity: 0.11;
-  z-index: 1;
+  z-index: 0; /* Abaixo das estrelas e bolas (z-index: 1) */
   pointer-events: none;
 }
 
