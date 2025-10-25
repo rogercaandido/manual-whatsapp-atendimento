@@ -366,15 +366,15 @@ body {
    HERO SECTION - DESIGN DO FIGMA
    ============================================ */
 .hero-section {
-  height: 100vh; /* Limitado a 100% da viewport */
+  height: 100vh;
   max-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 230px 0 230px; /* Padding equalizado */
+  padding: 0 max(2rem, 5vw); /* Padding responsivo */
   overflow: hidden;
   position: relative;
-  background: transparent; /* Sem cor sólida, usa o background do body */
+  background: transparent;
 }
 
 body {
@@ -397,7 +397,7 @@ body {
   align-items: center;
   gap: 9px;
   opacity: 0.11;
-  z-index: 0; /* Abaixo das estrelas e bolas (z-index: 1) */
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
@@ -422,36 +422,39 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  align-self: stretch;
-  gap: 10px;
-  padding-top: 110px;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 3rem); /* Gap responsivo */
+  padding-top: 0;
   width: 100%;
+  max-width: 1600px; /* Limita largura máxima */
   height: 100%;
+  margin: 0 auto;
   position: relative;
   z-index: 2;
 }
 
-/* Robô 3D à esquerda - 716.12px fixed width, fill height */
+/* Robô 3D à esquerda */
 .hero-robot-left {
-  width: 716.12px;
+  width: clamp(400px, 40vw, 716px); /* Width responsivo */
+  max-width: 716px;
   height: 100%;
   position: relative;
   display: flex;
-  align-items: flex-end; /* Gruda na base */
+  align-items: flex-end;
   justify-content: center;
   overflow: visible;
   flex-shrink: 0;
-  z-index: 10; /* Z-index maior para sobrepor */
+  z-index: 10;
 }
 
 .hero-robot-left #spline-canvas {
-  width: 115% !important; /* +15% de tamanho */
-  height: 115% !important; /* +15% de tamanho */
+  width: 115% !important;
+  height: 115% !important;
   display: block !important;
   object-fit: contain !important;
   object-position: center bottom !important;
   outline: none !important;
-  transform: translateX(50px); /* Avança 50px para a direita */
+  transform: translateX(clamp(0px, 3vw, 50px)); /* Transform responsivo */
   transform-origin: center bottom;
 }
 
@@ -461,18 +464,19 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: clamp(1rem, 2vw, 2rem);
   flex: 1;
+  max-width: 600px; /* Limita largura do conteúdo */
 }
 
 /* Título "COMEÇAR" */
 .hero-title-large {
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(4rem, 12vw, 10rem);
+  font-size: clamp(4rem, 10vw, 10rem); /* Mais responsivo */
   font-weight: 400;
   line-height: 1;
   color: #FFFFFF;
-  margin: 0 0 2rem;
+  margin: 0;
   text-align: center;
   letter-spacing: 0.02em;
 }
@@ -485,12 +489,15 @@ body {
   justify-content: center;
   background: #75D300;
   color: #09090b;
-  padding: 40px;
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 5vw, 3rem); /* Padding responsivo */
   text-decoration: none;
   font-weight: 400;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
   letter-spacing: 0.05em;
-  white-space: nowrap;
+  text-align: center;
+  line-height: 1.3;
+  white-space: normal; /* Permite quebra de linha */
+  max-width: 100%;
   transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 8px 24px rgba(117, 211, 0, 0.3);
 }
@@ -1140,41 +1147,31 @@ body {
     padding: 0 48px;
   }
 
-  /* Hero responsivo */
-  .hero-circular-layout {
-    padding: 6rem 2rem 3rem;
+  /* Hero section ajustes para tablets */
+  .hero-section {
+    padding: 0 3rem;
   }
 
-  .hero-semicircle {
-    width: 500px;
-    height: 500px;
+  .hero-container {
+    gap: 2rem;
+    max-width: 1200px;
   }
 
-  .curved-text-container {
-    width: 600px;
-    height: 600px;
+  .hero-robot-left {
+    width: clamp(350px, 35vw, 600px);
   }
 
-  .curved-text {
-    font-size: 36px;
+  .hero-content-right {
+    max-width: 500px;
   }
 
-  .hero-robot-center {
-    width: 420px;
-    height: 420px;
+  .hero-title-large {
+    font-size: clamp(3.5rem, 9vw, 8rem);
   }
 
-  .hero-content-bottom {
-    max-width: 700px;
-  }
-
-  .hero-title {
-    font-size: clamp(2.25rem, 5.5vw, 4rem);
-  }
-
-  .hero-subtitle {
-    font-size: 1.0625rem;
-    margin-bottom: 2.5rem;
+  .hero-cta-button {
+    padding: clamp(1.25rem, 3.5vw, 2rem) clamp(1.75rem, 4.5vw, 2.5rem);
+    font-size: clamp(1.125rem, 2.25vw, 1.75rem);
   }
 
   .section-title {
@@ -1206,43 +1203,35 @@ body {
     padding: 0 40px;
   }
 
+  /* Hero section para tablets menores */
   .hero-section {
-    padding: 100px 0 60px 0;
+    padding: 0 2.5rem;
   }
 
-  /* Grid ainda mais compacto com overlap maior */
-  /* Hero mais compacto */
-  .hero-circular-layout {
-    padding: 5rem 2rem 2rem;
+  .hero-container {
+    gap: 1.5rem;
+    flex-direction: row; /* Mantém lado a lado */
   }
 
-  .hero-semicircle {
-    width: 450px;
-    height: 450px;
+  .hero-robot-left {
+    width: clamp(300px, 35vw, 500px);
   }
 
-  .curved-text-container {
-    width: 550px;
-    height: 550px;
+  .hero-robot-left #spline-canvas {
+    transform: translateX(clamp(0px, 2vw, 30px));
   }
 
-  .curved-text {
-    font-size: 32px;
+  .hero-content-right {
+    max-width: 450px;
   }
 
-  .hero-robot-center {
-    width: 380px;
-    height: 380px;
+  .hero-title-large {
+    font-size: clamp(3rem, 8vw, 6.5rem);
   }
 
-  .hero-title {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-    margin-bottom: 2rem;
+  .hero-cta-button {
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(1.5rem, 4vw, 2.25rem);
+    font-size: clamp(1rem, 2vw, 1.5rem);
   }
 
   .section {
@@ -1279,56 +1268,50 @@ body {
     gap: 3rem;
   }
 
+  /* Hero section mobile - muda para coluna */
   .hero-section {
-    padding: 80px 0 50px 0;
-    min-height: auto;
+    padding: 0 1.5rem;
+    height: auto;
+    min-height: 100vh;
   }
 
-  /* Hero mobile */
-  .hero-circular-layout {
-    padding: 4rem 1.5rem 2rem;
-    min-height: auto;
+  .hero-container {
+    flex-direction: column; /* Empilha verticalmente */
+    gap: 2rem;
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+    justify-content: center;
   }
 
-  .hero-semicircle {
-    width: 350px;
-    height: 350px;
+  .hero-robot-left {
+    width: 100%;
+    max-width: 400px;
+    height: 50vh;
+    min-height: 300px;
+    order: 1; /* Robô aparece primeiro */
   }
 
-  .curved-text-container {
-    width: 450px;
-    height: 450px;
+  .hero-robot-left #spline-canvas {
+    transform: translateX(0); /* Centralizado */
+    width: 120% !important;
+    height: 120% !important;
   }
 
-  .curved-text {
-    font-size: 24px;
-    letter-spacing: 0.1em;
-  }
-
-  .hero-robot-center {
-    width: 300px;
-    height: 300px;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-robot-center spline-viewer {
-    transform: scale(1.2) !important;
-  }
-
-  .hero-content-bottom {
+  .hero-content-right {
+    width: 100%;
     max-width: 100%;
+    order: 2; /* Conteúdo aparece depois */
   }
 
-  .hero-title {
-    font-size: clamp(1.75rem, 6.5vw, 2.75rem);
-    margin-bottom: 1.25rem;
-    line-height: 1.2;
+  .hero-title-large {
+    font-size: clamp(2.5rem, 12vw, 5rem);
   }
 
-  .hero-subtitle {
-    font-size: 0.9375rem;
-    margin-bottom: 1.75rem;
-    line-height: 1.5;
+  .hero-cta-button {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.25rem 1.75rem;
+    font-size: clamp(1rem, 4vw, 1.25rem);
   }
 
   .section-header,
@@ -1391,6 +1374,8 @@ body {
   .chat-container {
     padding: 20px;
     min-height: 300px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .bubble {
@@ -1431,50 +1416,35 @@ body {
     font-size: 0.9rem;
   }
 
+  /* Hero section mobile pequeno */
   .hero-section {
-    padding: 70px 0 40px 0;
+    padding: 0 1.25rem;
   }
 
-  /* Hero mobile pequeno */
-  .hero-circular-layout {
-    padding: 3rem 1rem 1.5rem;
+  .hero-container {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    gap: 1.5rem;
   }
 
-  .hero-semicircle {
-    width: 280px;
-    height: 280px;
+  .hero-robot-left {
+    max-width: 320px;
+    height: 45vh;
+    min-height: 250px;
   }
 
-  .curved-text-container {
-    width: 350px;
-    height: 350px;
+  .hero-robot-left #spline-canvas {
+    width: 125% !important;
+    height: 125% !important;
   }
 
-  .curved-text {
-    font-size: 18px;
-    letter-spacing: 0.08em;
+  .hero-title-large {
+    font-size: clamp(2rem, 10vw, 3.5rem);
   }
 
-  .hero-robot-center {
-    width: 250px;
-    height: 250px;
-    margin-bottom: 1rem;
-  }
-
-  .hero-robot-center spline-viewer {
-    transform: scale(1.1) !important;
-  }
-
-  .hero-title {
-    font-size: clamp(1.5rem, 7.5vw, 2.25rem);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .hero-subtitle {
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
+  .hero-cta-button {
+    padding: 1.125rem 1.5rem;
+    font-size: clamp(0.875rem, 3.5vw, 1.125rem);
   }
 
   .btn-primary {
