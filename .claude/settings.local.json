@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Bash(dir:*)",
+      "Bash(git fetch:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".specify/scripts/powershell/create-new-feature.ps1\" -Json -Number 1 -ShortName \"whatsapp-automation-landing\" \"Site super moderno para pessoas conhecerem e usarem uma ferramenta de automação no WhatsApp\")",
+      "Bash(curl -s http://127.0.0.1:3845/mcp)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

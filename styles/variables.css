@@ -1,0 +1,40 @@
+/* Design Tokens - Extraídos do Figma */
+
+:root {
+  /* Colors - Zinc Palette */
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-black: #000000;
+
+  /* Brand Colors */
+  --color-primary: #74d200;
+  --color-primary-dark: #5fb300;
+
+  /* Spacing */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-80: 80px;
+
+  /* Page Layout */
+  --page-padding: 64px;
+
+  /* Typography - Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-m: 16px;
+  --font-size-medium: 18px;
+  --font-size-8xl: 128px;
+
+  /* Font Families */
+  --font-jetbrains: 'JetBrains Mono', monospace;
+  --font-inter: 'Inter', sans-serif;
+  --font-share-tech: 'Share Tech Mono', monospace;
+  --font-roboto: 'Roboto', sans-serif;
+
+  /* Effects */
+  --video-opacity: 0.2;
+}
