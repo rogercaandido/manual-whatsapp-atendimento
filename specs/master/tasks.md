@@ -1,682 +1,975 @@
-# Implementation Tasks: Video Background & Typography Updates
+# Implementation Tasks: Modern Effects & Microinteractions
 
-**Feature**: Video Background Integration & Hero Subtitle Font Weight Update
-**Feature ID**: style-refinement-v1-video-typography
-**Created**: 2025-10-27
+**Feature**: Add Elegant Modern Effects (Hover Parallax, Scroll Reveals, Microinteractions)
 **Branch**: master
-**Status**: Ready for Implementation
+**Status**: Ready to Execute
+**Estimated Time**: 100 minutes (~1.5-2 hours)
+
+---
+
+## Overview
+
+This document provides actionable implementation tasks for adding modern animation effects to the WhatsApp automation landing page. Tasks are organized into phases for systematic execution, with clear dependencies and parallel execution opportunities.
+
+**Implementation Strategy**: Incremental delivery - each phase builds testable functionality
 
 ---
 
 ## Task Summary
 
-**Total Tasks**: 20
-**Estimated Time**: 45 minutes
-**Parallelizable Tasks**: 4
-**Risk Level**: 🟢 LOW
+| Phase | Task Count | Est. Time | Can Start After |
+|-------|------------|-----------|-----------------|
+| Phase 1: Setup | 1 task | 2 min | Immediately |
+| Phase 2: Foundation | 3 tasks | 15 min | Phase 1 |
+| Phase 3: Microinteractions | 3 tasks | 25 min | Phase 2 |
+| Phase 4: Scroll Reveals | 3 tasks | 35 min | Phase 2 |
+| Phase 5: Testing & Validation | 4 tasks | 25 min | Phases 3 & 4 |
+
+**Total Tasks**: 14
+**Parallel Opportunities**: 6 tasks can run in parallel
+**Critical Path**: Phase 1 → Phase 2 → Phase 3/4 (parallel) → Phase 5
 
 ---
 
-## Phase 1: Setup & Prerequisites
+## Phase 1: Setup (2 minutes)
 
-**Goal**: Prepare project structure for video background integration
+**Goal**: Create project structure for animation scripts
 
 **Independent Test Criteria**:
-- [ ] videos/ directory exists in project root
-- [ ] background-hero.mp4 file exists and is playable
-- [ ] File size is reasonable (<10MB preferred)
+- ✅ `scripts/` directory exists in project root
+- ✅ Directory is accessible and writable
 
 ### Tasks
 
-- [X] T001 Create videos/ directory in project root at C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos
-- [X] T002 Copy video file from C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4 to videos/background-hero.mp4 using Windows copy command
+- [ ] T001 Create scripts directory at project root: C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\scripts
 
-**Dependencies**: None
+**Validation**: Run `dir scripts` from project root - should succeed without errors
+
+---
+
+## Phase 2: Foundation (15 minutes)
+
+**Goal**: Establish animation infrastructure (tokens, accessibility, focus states)
+
+**Independent Test Criteria**:
+- ✅ Animation tokens defined and accessible via CSS variables
+- ✅ Reduced motion override disables animations when OS setting enabled
+- ✅ Focus-visible styles show outline on Tab key navigation
+
+### Tasks
+
+- [ ] T002 Add animation tokens (duration & easing) to styles/variables.css
+- [ ] T003 [P] Add reduced motion accessibility override to end of styles/main.css
+- [ ] T004 [P] Add focus-visible styles for keyboard navigation to styles/main.css
+
+**Validation Steps**:
+1. **T002**: Open DevTools Console → type `getComputedStyle(document.documentElement).getPropertyValue('--duration-normal')` → should return `300ms`
+2. **T003**: Enable "Reduce Motion" in OS settings → refresh page → verify no animations play
+3. **T004**: Press Tab key → verify green outline appears on focusable elements
+
+**Parallel Execution**: T003 and T004 can run in parallel (different CSS sections)
+
+---
+
+## Phase 3: Microinteractions (25 minutes)
+
+**Goal**: Implement hover effects, button feedback, and subtle animations
+
+**Independent Test Criteria**:
+- ✅ Buttons lift on hover (desktop only), press down on click
+- ✅ Feature pills glow green and scale on hover
+- ✅ Logo accent pulses subtly (3-second cycle)
+- ✅ Mobile uses touch feedback (`:active`) instead of hover
+
+### Tasks
+
+- [ ] T005 [P] [MICRO] Implement button hover & press effects in styles/main.css (.btn class ~line 256)
+- [ ] T006 [P] [MICRO] Implement feature pill hover glow & scale in styles/main.css (.feature-pill class ~line 175)
+- [ ] T007 [P] [MICRO] Add logo accent pulse animation in styles/main.css (.header__logo-accent ~line 63)
+
+**Validation Steps**:
+1. **T005**:
+   - Desktop: Hover primary CTA → button lifts 2px, icon shifts
+   - Mobile: Tap button → scales to 0.98
+2. **T006**:
+   - Desktop: Hover pill → green glow appears, lifts 2px
+   - Mobile: Tap pill → scales to 0.98
+3. **T007**:
+   - Watch logo underscore → fades to 60% opacity and back over 3 seconds
+
+**Parallel Execution**: All 3 tasks (T005, T006, T007) can run in parallel (different CSS classes)
+
+**Test Command** (after completion):
+```bash
+# Open index.html in browser
+# Hover over "Começar agora" button - should lift
+# Hover over "Texto" pill - should glow green
+# Watch webdev_ logo - underscore should pulse
+```
+
+---
+
+## Phase 4: Scroll Reveals (35 minutes)
+
+**Goal**: Implement scroll-triggered animations using Intersection Observer
+
+**Independent Test Criteria**:
+- ✅ Elements with `[data-animate]` start hidden (opacity: 0)
+- ✅ Elements fade up when scrolled into view (10% visibility threshold)
+- ✅ Feature pills animate in sequence with 100ms stagger
+- ✅ Animations trigger once (don't repeat on re-scroll)
+- ✅ IntersectionObserver gracefully degrades if unsupported
+
+### Tasks
+
+- [ ] T008 [SCROLL] Create scripts/animations.js with Intersection Observer implementation
+- [ ] T009 [SCROLL] Add CSS scroll reveal styles ([data-animate] rules) to styles/main.css
+- [ ] T010 [SCROLL] Add data-animate attributes to HTML elements in index.html
+
+**Validation Steps**:
+1. **T008**:
+   - Check browser console → no errors
+   - Type `window.IntersectionObserver` in console → should be defined
+2. **T009**:
+   - Inspect hero title in DevTools → should have `opacity: 0; transform: translateY(30px)`
+3. **T010**:
+   - Reload page → hero title, pills, CTA should be hidden
+   - Scroll down → elements fade up smoothly
+   - Pills animate in sequence (Texto → Imagem → Documento)
+
+**Dependencies**:
+- T009 depends on T002 (needs animation tokens)
+- T010 depends on T008 and T009 (needs JS and CSS)
+
+**Test Command** (after completion):
+```bash
+# Open index.html in browser
+# Initial state: Hero title should be invisible
+# Scroll down: Hero title fades up
+# Continue scrolling: Feature pills animate in sequence (100ms apart)
+# CTA section fades up at bottom
+```
+
+**Link Script** (part of T010):
+Add before `</body>` in index.html:
+```html
+<!-- Animation Script -->
+<script src="scripts/animations.js"></script>
+```
+
+---
+
+## Phase 5: Testing & Validation (25 minutes)
+
+**Goal**: Verify animations work correctly across devices, browsers, and accessibility settings
+
+**Independent Test Criteria**:
+- ✅ All animations run at 60 FPS (no jank)
+- ✅ Responsive behavior correct at 480px, 768px, 1024px, 1440px
+- ✅ Reduced motion setting disables all animations
+- ✅ Keyboard navigation shows focus ring
+- ✅ Chrome and Firefox render animations correctly
+
+### Tasks
+
+- [ ] T011 [TEST] Responsive testing: Verify animations at 4 breakpoints (480px, 768px, 1024px, 1440px)
+- [ ] T012 [TEST] Accessibility testing: Verify reduced motion and keyboard navigation
+- [ ] T013 [TEST] Performance validation: Measure 60 FPS in Chrome DevTools Performance tab
+- [ ] T014 [TEST] Cross-browser testing: Verify in Chrome and Firefox
+
+**Validation Checklists**:
+
+**T011 - Responsive** (10 min):
+- [ ] 480px (mobile): Touch feedback works, no hover effects
+- [ ] 768px (tablet): Same as mobile, pills wrap correctly
+- [ ] 1024px (desktop): Full hover effects enabled
+- [ ] 1440px+ (large): All effects work smoothly
+- [ ] No horizontal scroll from transforms
+
+**T012 - Accessibility** (5 min):
+- [ ] Enable "Reduce Motion" in OS → all animations become instant
+- [ ] `[data-animate]` elements visible immediately with motion off
+- [ ] Press Tab key → green focus ring appears on buttons/pills
+- [ ] Focus ring has sufficient contrast (WCAG AA: 3:1 minimum)
+
+**T013 - Performance** (5 min):
+- [ ] Chrome DevTools → Performance tab → Record → Scroll page
+- [ ] FPS stays at 60 throughout scroll animations
+- [ ] No yellow "Long Task" warnings
+- [ ] No layout recalculation warnings during animations
+- [ ] GPU compositing active (check Layers panel)
+
+**T014 - Cross-Browser** (5 min):
+- [ ] Chrome: All effects work perfectly
+- [ ] Firefox: Scroll reveals, hover effects consistent
+- [ ] No console errors in either browser
+
+**Test Commands**:
+```bash
+# T011 - Responsive
+# Chrome DevTools → Toggle Device Mode (Ctrl+Shift+M)
+# Test: iPhone SE (375px), iPad (768px), Laptop (1440px)
+
+# T012 - Accessibility
+# macOS: System Preferences → Accessibility → Display → Reduce Motion
+# Windows: Settings → Ease of Access → Display → Show animations (off)
+
+# T013 - Performance
+# Chrome DevTools → Performance tab → Record (Ctrl+E)
+# Scroll page for 10 seconds → Stop → Check FPS chart
+
+# T014 - Cross-Browser
+# Open index.html in Firefox
+# Test hover, scroll reveals, button press
+```
+
+---
+
+## Dependencies Graph
+
+```
+T001 (Create scripts/)
+  ↓
+T002 (Animation tokens) ────────┬──────────────────────────────┐
+  ↓                             ↓                              ↓
+T003 [P] (Reduced motion)    T005 [P] (Button hover)      T009 (Scroll CSS)
+T004 [P] (Focus-visible)     T006 [P] (Pill hover)            ↓
+                              T007 [P] (Logo pulse)         T008 (animations.js)
+                                  ↓                             ↓
+                              T011 (Responsive) ←──────── T010 (HTML attributes)
+                                  ↓                             ↓
+                              T012 (Accessibility)         T011 (Responsive)
+                              T013 (Performance)           T012 (Accessibility)
+                              T014 (Cross-browser)         T013 (Performance)
+                                                           T014 (Cross-browser)
+```
+
+**Critical Path**: T001 → T002 → T009 → T008 → T010 → T011/T012/T013/T014
+
+**Parallel Opportunities**:
+- After T002: Run T003, T004, T005, T006, T007 simultaneously (5 parallel tasks possible)
+- After T010: Run T011, T012, T013, T014 simultaneously (4 parallel tasks possible)
+
+---
+
+## Detailed Task Instructions
+
+### T001: Create scripts directory
+
+**File**: Project root
 **Estimated Time**: 2 minutes
+**Priority**: P0 (Blocking)
 
----
-
-## Phase 2: User Story 1 - Video Background Integration
-
-**User Story**: US-1 Design Fidelity
-**Priority**: P1 (Critical)
-
-> Como designer, quero que a landing page tenha um vídeo background local funcional, para que a experiência visual seja imersiva e corresponda ao design pretendido.
-
-**Goal**: Replace placeholder video with local video background using relative path
-
-**Independent Test Criteria**:
-- [ ] Video loads and plays automatically
-- [ ] Video loops seamlessly without visible gaps
-- [ ] Video remains muted (autoplay requirement)
-- [ ] Content remains visible over video with 0.2 opacity overlay
-- [ ] Accessibility attributes properly set (preload, aria-hidden)
-
-### Implementation Tasks
-
-- [X] T003 [US1] Update video source path in index.html line 29 from src="/_videos/v1/1147b903a6da790fcd8f61c410a7f0e3191a14a3" to src="videos/background-hero.mp4"
-- [X] T004 [US1] Add preload="auto" attribute to video element in index.html line 26
-- [X] T005 [US1] Add aria-hidden="true" attribute to video element in index.html line 27
-- [X] T006 [US1] Update fallback text to "Seu navegador não suporta vídeos em HTML5" in index.html line 30
-
-**Dependencies**: T001, T002 (video file must exist)
-**Estimated Time**: 4 minutes
-
-**Testing**:
+**Instructions**:
 ```bash
-# Open index.html in browser
-# Verify video plays automatically
-# Verify video loops seamlessly
-# Verify opacity overlay (0.2) renders correctly
-# Check DevTools console for errors (should be none)
+# Windows Command Prompt
+cd "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b"
+mkdir scripts
+
+# Verify
+dir scripts
 ```
 
+**Success Criteria**:
+- Directory exists at: `C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\scripts`
+- No errors when running `dir scripts`
+
 ---
 
-## Phase 3: User Story 1 - Accessibility Enhancement
+### T002: Add animation tokens
 
-**Goal**: Add reduced motion support for video background (WCAG 2.2.2 compliance)
-
-**Independent Test Criteria**:
-- [ ] Users with reduced motion preference see static background instead of video
-- [ ] Background maintains visual consistency
-- [ ] No layout shift when video is hidden
-
-### Implementation Tasks
-
-- [X] T007 [US1] Add prefers-reduced-motion media query at end of styles/main.css file (after line 409)
-- [X] T008 [US1] Hide video element with display: none for reduced motion users in styles/main.css
-- [X] T009 [US1] Add fallback background (gradient + solid color) for .header in styles/main.css
-
-**Dependencies**: T003-T006 (video element must be properly configured)
+**File**: `styles/variables.css`
+**Location**: End of file, new section
 **Estimated Time**: 5 minutes
+**Priority**: P0 (Blocking for all animation tasks)
+
+**Instructions**:
+1. Open `styles/variables.css`
+2. Scroll to end of file (after existing CSS variables)
+3. Add new section with animation tokens
+
+**Code to Add**:
+```css
+/* ========================================
+   ANIMATION TOKENS
+   ======================================== */
+
+/* Animation Durations */
+--duration-instant: 100ms;   /* Button press feedback */
+--duration-fast: 200ms;      /* Quick hover transitions */
+--duration-normal: 300ms;    /* Standard state changes */
+--duration-slow: 600ms;      /* Content reveals, scroll animations */
+--duration-ambient: 3s;      /* Ambient loops (pulse effects) */
+
+/* Animation Easing Functions */
+--ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);    /* Smooth deceleration */
+--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy overshoot */
+--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);       /* Material sharp */
+```
+
+**Success Criteria**:
+- Variables defined in `:root` selector scope
+- No CSS syntax errors
+- Variables accessible via `getComputedStyle(document.documentElement).getPropertyValue('--duration-normal')` in browser console
+
+---
+
+### T003: Add reduced motion override [P]
+
+**File**: `styles/main.css`
+**Location**: End of file, after existing `@media` queries
+**Estimated Time**: 5 minutes
+**Priority**: P0 (Accessibility requirement)
+**Parallelizable**: Yes (can run with T004)
+
+**Instructions**:
+1. Open `styles/main.css`
+2. Scroll to end of file (after existing media queries ~line 422)
+3. Add reduced motion override section
+
+**Code to Add**:
+```css
+/* ========================================
+   ACCESSIBILITY: REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations globally */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Ensure scroll reveals are visible */
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+```
+
+**Success Criteria**:
+- Media query parses without errors
+- When "Reduce Motion" enabled in OS, all animations become instant
+- `[data-animate]` elements always visible
 
 **Testing**:
 ```bash
-# Enable "Reduce Motion" in OS settings (Windows: Settings > Accessibility > Visual Effects)
-# Refresh browser
-# Verify video doesn't play
-# Verify gradient/solid background displays instead
-# Verify layout remains intact
+# macOS: System Preferences → Accessibility → Display → Reduce Motion (on)
+# Windows: Settings → Ease of Access → Display → Show animations (off)
+# Reload page → verify no animations play
 ```
 
 ---
 
-## Phase 4: User Story 2 - Typography Update
+### T004: Add focus-visible styles [P]
 
-**User Story**: US-2 Consistência Visual
-**Priority**: P1 (Critical)
+**File**: `styles/main.css`
+**Location**: After button styles (around line 320, before reduced motion section)
+**Estimated Time**: 5 minutes
+**Priority**: P0 (Accessibility requirement)
+**Parallelizable**: Yes (can run with T003)
 
-> Como usuário, quero ver uma tipografia refinada no hero subtitle, para que a hierarquia visual seja clara e corresponda ao design Figma.
+**Instructions**:
+1. Open `styles/main.css`
+2. Find `.disclaimer` class (around line 322)
+3. Add focus-visible section after disclaimer styles
 
-**Goal**: Update hero subtitle font weight to match Figma specification (300 Light)
+**Code to Add**:
+```css
+/* ========================================
+   ACCESSIBILITY: FOCUS VISIBLE
+   ======================================== */
 
-**Independent Test Criteria**:
-- [ ] Hero subtitle uses font-weight 300 (Light) instead of 400 (Regular)
-- [ ] Text remains crisp and readable at 18px
-- [ ] Font rendering optimized for light weights on dark backgrounds
-- [ ] 17.96:1 contrast ratio maintained (WCAG AAA compliance)
-- [ ] Color (#e4e4e7) remains correct
+/* Focus ring for keyboard navigation */
+.btn:focus-visible,
+.feature-pill:focus-visible,
+.header__logo:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  transition: outline-offset var(--duration-fast) var(--ease-smooth);
+}
 
-### Implementation Tasks
+/* Do NOT show focus ring on mouse click */
+.btn:focus:not(:focus-visible),
+.feature-pill:focus:not(:focus-visible) {
+  outline: none;
+}
+```
 
-- [X] T010 [P] [US2] Change hero subtitle font-weight from var(--font-weight-regular) to var(--font-weight-light) in styles/main.css line 97
-- [X] T011 [P] [US2] Add -webkit-font-smoothing: antialiased property to .hero__subtitle in styles/main.css after line 102
-- [X] T012 [P] [US2] Add -moz-osx-font-smoothing: grayscale property to .hero__subtitle in styles/main.css after line 102
+**Success Criteria**:
+- Focus ring appears when pressing Tab key
+- Focus ring does NOT appear when clicking with mouse
+- Outline has 3:1 contrast ratio (green #74d200 on black background ✅)
 
-**Dependencies**: None (font-weight-light variable already exists in variables.css line 38)
-**Parallel Execution**: T010-T012 can all be done in a single edit (same CSS block)
-**Estimated Time**: 3 minutes
+**Testing**:
+```bash
+# Press Tab key repeatedly
+# Verify green outline appears on buttons and pills
+# Click button with mouse
+# Verify NO outline appears (only on keyboard focus)
+```
+
+---
+
+### T005: Button hover & press effects [P] [MICRO]
+
+**File**: `styles/main.css`
+**Location**: Update existing `.btn` styles (lines 256-308)
+**Estimated Time**: 10 minutes
+**Priority**: P1 (High visual impact)
+**Parallelizable**: Yes (can run with T006, T007)
+
+**Instructions**:
+1. Open `styles/main.css`
+2. Find `.btn` class (line 256)
+3. Update transition property
+4. Find `.btn--primary:hover` (line 288)
+5. Replace with enhanced hover effect
+6. Add button press feedback after hover styles
+7. Update secondary button hover
+
+**Code Changes**:
+
+**A. Update base transition** (line 263):
+```css
+.btn {
+  /* ... existing properties ... */
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+```
+
+**B. Replace primary button hover** (around line 288):
+```css
+/* Desktop: Full hover effects */
+@media (hover: hover) and (min-width: 1024px) {
+  .btn--primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Icon lifts faster than button */
+  .btn--primary:hover .btn__icon {
+    transform: translateY(-2px) scale(1.1);
+    transition: transform var(--duration-fast) var(--ease-bounce);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--color-zinc-500);
+    background: rgba(113, 113, 122, 0.1);
+    transform: translateY(-1px);
+  }
+}
+```
+
+**C. Add press feedback** (after hover styles):
+```css
+/* Button press feedback (all devices) */
+.btn:active {
+  transform: scale(0.98) !important;
+  transition: transform var(--duration-instant) var(--ease-sharp);
+}
+```
+
+**Success Criteria**:
+- Desktop: Hover primary CTA → button lifts 2px, icon bounces
+- Desktop: Hover secondary CTA → border brightens
+- All devices: Click button → subtle press down (scale 0.98)
+- Mobile: No hover effect, only press feedback
+
+**Testing**:
+```bash
+# Desktop (1024px+):
+# Hover "Começar agora" button → lifts up, icon shifts
+# Hover "Preciso de ajuda" button → border brightens
+
+# Mobile (< 768px):
+# Tap any button → scales down slightly (press feedback)
+```
+
+---
+
+### T006: Feature pill hover effects [P] [MICRO]
+
+**File**: `styles/main.css`
+**Location**: Update `.feature-pill` styles (lines 175-217)
+**Estimated Time**: 10 minutes
+**Priority**: P1 (High visual impact)
+**Parallelizable**: Yes (can run with T005, T007)
+
+**Instructions**:
+1. Open `styles/main.css`
+2. Find `.feature-pill` class (line 175)
+3. Add transition property
+4. Add desktop hover effect after existing pill styles
+5. Add mobile touch feedback
+
+**Code Changes**:
+
+**A. Update base pill** (line 175):
+```css
+.feature-pill {
+  /* ... existing properties ... */
+  transition: border-color var(--duration-normal) var(--ease-smooth),
+              box-shadow var(--duration-normal) var(--ease-smooth),
+              transform var(--duration-normal) var(--ease-smooth);
+}
+```
+
+**B. Add desktop hover** (after `.feature-pill__icon img` ~line 217):
+```css
+/* Desktop: Full hover effects */
+@media (hover: hover) and (min-width: 1024px) {
+  .feature-pill:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(116, 210, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  /* Icon scales slightly on hover */
+  .feature-pill:hover .feature-pill__icon {
+    transform: scale(1.1);
+    transition: transform var(--duration-fast) var(--ease-bounce);
+  }
+}
+```
+
+**C. Add mobile touch feedback** (after desktop hover):
+```css
+/* Mobile: Touch feedback only */
+@media (max-width: 768px) {
+  .feature-pill:active {
+    transform: scale(0.98);
+    border-color: var(--color-primary);
+  }
+}
+```
+
+**Success Criteria**:
+- Desktop: Hover pill → green glow, lifts 2px, scales to 1.02
+- Desktop: Icon scales to 1.1 on hover
+- Mobile: Tap pill → scales to 0.98, border turns green
+- Transition smooth (300ms duration)
+
+**Testing**:
+```bash
+# Desktop:
+# Hover "Texto" pill → green glow appears, pill lifts
+# Verify smooth 300ms transition
+
+# Mobile:
+# Tap "Imagem" pill → scales down, border flashes green
+```
+
+---
+
+### T007: Logo accent pulse [P] [MICRO]
+
+**File**: `styles/main.css`
+**Location**: After `.header__logo-accent` (line 63)
+**Estimated Time**: 5 minutes
+**Priority**: P2 (Optional polish)
+**Parallelizable**: Yes (can run with T005, T006)
+
+**Instructions**:
+1. Open `styles/main.css`
+2. Find `.header__logo-accent` class (line 61)
+3. Add keyframes definition above the class
+4. Add animation to `.header__logo-accent`
+5. Add hover effect for logo
+
+**Code Changes**:
+
+**A. Add keyframes** (before `.header__logo-accent` ~line 60):
+```css
+/* Subtle ambient animation */
+@keyframes logo-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+```
+
+**B. Update accent** (line 61):
+```css
+.header__logo-accent {
+  color: var(--color-primary);
+  animation: logo-pulse var(--duration-ambient) ease-in-out infinite;
+}
+```
+
+**C. Add logo hover** (after `.header__logo-accent`):
+```css
+/* Logo hover effect (desktop) */
+@media (hover: hover) {
+  .header__logo:hover .header__logo-accent {
+    animation-play-state: paused;
+    opacity: 1;
+  }
+
+  .header__logo:hover {
+    transform: rotate(-2deg);
+    transition: transform var(--duration-normal) var(--ease-bounce);
+  }
+}
+```
+
+**Success Criteria**:
+- Logo underscore pulses from opacity 1 → 0.6 → 1 over 3 seconds
+- Animation loops infinitely
+- Hover logo → pulse pauses, logo tilts -2 degrees
+- Effect is subtle and not distracting
+
+**Testing**:
+```bash
+# Watch "webdev_" logo
+# Green underscore should fade to 60% and back over 3 seconds
+# Hover logo → pulse stops, logo tilts slightly left
+```
+
+---
+
+### T008: Create animations.js [SCROLL]
+
+**File**: `scripts/animations.js` (NEW FILE)
+**Estimated Time**: 15 minutes
+**Priority**: P1 (Core feature)
+
+**Instructions**:
+1. Create new file: `scripts/animations.js`
+2. Copy full implementation below
+
+**Full File Content**:
+```javascript
+/**
+ * Scroll-triggered Animations
+ * Uses Intersection Observer API for performant scroll reveals
+ * @version 1.0
+ * @requires Modern browser with IntersectionObserver support (97%+)
+ */
+
+(function() {
+  'use strict';
+
+  /**
+   * Initializes scroll-triggered animations
+   * Observes elements with [data-animate] attribute
+   */
+  function animateOnScroll() {
+    // Check browser support
+    if (!('IntersectionObserver' in window)) {
+      console.warn('IntersectionObserver not supported, showing all content');
+      // Fallback: show all content immediately
+      document.querySelectorAll('[data-animate]').forEach(function(el) {
+        el.classList.add('animate-visible');
+      });
+      return;
+    }
+
+    // Observer configuration
+    var config = {
+      threshold: 0.1,                    // Trigger at 10% visibility
+      rootMargin: '0px 0px -50px 0px'    // Trigger 50px before entering viewport
+    };
+
+    // Create observer
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          // Add visible class to trigger CSS animation
+          entry.target.classList.add('animate-visible');
+
+          // Stop observing (one-time animation)
+          observer.unobserve(entry.target);
+        }
+      });
+    }, config);
+
+    // Observe all elements with data-animate attribute
+    var animatedElements = document.querySelectorAll('[data-animate]');
+
+    animatedElements.forEach(function(element) {
+      observer.observe(element);
+    });
+
+    // Cleanup function (optional, for future use)
+    return function cleanup() {
+      observer.disconnect();
+    };
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateOnScroll);
+  } else {
+    // DOM already loaded
+    animateOnScroll();
+  }
+
+})();
+```
+
+**Success Criteria**:
+- File created at correct path: `scripts/animations.js`
+- No syntax errors (check with `node -c scripts/animations.js` if Node installed)
+- IntersectionObserver check prevents errors in unsupported browsers
+- Graceful fallback shows all content if API unavailable
+
+**Testing** (after T010 complete):
+```bash
+# Open browser console
+# Type: window.IntersectionObserver
+# Should show: function IntersectionObserver() { [native code] }
+# No console errors
+```
+
+---
+
+### T009: Add scroll reveal CSS [SCROLL]
+
+**File**: `styles/main.css`
+**Location**: End of file, before responsive media queries (around line 333)
+**Estimated Time**: 10 minutes
+**Priority**: P1 (Core feature)
+**Dependencies**: T002 (animation tokens)
+
+**Instructions**:
+1. Open `styles/main.css`
+2. Find existing responsive media queries section (~line 333)
+3. Add scroll reveal styles BEFORE the first `@media` query
+
+**Code to Add**:
+```css
+/* ========================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ======================================== */
+
+/* Initial hidden state */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--duration-slow) var(--ease-smooth),
+              transform var(--duration-slow) var(--ease-smooth);
+}
+
+/* Visible state (class added by JS) */
+[data-animate].animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for sequential reveals */
+[data-animate-delay="1"] { transition-delay: 0.1s; }
+[data-animate-delay="2"] { transition-delay: 0.2s; }
+[data-animate-delay="3"] { transition-delay: 0.3s; }
+[data-animate-delay="4"] { transition-delay: 0.4s; }
+[data-animate-delay="5"] { transition-delay: 0.5s; }
+
+/* Subtle variation: fade-only (no translateY) */
+[data-animate-type="fade"] {
+  transform: none;
+}
+```
+
+**Success Criteria**:
+- `[data-animate]` elements start with `opacity: 0` and `translateY(30px)`
+- `.animate-visible` class triggers smooth transition to `opacity: 1`, `translateY(0)`
+- Stagger delays apply correctly (100ms increments)
+- Transition duration is 600ms (`--duration-slow`)
+
+**Testing** (manual via DevTools):
+```javascript
+// Open browser console
+const el = document.querySelector('[data-animate]');
+console.log(getComputedStyle(el).opacity); // Should be "0"
+el.classList.add('animate-visible');
+// Element should fade up over 600ms
+```
+
+---
+
+### T010: Add data-animate attributes [SCROLL]
+
+**File**: `index.html`
+**Locations**: Multiple elements throughout file
+**Estimated Time**: 10 minutes
+**Priority**: P1 (Core feature)
+**Dependencies**: T008 (animations.js), T009 (scroll CSS)
+
+**Instructions**:
+1. Open `index.html`
+2. Add `data-animate` attribute to specified elements
+3. Add `data-animate-delay` for stagger effects
+4. Link animations.js script before `</body>`
+
+**HTML Changes**:
+
+**A. Hero subtitle** (line 50):
+```html
+<p class="hero__subtitle" data-node-id="2014:262" data-animate>
+  IA recebe, organiza e atualiza você automaticamente.
+</p>
+```
+
+**B. Hero title** (line 58):
+```html
+<h1 class="hero__title-text" data-node-id="2019:58" data-animate>MANDA NO</h1>
+```
+
+**C. Feature pills** (lines 73, 81, 89 - with stagger):
+```html
+<!-- Texto -->
+<div class="feature-pill" data-node-id="2019:44" data-animate data-animate-delay="1">
+  <!-- ... existing content ... -->
+</div>
+
+<!-- Imagem -->
+<div class="feature-pill" data-node-id="2019:47" data-animate data-animate-delay="2">
+  <!-- ... existing content ... -->
+</div>
+
+<!-- Documento -->
+<div class="feature-pill" data-node-id="2019:49" data-animate data-animate-delay="3">
+  <!-- ... existing content ... -->
+</div>
+```
+
+**D. CTA section** (line 99):
+```html
+<section class="cta-section" data-node-id="2014:192" data-animate>
+  <!-- ... existing content ... -->
+</section>
+```
+
+**E. Link script** (before `</body>` at end of file):
+```html
+  <!-- Animation Script -->
+  <script src="scripts/animations.js"></script>
+</body>
+</html>
+```
+
+**Success Criteria**:
+- 7 elements have `data-animate` attribute
+- 3 pills have `data-animate-delay="1|2|3"` attributes
+- Script tag links to `scripts/animations.js`
+- Page loads without errors
 
 **Testing**:
 ```bash
 # Open index.html in browser
-# Verify hero subtitle appears visibly lighter than before
-# DevTools: Inspect element, check computed font-weight: 300
-# Test on macOS if available (antialiasing most visible)
-# Verify color remains #e4e4e7 (zinc-200)
-```
-
----
-
-## Phase 5: Verification & Quality Assurance
-
-**Goal**: Verify all changes work correctly across browsers and breakpoints
-
-**Independent Test Criteria**:
-- [ ] Video background verified working in Chrome and Firefox
-- [ ] Typography verified lighter and readable
-- [ ] Colors verified matching Figma node 2019-47
-- [ ] All 4 responsive breakpoints tested
-- [ ] Cross-browser compatibility confirmed
-
-### Visual Verification Tasks
-
-- [ ] T013 Manual visual verification of video background: plays automatically, loops seamlessly, muted, opacity 0.2 correct, content visible over video
-- [ ] T014 Manual visual verification of typography: font-weight 300 visible, text readable at 18px, antialiasing crisp, color #e4e4e7 correct
-- [ ] T015 [P] Manual color verification against Figma node 2019-47: feature pill border #71717a (zinc-500), feature pill text #d4d4d8 (zinc-300)
-
-**Dependencies**: T001-T012 (all implementation tasks complete)
-**Estimated Time**: 13 minutes
-
-### Responsive Testing
-
-- [ ] T016 [P] Test 480px breakpoint (mobile): video scales with object-fit cover, subtitle readable, no horizontal scroll, layout intact
-- [ ] T017 [P] Test 768px breakpoint (tablet): video scales correctly, subtitle readable, layout intact
-- [ ] T018 [P] Test 1024px breakpoint (desktop): video scales correctly, subtitle readable, layout intact
-- [ ] T019 [P] Test 1440px+ breakpoint (large desktop): video scales correctly, subtitle readable, layout intact
-
-**Dependencies**: T001-T012 (all implementation tasks complete)
-**Parallel Execution**: All 4 breakpoint tests can be done in sequence during one testing session
-**Estimated Time**: 10 minutes
-
-### Cross-Browser Testing
-
-- [ ] T020 [P] Test in Chrome: video autoplay works, font-weight 300 renders correctly, no console errors, layout correct
-- [ ] T021 [P] Test in Firefox: video autoplay works, font-weight 300 renders correctly, no console errors, layout correct
-- [ ] T022 [P] Test in Safari (if available): video autoplay works, font-smoothing renders correctly on macOS, layout correct
-
-**Dependencies**: T001-T012 (all implementation tasks complete)
-**Parallel Execution**: Can test browsers in parallel using different devices/VMs
-**Estimated Time**: 10 minutes
-
----
-
-## Task Dependencies
-
-### Sequential Dependencies
-
-```
-Setup Phase:
-T001 (Create directory)
-  └─→ T002 (Copy video file)
-       └─→ T003 (Update HTML source)
-            └─→ T004 (Add preload attribute)
-                 └─→ T005 (Add aria-hidden attribute)
-                      └─→ T006 (Update fallback text)
-                           └─→ T007 (Add reduced motion media query)
-                                └─→ T008 (Hide video for reduced motion)
-                                     └─→ T009 (Add fallback background)
-```
-
-### Parallel Tasks
-
-**Typography Tasks (T010-T012)** can run 100% in parallel with Video Tasks (T001-T009):
-```
-T010 (Font weight change)    ──┐
-T011 (Webkit smoothing)       ──┼─→ All in same .hero__subtitle block
-T012 (Moz smoothing)          ──┘
-```
-
-**Verification Tasks** can run after implementation is complete:
-```
-After T001-T012 complete:
-
-T013 (Video verification)     ──┐
-T014 (Typography verification)──┤
-T015 (Color verification)     ──┼─→ Can test in parallel
-T016-T019 (Responsive tests)  ──┤
-T020-T022 (Browser tests)     ──┘
-```
-
----
-
-## Parallel Execution Examples
-
-### Example 1: Maximum Parallelization
-
-**Session 1** (Video Implementation):
-```
-T001 → T002 → T003 → T004 → T005 → T006 → T007 → T008 → T009
-Time: ~11 minutes
-```
-
-**Session 2** (Typography - runs parallel with Session 1):
-```
-T010, T011, T012 (all in single edit of .hero__subtitle block)
-Time: ~3 minutes
-Can start immediately, no dependencies on video tasks
-```
-
-**Session 3** (Verification - after both sessions complete):
-```
-T013, T014, T015, T016, T017, T018, T019, T020, T021, T022
-Time: ~33 minutes
-Manual testing, can be done all at once or incrementally
-```
-
-**Total Time with Parallelization**: ~33 minutes (vs 45 sequential)
-
-### Example 2: Incremental Delivery (MVP First)
-
-**Iteration 1: Video Background MVP** (5 minutes)
-```
-T001 → T002 → T003 → T013 (Quick validation)
-Deliverable: Working video background
-```
-
-**Iteration 2: Complete Video Feature** (6 minutes)
-```
-T004 → T005 → T006 → T007 → T008 → T009
-Deliverable: Accessible video with reduced motion support
-```
-
-**Iteration 3: Typography Update** (3 minutes)
-```
-T010 → T011 → T012 → T014
-Deliverable: Lighter hero subtitle font weight
-```
-
-**Iteration 4: Color Verification** (3 minutes)
-```
-T015
-Deliverable: Confirmed colors match Figma
-```
-
-**Iteration 5: Full QA** (20 minutes)
-```
-T016 → T017 → T018 → T019 → T020 → T021 → T022
-Deliverable: Production-ready, tested across devices
+# Initial load: Hero title should be invisible
+# Scroll down slowly:
+#   - Hero subtitle fades up
+#   - Hero title fades up
+#   - Pills animate in sequence: Texto (wait 100ms) → Imagem (wait 100ms) → Documento
+#   - CTA section fades up at bottom
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP Scope (Minimal Viable Product)
+### Recommended Execution Order
 
-**Goal**: Get video background working as quickly as possible
+**Day 1 - Foundation** (20 min):
+1. Execute Phase 1: Setup (T001)
+2. Execute Phase 2: Foundation (T002-T004)
+3. **Checkpoint**: Verify animation tokens accessible, reduced motion works
 
-**Tasks**: T001 → T002 → T003
-**Time**: ~5 minutes
-**Deliverable**: Working video background (basic functionality)
+**Day 1 - Visual Effects** (25 min):
+4. Execute Phase 3: Microinteractions (T005-T007) in parallel
+5. **Checkpoint**: Test hover effects on desktop, press feedback on mobile
 
-**Test**: Open index.html, verify video plays
+**Day 1 - Scroll Reveals** (35 min):
+6. Execute Phase 4: Scroll Reveals (T008-T010) sequentially
+7. **Checkpoint**: Verify scroll animations trigger correctly
 
-### Full Feature Scope
+**Day 2 - Validation** (25 min):
+8. Execute Phase 5: Testing (T011-T014)
+9. **Checkpoint**: All tests pass, 60 FPS confirmed
 
-**Goal**: Complete all requirements with accessibility and polish
-
-**Tasks**: T001 → T022
-**Time**: ~45 minutes (or ~33 with parallelization)
-**Deliverable**: Production-ready implementation
-
-**Test**: All 22 tasks verified passing
-
-### Recommended Approach: Incremental with Validation
-
-1. **Video MVP** (T001-T003) → Quick test → Proceed
-2. **Video Polish** (T004-T009) → Accessibility test → Proceed
-3. **Typography** (T010-T012) → Visual test → Proceed
-4. **Full QA** (T013-T022) → Comprehensive testing → Deploy
-
-Each increment delivers value and is independently testable.
+**Total Time**: ~105 minutes (includes checkpoints)
 
 ---
 
-## File Modifications Summary
+### Parallel Execution Strategy
 
-### Files to Modify
-
-| File | Tasks | Changes | Risk | Lines |
-|------|-------|---------|------|-------|
-| index.html | T003, T004, T005, T006 | Update video src, add accessibility attributes, update fallback text | Low | 4 changes (lines 26-30) |
-| styles/main.css | T007, T008, T009, T010, T011, T012 | Add reduced motion support (3 lines), update hero subtitle font-weight and smoothing (3 lines) | Low | ~15 lines total |
-
-### New Files/Directories
-
-| Path | Task | Purpose | Size |
-|------|------|---------|------|
-| videos/ | T001 | Directory for video assets | N/A |
-| videos/background-hero.mp4 | T002 | Local video file | TBD (optimize to <5MB if possible) |
-
-### No Changes Required
-
-| Component | Reason | Verification Task |
-|-----------|--------|-------------------|
-| styles/variables.css | Font-weight-light (300) already exists at line 38 | None needed |
-| Feature pill colors | Already match Figma node 2019-47 exactly | T015 verifies |
-| HTML structure | No structural changes needed | None |
-| Other CSS | No other style changes needed | None |
-
----
-
-## Quality Gates
-
-### Gate 1: Video Setup Complete (After Phase 1)
-
-**Criteria**:
-- [ ] videos/ directory exists
-- [ ] background-hero.mp4 file exists and playable
-- [ ] File size acceptable (<10MB)
-
-**Blocker**: YES - Cannot proceed without video file
-**Tasks**: T001, T002
-
----
-
-### Gate 2: Video Implementation Complete (After Phase 2)
-
-**Criteria**:
-- [ ] Video source path updated to relative path
-- [ ] Video plays automatically in browser
-- [ ] Video loops seamlessly
-- [ ] Accessibility attributes present
-
-**Blocker**: NO - Can proceed to typography in parallel
-**Tasks**: T003, T004, T005, T006
-
----
-
-### Gate 3: Accessibility Complete (After Phase 3)
-
-**Criteria**:
-- [ ] Reduced motion media query implemented
-- [ ] Video hidden for users with motion preference
-- [ ] Fallback background displays correctly
-
-**Blocker**: NO - Can proceed to verification
-**Tasks**: T007, T008, T009
-
----
-
-### Gate 4: Typography Complete (After Phase 4)
-
-**Criteria**:
-- [ ] Hero subtitle font-weight changed to 300
-- [ ] Font-smoothing properties added
-- [ ] Text remains readable
-
-**Blocker**: NO - Can proceed to verification
-**Tasks**: T010, T011, T012
-
----
-
-### Gate 5: Verification Complete (After Phase 5)
-
-**Criteria**:
-- [ ] Visual verification passed (video, typography, colors)
-- [ ] Responsive testing passed (4 breakpoints)
-- [ ] Cross-browser testing passed (Chrome, Firefox minimum)
-- [ ] No console errors
-- [ ] No visual regressions
-
-**Blocker**: YES - Must pass before deployment
-**Tasks**: T013-T022
-
----
-
-## Acceptance Criteria
-
-### AC-1: Video Background (US-1)
-
-- [ ] Video file copied to project (videos/background-hero.mp4)
-- [ ] Video source uses relative path (videos/background-hero.mp4)
-- [ ] Video plays automatically on page load
-- [ ] Video loops infinitely without gaps
-- [ ] Video remains muted (autoplay works in all browsers)
-- [ ] Opacity overlay (0.2) renders correctly
-- [ ] Content visible and readable over video
-- [ ] Accessibility attributes present (preload, aria-hidden)
-- [ ] Reduced motion users see fallback background
-
-### AC-2: Typography (US-2)
-
-- [ ] Hero subtitle uses font-weight 300 (Light)
-- [ ] Font appears visibly lighter than previous 400 weight
-- [ ] Text remains readable at 18px
-- [ ] Font-smoothing properties render correctly (especially macOS)
-- [ ] Color (#e4e4e7) unchanged from before
-- [ ] 17.96:1 contrast ratio maintained (WCAG AAA)
-
-### AC-3: Colors (Verification)
-
-- [ ] Feature pill border color: #71717a (zinc-500) - no changes
-- [ ] Feature pill text color: #d4d4d8 (zinc-300) - no changes
-- [ ] Colors verified against Figma node 2019-47
-
-### AC-4: Responsive (All Breakpoints)
-
-- [ ] 480px (mobile): Video scales, subtitle readable, layout intact
-- [ ] 768px (tablet): Video scales, subtitle readable, layout intact
-- [ ] 1024px (desktop): Video scales, subtitle readable, layout intact
-- [ ] 1440px+ (large): Video scales, subtitle readable, layout intact
-- [ ] No horizontal scroll at any breakpoint
-- [ ] Video doesn't break responsive behavior
-
-### AC-5: Cross-Browser (Compatibility)
-
-- [ ] Chrome: Video autoplay works, font-weight renders
-- [ ] Firefox: Video autoplay works, font-weight renders
-- [ ] Safari (if tested): Video autoplay works, font-smoothing works
-- [ ] No console errors in any browser
-- [ ] Consistent visual appearance across browsers
-
----
-
-## Definition of Done
-
-### Code Complete
-
-- [ ] All 22 tasks (T001-T022) marked complete
-- [ ] videos/ directory created
-- [ ] background-hero.mp4 copied to project
-- [ ] index.html updated with new video source and attributes
-- [ ] styles/main.css updated with reduced motion and typography changes
-- [ ] No syntax errors in HTML or CSS
-
-### Testing Complete
-
-- [ ] Video background verified working (T013)
-- [ ] Typography verified lighter and readable (T014)
-- [ ] Colors verified matching Figma (T015)
-- [ ] All 4 responsive breakpoints tested (T016-T019)
-- [ ] Cross-browser testing complete (T020-T022 minimum Chrome + Firefox)
-- [ ] Reduced motion accessibility tested
-- [ ] No visual regressions detected
-
-### Documentation Complete
-
-- [ ] tasks.md updated with all tasks
-- [ ] plan.md reflects actual implementation
-- [ ] Git commit message prepared (see template below)
-- [ ] No blockers or open questions
-
-### Deployment Ready
-
-- [ ] All quality gates passed
-- [ ] No console errors in browser
-- [ ] Visual fidelity matches design intent
-- [ ] Accessibility maintained (WCAG AAA)
-- [ ] Performance acceptable (video loads progressively)
-
----
-
-## Rollback Plan
-
-### Scenario 1: Video file too large or won't load
-
-**Symptoms**: Slow page load, video doesn't play, browser hangs
-
-**Rollback**:
+**Opportunity 1**: After T002 complete
 ```bash
-git checkout HEAD -- index.html styles/main.css
-rm -rf videos/
+# Run in parallel (5 tasks):
+T003 - Developer A: Reduced motion
+T004 - Developer A: Focus-visible
+T005 - Developer B: Button hover
+T006 - Developer B: Pill hover
+T007 - Developer B: Logo pulse
+
+# Wait for all to complete before proceeding
 ```
 
-**Alternative**: Optimize video with FFmpeg and retry
-
-### Scenario 2: Font weight too light / unreadable
-
-**Symptoms**: Users report hero subtitle hard to read
-
-**Quick Fix**:
-```css
-/* In styles/main.css line 97 */
-font-weight: var(--font-weight-regular);  /* Revert to 400 */
-```
-
-**Note**: 17.96:1 contrast provides large buffer, unlikely to occur
-
-### Scenario 3: Video breaks layout on specific device
-
-**Symptoms**: Video overlaps content, z-index issues
-
-**Quick Fix**:
-```css
-/* In styles/main.css */
-.header__video {
-  z-index: -1;  /* Ensure video stays behind content */
-}
-```
-
-### Scenario 4: Complete rollback needed
-
-**Commands**:
+**Opportunity 2**: After T010 complete
 ```bash
-git reset --hard HEAD~1  # Undo last commit
-rm -rf videos/           # Remove video directory if needed
+# Run in parallel (4 tasks):
+T011 - Tester A: Responsive
+T012 - Tester A: Accessibility
+T013 - Tester B: Performance
+T014 - Tester B: Cross-browser
+
+# Merge test reports
 ```
 
 ---
 
-## Commit Message Template
+## Success Criteria
 
-When all tasks complete and tests pass, use this commit message:
+### MVP Definition (Minimum Viable Product)
 
-```
-feat: integra vídeo background local e ajusta tipografia hero
+**Must Have** (Required for MVP):
+- ✅ Animation tokens defined (T002)
+- ✅ Reduced motion compliance (T003)
+- ✅ Button hover effects (T005)
+- ✅ Scroll reveals (T008-T010)
+- ✅ Responsive testing (T011)
+- ✅ Accessibility testing (T012)
 
-- Cria diretório videos/ e adiciona background-hero.mp4
-- Atualiza source path do vídeo de placeholder para caminho relativo (videos/background-hero.mp4)
-- Adiciona atributos de acessibilidade ao vídeo (preload="auto", aria-hidden="true")
-- Implementa suporte a prefers-reduced-motion com fallback background
-- Muda hero subtitle font-weight de 400 (Regular) para 300 (Light)
-- Adiciona font-smoothing para renderização otimizada em macOS/iOS
-- Verifica cores do Figma node 2019-47 (já implementadas corretamente)
+**Nice to Have** (Post-MVP):
+- ⭐ Focus-visible styles (T004) - enhances accessibility
+- ⭐ Feature pill hover (T006) - visual polish
+- ⭐ Logo accent pulse (T007) - branding delight
+- ⭐ Performance validation (T013) - optimization
+- ⭐ Cross-browser testing (T014) - compatibility
 
-Testes realizados:
-- Chrome e Firefox: vídeo autoplay funcional, tipografia renderizada
-- Breakpoints: 480px, 768px, 1024px, 1440px todos funcionais
-- Acessibilidade: WCAG AAA mantido (17.96:1 contrast), reduced motion testado
-- Sem erros no console, sem regressões visuais
-
-Vídeo fonte: C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4
-Figma node: 2019-47 (feature pills colors verified)
-Tasks: T001-T022
-Tempo de implementação: ~45 minutos
-Risco: BAIXO (mudanças isoladas, não-destrutivas)
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
+**MVP Scope**: Tasks T001, T002, T003, T005, T008-T012 (9 tasks, ~70 min)
 
 ---
 
-## Notes for Implementation
+## Quick Reference: Animation Tokens
 
-### Video File Considerations
-
-**Source**: `C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4`
-**Destination**: `videos/background-hero.mp4`
-
-**Optional Optimization** (using FFmpeg):
-```bash
-ffmpeg -i "C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4" \
-  -c:v libx264 \
-  -crf 23 \
-  -preset slow \
-  -movflags +faststart \
-  -vf scale=1920:1080 \
-  -an \
-  "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos\background-hero.mp4"
-```
-
-**Benefits**:
-- Smaller file size (2-5MB vs potentially 10MB+)
-- Progressive loading (FastStart enabled)
-- No audio track (saves ~20% bandwidth)
-- Optimized for web delivery
-
-### Typography Considerations
-
-**Font Already Loaded**:
-```html
-<!-- In index.html, Google Fonts already includes weight 300 -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
-```
-
-**CSS Variable Already Defined**:
 ```css
-/* In styles/variables.css line 38 */
---font-weight-light: 300;
+/* Durations */
+--duration-instant: 100ms;   /* T005: Button press */
+--duration-fast: 200ms;      /* T005, T006: Hover micro-transitions */
+--duration-normal: 300ms;    /* T005, T006, T007: Standard hover */
+--duration-slow: 600ms;      /* T009: Scroll reveals */
+--duration-ambient: 3s;      /* T007: Logo pulse */
+
+/* Easing */
+--ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);    /* T005, T006, T009: Deceleration */
+--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* T005, T006, T007: Overshoot */
+--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);       /* T005: Button press */
 ```
 
-**No additional font loading needed** ✅
+---
 
-### Color Verification (T015)
-
-**Expected Values** (from Figma node 2019-47):
-- Feature pill border: `#71717a` (zinc-500) ✅ Already implemented correctly
-- Feature pill text: `#d4d4d8` (zinc-300) ✅ Already implemented correctly
-
-**This is verification only** - no code changes needed for colors
-
-### Constitution Compliance
-
-All changes comply with project constitution:
-- ✅ Mobile-first approach maintained (existing media queries unchanged)
-- ✅ CSS variables used consistently
-- ✅ No structural HTML changes (only attribute additions)
-- ✅ Accessibility enhanced (reduced motion, aria attributes)
-- ✅ Organized file structure (videos/ directory mirrors assets/)
+**Document Version**: 1.0
+**Created**: 2025-10-27
+**Status**: Ready to Execute
+**Next Step**: Begin with T001 (Create scripts directory)
 
 ---
 
-## Appendix: Research References
-
-### Video Background Implementation
-
-**Source**: research.md Phase 0 findings
-
-**Key Decisions**:
-- Use relative path (videos/background-hero.mp4) for portability
-- HTML5 video with autoplay, loop, muted, playsinline attributes
-- Add preload="auto" for above-the-fold content
-- Add aria-hidden="true" for decorative video (WCAG)
-- Implement prefers-reduced-motion fallback (WCAG 2.2.2)
-
-**Browser Compatibility**: Excellent (98%+ modern browsers)
-
-### Typography Update
-
-**Source**: research.md Phase 0 findings
-
-**Key Decisions**:
-- Font-weight 300 (Light) matches Figma specification
-- 17.96:1 contrast ratio exceeds WCAG AAA by 2.5× (buffer for light weight)
-- Add font-smoothing for optimal rendering on macOS/iOS
-- 18px font size exceeds minimum (16px) for light weights
-
-**Accessibility**: WCAG AAA compliant (contrast ratio verified)
-
-### Color Verification
-
-**Source**: Figma MCP extraction of node 2019-47
-
-**Findings**:
-- Feature pill border: var(--color-zinc-500) = #71717a ✅ Match
-- Feature pill text: var(--color-zinc-300) = #d4d4d8 ✅ Match
-
-**No changes required** - verification task only
-
----
-
-**Task List Version**: 2.0 (Video & Typography Update)
-**Last Updated**: 2025-10-27
-**Ready for Execution**: ✅ YES
-
-**Next Step**: Begin with T001 (Create videos directory)
-**Estimated Total Time**: 45 minutes (or 33 with parallelization)
-**Risk Level**: 🟢 LOW
+**End of Tasks Document**

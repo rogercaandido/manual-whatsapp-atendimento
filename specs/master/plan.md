@@ -1,17 +1,19 @@
-# Implementation Plan: Video Background & Typography Updates
+# Implementation Plan: Modern Effects & Microinteractions
 
-**Feature**: Video Background Integration & Hero Subtitle Font Weight Update
+**Feature**: Add Elegant Modern Effects (Hover Parallax, Scroll Reveals, Microinteractions)
 **Created**: 2025-10-27 (Updated)
 **Branch**: master
 **Status**: Ready for Implementation
 
 ## Change Summary
 
-This plan covers TWO specific updates based on user requirements:
+This plan implements modern animation effects and microinteractions to enhance the landing page experience:
 
-1. **Video Background**: Replace placeholder video path with local video file
-2. **Hero Subtitle Typography**: Change font-weight from 400 (Regular) to 300 (Light) with rendering enhancements
-3. **Color Verification**: Confirm Figma node 2019-47 colors are correctly implemented
+1. **Hover Parallax**: Subtle depth effects on buttons, pills, and logo
+2. **Scroll Reveals**: Progressive content disclosure with Intersection Observer
+3. **Microinteractions**: Button feedback, icon bounces, glow effects
+4. **Accessibility**: Full reduced-motion support and keyboard navigation
+5. **Performance**: GPU-accelerated animations, 60 FPS target
 
 ---
 

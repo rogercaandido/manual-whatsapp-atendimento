@@ -60,6 +60,18 @@ body {
 
 .header__logo-accent {
   color: var(--color-primary);
+  animation: logoPulse var(--duration-ambient) var(--ease-smooth) infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
 }
 
 /* Main Content */
@@ -179,6 +191,29 @@ body {
   padding: var(--space-8) var(--space-16);
   border: 1px solid var(--color-zinc-500);
   border-radius: 33px;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  cursor: pointer;
+}
+
+/* Desktop: Feature pill hover effects */
+@media (hover: hover) and (min-width: 1024px) {
+  .feature-pill:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 16px rgba(116, 210, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .feature-pill:hover .feature-pill__icon {
+    transform: scale(1.1);
+    transition: transform var(--duration-fast) var(--ease-bounce);
+  }
+}
+
+/* Mobile: Touch feedback */
+.feature-pill:active {
+  transform: scale(0.98);
+  border-color: var(--color-primary);
+  transition: transform var(--duration-instant) var(--ease-sharp);
 }
 
 .feature-pill__text {
@@ -260,7 +295,7 @@ body {
   padding: 12px 24px;
   border: 1px solid;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-normal) var(--ease-smooth);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -285,10 +320,6 @@ body {
   text-transform: uppercase;
 }
 
-.btn--primary:hover {
-  background: var(--color-primary-dark);
-}
-
 .btn--secondary {
   background: transparent;
   border-color: var(--color-zinc-600);
@@ -301,9 +332,31 @@ body {
   color: var(--color-zinc-500);
 }
 
-.btn--secondary:hover {
-  border-color: var(--color-zinc-500);
-  background: rgba(113, 113, 122, 0.1);
+/* Desktop: Full hover effects */
+@media (hover: hover) and (min-width: 1024px) {
+  .btn--primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Icon lifts faster than button */
+  .btn--primary:hover .btn__icon {
+    transform: translateY(-2px) scale(1.1);
+    transition: transform var(--duration-fast) var(--ease-bounce);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--color-zinc-500);
+    background: rgba(113, 113, 122, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+/* Button press feedback (all devices) */
+.btn:active {
+  transform: scale(0.98) !important;
+  transition: transform var(--duration-instant) var(--ease-sharp);
 }
 
 .btn__icon {
@@ -328,6 +381,43 @@ body {
   line-height: 1.5;
   letter-spacing: -0.16px;
   min-width: 100%;
+}
+
+/* ========================================
+   SCROLL REVEAL ANIMATIONS
+   ======================================== */
+
+/* Initial hidden state (before scroll reveal) */
+.animate-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Visible state (after scroll reveal) */
+.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slow) var(--ease-smooth),
+              transform var(--duration-slow) var(--ease-smooth);
+}
+
+/* ========================================
+   ACCESSIBILITY: FOCUS VISIBLE
+   ======================================== */
+
+/* Focus ring for keyboard navigation */
+.btn:focus-visible,
+.feature-pill:focus-visible,
+.header__logo:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  transition: outline-offset var(--duration-fast) var(--ease-smooth);
+}
+
+/* Do NOT show focus ring on mouse click */
+.btn:focus:not(:focus-visible),
+.feature-pill:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Responsive */
@@ -409,8 +499,28 @@ body {
   }
 }
 
-/* Video Accessibility - Respect reduced motion preference */
+/* ========================================
+   ACCESSIBILITY: REDUCED MOTION
+   ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
+  /* Disable all animations globally */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Ensure scroll reveals are visible */
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Video specific handling */
   .header__video {
     display: none;
   }

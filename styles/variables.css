@@ -48,4 +48,20 @@
 
   /* Effects */
   --video-opacity: 0.2;
+
+  /* ========================================
+     ANIMATION TOKENS
+     ======================================== */
+
+  /* Animation Durations */
+  --duration-instant: 100ms;   /* Button press feedback */
+  --duration-fast: 200ms;      /* Quick hover transitions */
+  --duration-normal: 300ms;    /* Standard state changes */
+  --duration-slow: 600ms;      /* Content reveals, scroll animations */
+  --duration-ambient: 3s;      /* Ambient loops (pulse effects) */
+
+  /* Animation Easing Functions */
+  --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);    /* Smooth deceleration */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy overshoot */
+  --ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);       /* Material sharp */
 }
