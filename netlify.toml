@@ -1,0 +1,56 @@
+# Netlify Configuration
+# Landing Page: Manual WhatsApp Atendimento
+
+[build]
+  # This is a static HTML/CSS site, no build step needed
+  publish = "."
+
+  # Since we have no build step, we can leave command empty
+  command = ""
+
+[[redirects]]
+  # Redirect for SPA-like behavior (if needed in future)
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+  # Exclude assets from redirects
+  conditions = {Role = ["admin"]}
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "no-referrer-when-downgrade"
+
+    # Performance - Cache static assets
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    # Don't cache HTML
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    # Cache assets for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/styles/*"
+  [headers.values]
+    # Cache CSS for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Custom 404 page (optional - create 404.html if needed)
+# [[redirects]]
+#   from = "/*"
+#   to = "/404.html"
+#   status = 404
