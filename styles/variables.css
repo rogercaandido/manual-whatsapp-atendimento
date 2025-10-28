@@ -64,4 +64,13 @@
   --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);    /* Smooth deceleration */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy overshoot */
   --ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);       /* Material sharp */
+
+  /* ========================================
+     MOBILE-SPECIFIC SPACING
+     ======================================== */
+
+  /* Mobile Compact Spacing - Reduces gaps for mobile viewports to fit content without scroll */
+  --space-mobile-gap-section: 24px;     /* Gap between major sections (hero, features, CTA) */
+  --space-mobile-gap-elements: 16px;    /* Gap between elements within sections */
+  --space-mobile-padding-bottom: 24px;  /* Bottom padding for header on mobile */
 }

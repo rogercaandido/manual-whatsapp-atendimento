@@ -18,12 +18,12 @@ body {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 800px;
+  min-height: auto;  /* Mobile-first: allows contraction to fit content */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-80);
-  padding: var(--space-32) var(--page-padding) var(--space-80);
+  gap: var(--space-mobile-gap-section);  /* 24px on mobile */
+  padding: var(--space-16) var(--page-padding) var(--space-mobile-padding-bottom);
 }
 
 /* Background Video */
@@ -83,8 +83,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 40px;
+  justify-content: space-between;  /* Intelligent vertical distribution */
+  gap: var(--space-mobile-gap-section);  /* 24px on mobile */
 }
 
 /* Hero Section */
@@ -250,22 +250,22 @@ body {
 .cta-section {
   width: 100%;
   max-width: 1280px;
-  flex: 1;
+  flex: 0 0 auto;  /* Don't grow, only occupy necessary space */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 80px;
+  gap: var(--space-mobile-gap-section);  /* 24px on mobile */
 }
 
 .cta-container {
-  flex: 1;
+  flex: 0 0 auto;  /* Don't grow */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 40px;
+  gap: var(--space-mobile-gap-elements);  /* 16px on mobile */
 }
 
 .cta-content {
@@ -273,7 +273,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-mobile-gap-elements);  /* 16px on mobile */
 }
 
 /* CTA Buttons */
@@ -414,6 +414,53 @@ body {
 .feature-pill:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* ========================================
+   PROGRESSIVE ENHANCEMENT: DESKTOP RESTORATION
+   ======================================== */
+
+/* Tablet: 768px+ - Restore moderate spacing */
+@media (min-width: 768px) {
+  .header {
+    min-height: 700px;  /* Tablet: moderate min-height */
+    gap: var(--space-40);
+    padding: var(--space-32) var(--page-padding) var(--space-40);
+  }
+
+  .header__content {
+    gap: 40px;  /* Restore desktop gap */
+  }
+
+  .cta-section {
+    gap: 40px;
+  }
+
+  .cta-container {
+    gap: 40px;
+  }
+
+  .cta-content {
+    gap: 32px;
+  }
+}
+
+/* Desktop: 1024px+ - Restore generous spacing */
+@media (min-width: 1024px) {
+  .header {
+    min-height: 800px;  /* Desktop: original min-height */
+    gap: var(--space-80);
+    padding: var(--space-32) var(--page-padding) var(--space-80);
+  }
+
+  .cta-section {
+    flex: 1;  /* Restore flex-grow on desktop */
+    gap: 80px;
+  }
+}
+
+/* ========================================
+   LEGACY RESPONSIVE (max-width)
+   ======================================== */
 
 /* Responsive */
 @media (max-width: 1440px) {
