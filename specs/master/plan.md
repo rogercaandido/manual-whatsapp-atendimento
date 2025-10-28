@@ -1,21 +1,25 @@
-# Implementation Plan: Footer Section with Partner Logos
+# Implementation Plan: Social Sharing & Favicon Enhancement
 
-**Feature**: Footer Partner Logos Section
-**Created**: 2025-10-27
+**Feature**: Social Meta Tags, Favicon, and Improved Page Title
+**Created**: 2025-10-28
 **Branch**: master
-**Status**: Ready for Implementation
+**Status**: Phase 1 Complete - Ready for Implementation
 
 ---
 
 ## Change Summary
 
-Este plano implementa uma nova seção de rodapé (footer) na landing page com logos minimalistas de 5 parceiros, conforme design Figma node 2043-191:
+Este plano adiciona meta tags de compartilhamento social (Open Graph, Twitter Card), favicon completo (múltiplos formatos), e melhora o título da página para SEO e compartilhamento.
 
-1. **HTML Structure**: Adicionar `<footer>` semântico com 5 logos de parceiros
-2. **CSS Styling**: Estilização minimalista com logos em cinza (grayscale + opacity)
-3. **Responsive Layout**: Flexbox adaptável (mobile: 2-3 logos/linha, desktop: 5 logos/linha)
-4. **Assets**: 9 SVGs já baixados do Figma MCP server
-5. **Design Tokens**: Reutilizar variáveis existentes + adicionar tokens footer-specific
+**User Requirements**:
+> "precisamos inserir uma imagem de miniatura de compartilhamento, pode ser um preview do site mesmo e também um favicon (logo do whatsapp como na hero) e ajustar para um nome mais legal o titulo do site."
+
+**Deliverables**:
+1. **Social Sharing Meta Tags**: Open Graph (Facebook, WhatsApp, LinkedIn) + Twitter Card
+2. **Favicon Files**: Multiple formats (ICO, SVG, PNG) for all devices
+3. **Social Preview Image**: 1200×630px screenshot/mockup of hero section
+4. **Improved Page Title**: From "webdev_ - Automação WhatsApp com IA" to "Manda no WhatsApp com IA | webdev_"
+5. **Web Manifest**: PWA-ready manifest.json for Android icons
 
 ---
 
@@ -27,8 +31,6 @@ Este plano implementa uma nova seção de rodapé (footer) na landing page com l
 4. [Phase 0: Research & Analysis](#phase-0-research--analysis)
 5. [Phase 1: Design & Contracts](#phase-1-design--contracts)
 6. [Phase 2: Implementation Plan](#phase-2-implementation-plan)
-7. [Testing Strategy](#testing-strategy)
-8. [Rollout Plan](#rollout-plan)
 
 ---
 
@@ -36,42 +38,69 @@ Este plano implementa uma nova seção de rodapé (footer) na landing page com l
 
 ### Project Overview
 
-Landing page HTML/CSS pura para automação WhatsApp com IA. Rodapé com logos de parceiros completa a hierarquia visual da página e demonstra credibilidade através de associações com outras marcas.
+Landing page HTML/CSS pura para automação WhatsApp com IA. Adicionando meta tags de compartilhamento social e favicon para melhorar SEO, social sharing, e branding.
 
-### Technology Stack
+### Current State
 
-- **Frontend**: HTML5 puro (semantic `<footer>`)
-- **Styling**: CSS3 com Custom Properties (variáveis CSS)
-- **Assets**: SVG logos (escaláveis, otimizados)
-- **Design Source**: Figma node 2043-191 via MCP Server
-
-### Current Architecture
-
+**HTML `<head>` Current** (lines 3-16):
+```html
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webdev_ - Automação WhatsApp com IA</title>
+  <!-- Google Fonts -->
+  <!-- Stylesheets -->
+</head>
 ```
-projeto_b/
-├── index.html              # Adicionar <footer> antes de </body>
-├── styles/
-│   ├── variables.css       # Adicionar tokens footer
-│   └── main.css           # Adicionar estilos .footer*
-└── assets/
-    ├── footer-ic-logo.svg              ✅ Downloaded
-    ├── footer-hi-logo-*.svg (5 files)  ✅ Downloaded
-    ├── footer-integra-logo.svg         ✅ Downloaded
-    ├── footer-iamagistral-logo.svg     ✅ Downloaded
-    └── footer-csf-logo-main.svg        ✅ Downloaded
+
+**Missing**:
+- ❌ Meta description (SEO)
+- ❌ Open Graph tags (social sharing)
+- ❌ Twitter Card tags
+- ❌ Favicon links (any format)
+- ❌ Social preview image
+- ❌ Web manifest
+
+### Target State
+
+**HTML `<head>` Enhanced**:
+```html
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manda no WhatsApp com IA | webdev_</title>
+
+  <!-- SEO -->
+  <meta name="description" content="...">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="...">
+  <meta property="og:description" content="...">
+  <meta property="og:image" content="...">
+  <meta property="og:url" content="...">
+  ...
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="...">
+  <meta name="twitter:title" content="...">
+  <meta name="twitter:image" content="...">
+  ...
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  ...
+</head>
 ```
 
 ### Key Dependencies
 
-- **None**: Feature é self-contained
-- **Assets**: 9 SVGs já baixados (total ~135KB)
-- **Existing Tokens**: `--space-80`, `--page-padding`, `--duration-normal`, `--ease-smooth`
-
-### Integration Points
-
-- **Visual Hierarchy**: Footer fecha a página após CTAs e disclaimer
-- **Spacing**: 80px gap acima (consistente com design system)
-- **Responsividade**: Alinha com breakpoints existentes (480px, 768px, 1024px, 1440px)
+- **Source Asset**: `assets/whatsapp-logo.svg` (76×76, existing) → favicon source
+- **Hero Section**: Current design (lines 48-67 in index.html) → social preview image
+- **Favicon Tool**: realfavicongenerator.net (online, free)
+- **Image Tool**: Browser DevTools screenshot OR Figma export
 
 ---
 
@@ -81,90 +110,104 @@ projeto_b/
 
 | Principle | Requirement | Current Status | Compliance |
 |-----------|-------------|----------------|------------|
-| **I. Estrutura e Organização** | Assets em pastas específicas | ✅ `assets/footer-*.svg` | ✅ PASS |
-| **II. HTML Semântico** | Tag `<footer>` com roles ARIA | ✅ Planned | ✅ PASS |
-| **III. CSS Responsivo (NON-NEGOTIABLE)** | Mobile-first, variáveis CSS | ✅ Planned | ✅ PASS |
-| **IV. Performance** | SVGs otimizados, sem JS | ✅ Static assets | ✅ PASS |
-| **V. Compatibilidade** | CSS básico, suporte amplo | ✅ Flexbox + filters | ✅ PASS |
+| **II. HTML Semântico** | Meta tags essenciais (charset, viewport, description) | ⚠️ Missing description | 🟡 IMPROVE |
+| **II. HTML Semântico** | Meta tags for SEO and social sharing | ❌ Missing OG, Twitter | 🟡 IMPROVE |
+| **II. HTML Semântico** | Favicon meta tag | ❌ Missing | 🟡 IMPROVE |
+| **V. Compatibilidade** | Validação HTML (W3C) | ✅ Valid (will remain valid) | ✅ PASS |
 
 ### Non-Negotiable Requirements Status
 
-✅ **Mobile-first approach**: Media queries 480px → 768px → 1024px
-✅ **CSS Variables**: Reutilizar tokens existentes + novos footer-specific
-✅ **Responsive breakpoints**: 4 breakpoints consistentes com projeto
-✅ **HTML Semântico**: `<footer role="contentinfo">`, alt text
+✅ **HTML Semântico**: Adding meta tags improves semantic HTML
+✅ **Padrões Web**: Using standard Open Graph, Twitter Card protocols
+✅ **Compatibilidade**: Favicon formats support all modern browsers
 
 ### Constitution Violations
 
-**None detected**. Implementação HTML/CSS pura alinhada com todos os princípios.
+**NO VIOLATIONS DETECTED** ✅
 
-### Risk Assessment
-
-**Risk Level**: 🟢 LOW
-
-**Rationale**:
-- Adição isolada (não modifica código existente)
-- HTML/CSS apenas (sem JavaScript)
-- Assets já validados (Figma source of truth)
-- Responsivo by design (Flexbox padrão)
+- Proposta **melhora** HTML semântico ao adicionar meta tags essenciais
+- Segue padrões web estabelecidos (Open Graph Protocol, Twitter Card spec)
+- Favicon multi-formato garante compatibilidade cross-browser
 
 ---
 
 ## Quality Gates
 
-### Gate 1: Visual Fidelity ✅
+### Gate 1: Meta Tags Validation ✅ CRITICAL
 
 **Criteria**:
-- [ ] 5 logos visíveis em ordem correta (IC, Hi, Integra, IA Magistral, CSF)
-- [ ] Logos em estilo minimalista (grayscale, opacity ~0.7)
-- [ ] Espaçamento horizontal balanceado (justify-between no desktop)
-- [ ] Alinhamento vertical centralizado
+- [ ] All Open Graph required tags present (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`)
+- [ ] All Twitter Card required tags present (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`)
+- [ ] SEO meta description present (150-160 chars)
+- [ ] Image URLs are absolute (https://) for social platforms
+- [ ] HTML validates with W3C validator
 
-**Validation Method**: Comparação com screenshot Figma node 2043-191
+**Validation Method**:
+- W3C HTML Validator
+- Facebook Sharing Debugger (https://developers.facebook.com/tools/debug/)
+- Twitter Card Validator (https://cards-dev.twitter.com/validator)
 
-**Blocker**: No
+**Blocker**: YES - Feature core requirement
 
 ---
 
-### Gate 2: Responsive Integrity ✅
+### Gate 2: Favicon Files Complete ✅ CRITICAL
 
 **Criteria**:
-- [ ] Mobile (375px): 2 logos/linha, centralizados
-- [ ] Tablet (768px): 3 logos/linha, centralizados
-- [ ] Desktop (1024px+): 5 logos/linha, space-between
-- [ ] Sem overflow horizontal em nenhum breakpoint
+- [ ] `favicon.ico` (32×32) exists in root
+- [ ] `favicon.svg` exists in root (modern browsers)
+- [ ] `favicon-32x32.png` exists
+- [ ] `favicon-16x16.png` exists
+- [ ] `apple-touch-icon.png` (180×180) exists
+- [ ] `android-chrome-192x192.png` exists
+- [ ] `android-chrome-512x512.png` exists
+- [ ] `site.webmanifest` exists with correct paths
 
-**Validation Method**: DevTools responsive mode testing
+**Validation Method**:
+- File existence check
+- Visual test in browser tabs (Chrome, Safari, Firefox)
+- iOS add to home screen test
+- Android add to home screen test
 
-**Blocker**: No
+**Blocker**: YES - Visual branding requirement
 
 ---
 
-### Gate 3: Code Quality ✅
+### Gate 3: Social Preview Image Quality ✅
 
 **Criteria**:
-- [ ] HTML semântico (`<footer>`, `alt` text)
-- [ ] CSS usa variáveis para cores, spacing, timing
-- [ ] Mobile-first media queries
-- [ ] Comentários explicativos
+- [ ] Image dimensions exactly 1200×630 pixels
+- [ ] File format PNG or JPG
+- [ ] File size < 1 MB (< 5MB max)
+- [ ] Contains hero section (MANDA NO + WhatsApp logo)
+- [ ] Readable on mobile screens (high contrast)
+- [ ] WhatsApp preview renders correctly
 
-**Validation Method**: Code review
+**Validation Method**:
+- Image properties check (dimensions, size)
+- Share URL in WhatsApp (self-message test)
+- Facebook Sharing Debugger preview
+- Twitter Card Validator preview
 
-**Blocker**: No
+**Blocker**: NO - But important for social sharing UX
 
 ---
 
-### Gate 4: Accessibility ✅
+### Gate 4: SEO & Page Title ✅
 
 **Criteria**:
-- [ ] Alt text descritivo em todas as imagens
-- [ ] Footer é landmark semântico
-- [ ] Contraste suficiente (logos cinza em fundo preto)
-- [ ] Sem interatividade desnecessária
+- [ ] Page title updated to "Manda no WhatsApp com IA | webdev_"
+- [ ] Title length 50-60 chars (optimal for SERP)
+- [ ] Meta description 150-160 chars
+- [ ] Description includes primary keywords (WhatsApp, IA)
+- [ ] Title matches hero section messaging ("MANDA NO")
 
-**Validation Method**: Manual accessibility audit
+**Validation Method**:
+- Character count check
+- Google SERP snippet preview
+- Consistency check with hero content
 
-**Blocker**: No
+**Blocker**: NO - But important for SEO and user experience
 
 ---
 
@@ -172,582 +215,442 @@ projeto_b/
 
 ### Status: ✅ COMPLETE
 
-**Completed Artifacts**:
-- ✅ [research.md](./research.md) - Análise completa do design Figma
-- ✅ 9 SVG assets baixados do Figma MCP server
-- ✅ Design tokens identificados e documentados
+See [research.md](./research.md) for detailed findings.
 
-**Key Findings**:
-1. **Logo Dimensions**: 5 logos com heights variando de 11.6px a 27.841px
-2. **Responsive Strategy**: Flexbox hybrid (justify-between desktop, center mobile)
-3. **Color Treatment**: CSS filter (grayscale + brightness + opacity)
-4. **Composite Logos**: Hi Nutrition e CSF simplificados para v1 (logo principal apenas)
-
-**Research Decisions**:
-- ✅ Usar múltiplos SVG files (fidelidade ao Figma)
-- ✅ HTML semântico com `<footer>` e data attributes
-- ✅ CSS filter para efeito minimalista (não recolorir SVGs manualmente)
-- ✅ Hover opcional (recolor on hover para desktop)
-
-**No Blockers**: Todos requisitos claros, assets prontos.
+**Key Decisions**:
+- ✅ **Page Title**: "Manda no WhatsApp com IA | webdev_" (35 chars, brand-consistent)
+- ✅ **Meta Description**: 150 chars, keyword-rich, includes CTA
+- ✅ **Favicon Source**: Use existing `whatsapp-logo.svg`
+- ✅ **Favicon Tool**: realfavicongenerator.net (online, complete package)
+- ✅ **Social Image**: Screenshot method (1200×630 of hero section)
+- ✅ **Image Format**: PNG (high quality, transparency support)
 
 ---
 
 ## Phase 1: Design & Contracts
 
-### 1.1 Data Model
+### Status: ✅ COMPLETE
 
-✅ **Completed**: [data-model.md](./data-model.md)
+See [data-model.md](./data-model.md) and [quickstart.md](./quickstart.md).
 
-**Key Points**:
-- 5 partner logos definidos com metadados completos
-- Data attributes para targeting CSS (`data-logo="ic"`)
-- Design tokens para footer (spacing, opacity, filters)
-- Test cases para 3 viewports (mobile, tablet, desktop)
-
-### 1.2 Design System Tokens
-
-**New CSS Variables** (adicionar a `variables.css`):
-
-```css
-/* === FOOTER TOKENS === */
-
-/* Footer Spacing */
---footer-padding-vertical: var(--space-80);        /* 80px */
---footer-padding-horizontal: var(--page-padding);  /* 64px */
-
-/* Logo Styling */
---logo-opacity-base: 0.7;
---logo-opacity-hover: 1.0;
---logo-filter-grayscale: 1;       /* Full grayscale */
---logo-filter-brightness: 1.5;    /* Lighten for visibility on black bg */
-
-/* Logo Spacing (Responsive) */
---logo-gap-mobile: 24px;
---logo-gap-tablet: 32px;
---logo-gap-desktop: 0;  /* justify-between handles spacing */
-
-/* Logo Max Dimensions (Responsive Scaling) */
---logo-max-height-mobile: 18px;
---logo-max-height-tablet: 20px;
---logo-max-height-desktop: auto;  /* Use Figma exact dimensions */
-```
-
-**Rationale**:
-- Reutiliza `--space-80` e `--page-padding` (consistência)
-- Define opacities como variáveis (fácil ajuste)
-- Responsive scaling via max-height (mantém aspect ratio)
-
-### 1.3 HTML Structure Specification
-
-```html
-<!-- ========================================
-     FOOTER SECTION - Partner Logos
-     ======================================== -->
-<footer class="footer" role="contentinfo">
-  <div class="footer__container">
-    <!-- Logos Grid/Flexbox -->
-    <div class="footer__logos" aria-label="Parceiros">
-
-      <!-- IC Cosmetologia -->
-      <div class="footer-logo" data-logo="ic">
-        <img src="assets/footer-ic-logo.svg" alt="IC Cosmetologia" width="147.712" height="27.841">
-      </div>
-
-      <!-- Hi Nutrition -->
-      <div class="footer-logo" data-logo="hi">
-        <img src="assets/footer-hi-logo-5.svg" alt="Hi Nutrition" width="101.31" height="17.787">
-      </div>
-
-      <!-- Integra -->
-      <div class="footer-logo" data-logo="integra">
-        <img src="assets/footer-integra-logo.svg" alt="Integra" width="91.257" height="11.6">
-      </div>
-
-      <!-- IA Magistral -->
-      <div class="footer-logo" data-logo="ia-magistral">
-        <img src="assets/footer-iamagistral-logo.svg" alt="IA Magistral" width="104.404" height="20.881">
-      </div>
-
-      <!-- Consultório São Francisco -->
-      <div class="footer-logo" data-logo="csf">
-        <img src="assets/footer-csf-logo-main.svg" alt="Consultório São Francisco" width="119.871" height="19.334">
-      </div>
-
-    </div>
-  </div>
-</footer>
-```
-
-**Key Decisions**:
-- `width` e `height` attributes para prevent layout shift
-- `aria-label="Parceiros"` para screen readers
-- `data-logo` attribute para CSS targeting
-- Semantic `<footer>` com `role="contentinfo"` (redundante mas explícito)
-
-### 1.4 CSS Specification
-
-#### Footer Container
-
-```css
-/* ========================================
-   FOOTER SECTION
-   ======================================== */
-
-.footer {
-  padding: var(--footer-padding-vertical) var(--footer-padding-horizontal);
-  background-color: transparent;  /* Herda do body (#000) */
-}
-
-.footer__container {
-  max-width: 1440px;  /* Match page max-width */
-  margin: 0 auto;
-}
-
-.footer__logos {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;  /* Mobile first: centered */
-  gap: var(--logo-gap-mobile);
-}
-```
-
-#### Logo Styling
-
-```css
-.footer-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-logo img {
-  max-height: var(--logo-max-height-mobile);
-  width: auto;
-  height: auto;
-  display: block;
-
-  /* Minimalista cinza effect */
-  filter: grayscale(var(--logo-filter-grayscale))
-          brightness(var(--logo-filter-brightness))
-          opacity(var(--logo-opacity-base));
-
-  transition: filter var(--duration-normal) var(--ease-smooth);
-}
-```
-
-#### Hover Effect (Desktop Only)
-
-```css
-@media (hover: hover) and (min-width: 1024px) {
-  .footer-logo:hover img {
-    filter: grayscale(0)
-            brightness(1)
-            opacity(var(--logo-opacity-hover));
-  }
-}
-```
-
-#### Responsive Breakpoints
-
-```css
-/* Tablet: 768px+ */
-@media (min-width: 768px) {
-  .footer__logos {
-    gap: var(--logo-gap-tablet);
-  }
-
-  .footer-logo img {
-    max-height: var(--logo-max-height-tablet);
-  }
-}
-
-/* Desktop: 1024px+ */
-@media (min-width: 1024px) {
-  .footer__logos {
-    justify-content: space-between;  /* Espaçamento máximo */
-    gap: var(--logo-gap-desktop);  /* 0, justify-between handles it */
-  }
-
-  .footer-logo img {
-    max-height: var(--logo-max-height-desktop);  /* auto = Figma exact size */
-  }
-}
-```
+**Artifacts Generated**:
+- ✅ **data-model.md**: Complete spec for meta tags, favicon files, social image
+- ✅ **quickstart.md**: Step-by-step implementation guide (30-45 min)
+- ✅ **Agent context**: Updated (attempted, template missing - non-blocking)
 
 ---
 
 ## Phase 2: Implementation Plan
 
-### 2.1 Implementation Tasks
+### Task Breakdown
 
-#### Task 1: Add Footer CSS Variables ⏱️ 3 min
+#### Task 1: Generate Favicon Files ⏱️ 10 min
 
-**File**: `styles/variables.css` (final do arquivo, antes de fechar `:root`)
+**Method**: Use realfavicongenerator.net
 
-**Changes**:
-```css
-/* Adicionar ao final da seção :root, antes do } */
+**Steps**:
+1. Navigate to https://realfavicongenerator.net
+2. Upload `assets/whatsapp-logo.svg`
+3. Configure settings:
+   - Desktop favicon: Default
+   - iOS Web Clip: Background #000000 (black)
+   - Android Chrome: Theme color #74d200 (green)
+4. Generate and download favicon package
+5. Extract files to project root:
+   - `favicon.ico`
+   - `favicon-16x16.png`
+   - `favicon-32x32.png`
+   - `apple-touch-icon.png`
+   - `android-chrome-192x192.png`
+   - `android-chrome-512x512.png`
+   - `site.webmanifest`
 
-  /* === Footer Tokens === */
-  --footer-padding-vertical: var(--space-80);
-  --footer-padding-horizontal: var(--page-padding);
+**Alternative** (if tool unavailable):
+- Copy `assets/whatsapp-logo.svg` → root as `favicon.svg`
+- Manually create PNGs with image editor
 
-  --logo-opacity-base: 0.7;
-  --logo-opacity-hover: 1.0;
-  --logo-filter-grayscale: 1;
-  --logo-filter-brightness: 1.5;
-
-  --logo-gap-mobile: 24px;
-  --logo-gap-tablet: 32px;
-  --logo-gap-desktop: 0;
-
-  --logo-max-height-mobile: 18px;
-  --logo-max-height-tablet: 20px;
-  --logo-max-height-desktop: auto;
-}
-```
-
-**Testing**: Validar sintaxe CSS (sem erros)
+**Validation**:
+- [ ] All 7 files exist in project root
+- [ ] `site.webmanifest` JSON valid
+- [ ] PNG files have transparent backgrounds
 
 **Dependencies**: None
 
 ---
 
-#### Task 2: Add Footer HTML Structure ⏱️ 5 min
+#### Task 2: Create Social Preview Image ⏱️ 10 min
 
-**File**: `index.html` (antes do fechamento `</body>`)
+**Method**: Browser screenshot of hero section
 
-**Location**: Após a seção `.disclaimer`, antes de `</body>`
+**Steps**:
+1. Open `index.html` in Chrome (or preferred browser)
+2. Open DevTools (F12)
+3. Click "Toggle Device Toolbar" (Ctrl+Shift+M / Cmd+Shift+M)
+4. Set "Responsive" dimensions:
+   - Width: 1200px
+   - Height: 630px
+5. Scroll/position to show hero section:
+   - "MANDA NO" title
+   - WhatsApp logo
+   - Subtitle visible
+6. Capture screenshot:
+   - Chrome: Cmd/Ctrl+Shift+P → type "Capture screenshot" → Enter
+   - Or use OS screenshot tool
+7. Save as `assets/social-preview.png`
 
-**Changes**:
+**Alternative** (higher quality):
+- Export from Figma (node 2019:42 - hero section)
+- Resize to 1200×630px
+
+**Validation**:
+- [ ] File `assets/social-preview.png` exists
+- [ ] Dimensions exactly 1200×630 pixels
+- [ ] File size < 1 MB
+- [ ] Hero content (title + logo) visible and centered
+
+**Dependencies**: None
+
+---
+
+#### Task 3: Update Page Title ⏱️ 2 min
+
+**File**: `index.html`
+
+**Location**: Line 6
+
+**Change**:
+
+**REPLACE**:
 ```html
-<!-- ANTES DO </body>, adicionar: -->
-
-  <!-- ========================================
-       FOOTER SECTION - Partner Logos
-       ======================================== -->
-  <footer class="footer" role="contentinfo">
-    <div class="footer__container">
-      <div class="footer__logos" aria-label="Parceiros">
-
-        <div class="footer-logo" data-logo="ic">
-          <img src="assets/footer-ic-logo.svg" alt="IC Cosmetologia" width="147.712" height="27.841">
-        </div>
-
-        <div class="footer-logo" data-logo="hi">
-          <img src="assets/footer-hi-logo-5.svg" alt="Hi Nutrition" width="101.31" height="17.787">
-        </div>
-
-        <div class="footer-logo" data-logo="integra">
-          <img src="assets/footer-integra-logo.svg" alt="Integra" width="91.257" height="11.6">
-        </div>
-
-        <div class="footer-logo" data-logo="ia-magistral">
-          <img src="assets/footer-iamagistral-logo.svg" alt="IA Magistral" width="104.404" height="20.881">
-        </div>
-
-        <div class="footer-logo" data-logo="csf">
-          <img src="assets/footer-csf-logo-main.svg" alt="Consultório São Francisco" width="119.871" height="19.334">
-        </div>
-
-      </div>
-    </div>
-  </footer>
-
-</body>
-</html>
+  <title>webdev_ - Automação WhatsApp com IA</title>
 ```
 
-**Testing**:
-- Abrir `index.html` no browser
-- Verificar 5 logos aparecem (mesmo sem CSS, devem ser visíveis)
-- Inspecionar: footer é landmark semântico
+**WITH**:
+```html
+  <title>Manda no WhatsApp com IA | webdev_</title>
+```
 
-**Dependencies**: Task 1 (variables)
+**Rationale**:
+- ✅ Benefit-first (not brand-first)
+- ✅ Matches hero title ("MANDA NO")
+- ✅ 35 characters (optimal for SEO)
+- ✅ Includes keywords: WhatsApp, IA
+
+**Validation**:
+- [ ] Title appears correctly in browser tab
+- [ ] Length 35 chars (optimal for SERP display)
+
+**Dependencies**: None
 
 ---
 
-#### Task 3: Add Footer Base CSS ⏱️ 10 min
+#### Task 4: Add SEO Meta Description ⏱️ 2 min
 
-**File**: `styles/main.css` (ao final do arquivo)
+**File**: `index.html`
 
-**Changes**:
-```css
-/* ========================================
-   FOOTER SECTION
-   ======================================== */
+**Location**: After line 6 (after title)
 
-/* Footer Container */
-.footer {
-  padding: var(--footer-padding-vertical) var(--footer-padding-horizontal);
-  background-color: transparent;  /* Herda do body (#000) */
-}
+**Add**:
+```html
 
-.footer__container {
-  max-width: 1440px;
-  margin: 0 auto;
-}
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Receba mensagens, organize demandas e atualize status automaticamente pelo WhatsApp com IA. Sem complicação. Comece agora com webdev_.">
+```
 
-/* Logos Grid */
-.footer__logos {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;  /* Mobile first: centered */
-  gap: var(--logo-gap-mobile);
-}
+**Rationale**:
+- 150 characters (optimal length)
+- Includes primary keywords
+- Expands on subtitle content
+- CTA at end ("Comece agora")
 
-/* Individual Logo Wrapper */
-.footer-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+**Validation**:
+- [ ] Meta tag present in HTML
+- [ ] Content length 150 chars
+- [ ] No special characters breaking HTML
 
-/* Logo Images */
-.footer-logo img {
-  max-height: var(--logo-max-height-mobile);
-  width: auto;
-  height: auto;
-  display: block;
+**Dependencies**: Task 3 (logical grouping)
 
-  /* Minimalista cinza effect */
-  filter: grayscale(var(--logo-filter-grayscale))
-          brightness(var(--logo-filter-brightness))
-          opacity(var(--logo-opacity-base));
+---
 
-  transition: filter var(--duration-normal) var(--ease-smooth);
+#### Task 5: Add Open Graph Meta Tags ⏱️ 5 min
+
+**File**: `index.html`
+
+**Location**: After SEO meta description
+
+**Add**:
+```html
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="webdev_">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Manda no WhatsApp com IA">
+  <meta property="og:description" content="Receba mensagens, organize demandas e atualize status automaticamente pelo WhatsApp com IA.">
+  <meta property="og:url" content="https://[REPLACE-WITH-YOUR-DOMAIN]/">
+  <meta property="og:image" content="https://[REPLACE-WITH-YOUR-DOMAIN]/assets/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Manda no WhatsApp - Automação com IA">
+```
+
+**Note**: URLs marked with `[REPLACE-WITH-YOUR-DOMAIN]` - update after deployment.
+
+**Rationale**:
+- Complete Open Graph protocol implementation
+- Works for Facebook, WhatsApp, LinkedIn, Discord
+- Image dimensions specified (helps platforms optimize)
+- Locale pt_BR (Brazilian Portuguese)
+
+**Validation**:
+- [ ] All 10 tags present
+- [ ] Property names correct (`property="og:..."`)
+- [ ] Content values have no typos
+- [ ] Placeholder URLs documented for post-deployment
+
+**Dependencies**: Task 2 (social-preview.png must exist), Task 4 (logical grouping)
+
+---
+
+#### Task 6: Add Twitter Card Meta Tags ⏱️ 3 min
+
+**File**: `index.html`
+
+**Location**: After Open Graph tags
+
+**Add**:
+```html
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Manda no WhatsApp com IA">
+  <meta name="twitter:description" content="Receba mensagens, organize demandas e atualize status automaticamente pelo WhatsApp com IA.">
+  <meta name="twitter:image" content="https://[REPLACE-WITH-YOUR-DOMAIN]/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="Manda no WhatsApp - Automação com IA">
+```
+
+**Rationale**:
+- `summary_large_image` card type (large preview)
+- Reuses same title/description as Open Graph
+- Same social preview image
+
+**Validation**:
+- [ ] All 5 tags present
+- [ ] Attribute names correct (`name="twitter:..."`)
+- [ ] Card type is "summary_large_image"
+- [ ] Image URL matches Open Graph image
+
+**Dependencies**: Task 5 (logical grouping)
+
+---
+
+#### Task 7: Add Favicon Links ⏱️ 5 min
+
+**File**: `index.html`
+
+**Location**: After Google Fonts links (before Stylesheets comment)
+
+**Add**:
+```html
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+```
+
+**Rationale**:
+- Modern browsers: SVG favicon (best quality)
+- Standard browsers: PNG 32×32
+- Retina displays: PNG 16×16
+- iOS bookmarks: apple-touch-icon 180×180
+- Android: manifest with 192×192, 512×512
+
+**Validation**:
+- [ ] All 6 link tags present
+- [ ] Paths are root-relative (`/favicon.ico`)
+- [ ] Sizes attributes correct
+- [ ] Type attributes correct for PNGs and SVG
+
+**Dependencies**: Task 1 (favicon files must exist)
+
+---
+
+#### Task 8: Verify site.webmanifest ⏱️ 3 min
+
+**File**: `site.webmanifest` (generated by realfavicongenerator.net)
+
+**Expected Content**:
+```json
+{
+  "name": "webdev_ - Automação WhatsApp",
+  "short_name": "webdev_",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#74d200",
+  "background_color": "#000000",
+  "display": "standalone"
 }
 ```
 
-**Testing**:
-- Logos devem aparecer em cinza minimalista
-- Mobile: logos centralizados com gap 24px
-- Aspect ratio mantido
+**Check**:
+- [ ] JSON is valid (no syntax errors)
+- [ ] `theme_color` is `#74d200` (primary green)
+- [ ] `background_color` is `#000000` (black)
+- [ ] Icon paths are correct (`/android-chrome-...`)
 
-**Dependencies**: Tasks 1-2
+**If generated manifest incorrect**: Edit manually to match above
 
----
-
-#### Task 4: Add Responsive CSS ⏱️ 7 min
-
-**File**: `styles/main.css` (continuar após Task 3)
-
-**Changes**:
-```css
-/* ========================================
-   FOOTER RESPONSIVE
-   ======================================== */
-
-/* Tablet: 768px+ */
-@media (min-width: 768px) {
-  .footer__logos {
-    gap: var(--logo-gap-tablet);  /* 32px */
-  }
-
-  .footer-logo img {
-    max-height: var(--logo-max-height-tablet);  /* 20px */
-  }
-}
-
-/* Desktop: 1024px+ */
-@media (min-width: 1024px) {
-  .footer__logos {
-    justify-content: space-between;  /* Máximo espaçamento horizontal */
-    gap: var(--logo-gap-desktop);  /* 0 */
-  }
-
-  .footer-logo img {
-    max-height: var(--logo-max-height-desktop);  /* auto = Figma exact */
-  }
-}
-
-/* Hover Effect (Desktop Only) */
-@media (hover: hover) and (min-width: 1024px) {
-  .footer-logo:hover img {
-    filter: grayscale(0)
-            brightness(1)
-            opacity(var(--logo-opacity-hover));
-  }
-}
-```
-
-**Testing**:
-- 768px: Gap aumenta para 32px, logos ~20px height
-- 1024px+: Logos espaçados com justify-between, tamanho Figma exato
-- Hover: Logos recolorizam (grayscale → original color)
-
-**Dependencies**: Task 3
+**Dependencies**: Task 1 (manifest generated with favicons)
 
 ---
 
-#### Task 5: Visual Regression Testing ⏱️ 10 min
+#### Task 9: Test Favicon Display ⏱️ 5 min
 
-**Test Cases**:
+**Validation**:
 
-**Viewport 375px (Mobile)**:
-- [ ] 2 logos por linha (aproximadamente)
-- [ ] Logos centralizados
-- [ ] Gap 24px entre logos
-- [ ] Logos ~18px height máximo
-- [ ] Estilo minimalista (cinza)
+**Chrome**:
+- [ ] Open `index.html` in Chrome
+- [ ] Check browser tab → WhatsApp logo favicon visible
+- [ ] Hard refresh (Ctrl+Shift+R) if not showing
 
-**Viewport 768px (Tablet)**:
-- [ ] 3 logos por linha
-- [ ] Logos centralizados
-- [ ] Gap 32px
-- [ ] Logos ~20px height máximo
+**Firefox**:
+- [ ] Open in Firefox
+- [ ] Check tab icon
 
-**Viewport 1440px (Desktop)**:
-- [ ] 5 logos em linha única
-- [ ] Espaçados com justify-between
-- [ ] Logos tamanho Figma exato
-- [ ] Hover recoloriza logos
+**Safari** (if macOS available):
+- [ ] Open in Safari
+- [ ] Check tab icon
 
-**Pass Criteria**: Layout consistente com screenshot Figma em todos os breakpoints
+**iOS** (if device available):
+- [ ] Open in Safari iOS
+- [ ] Tap Share → "Add to Home Screen"
+- [ ] Verify `apple-touch-icon` shows correctly
 
-**Dependencies**: Tasks 1-4
+**Android** (if device available):
+- [ ] Open in Chrome Android
+- [ ] Menu → "Add to Home screen"
+- [ ] Verify icon shows (192×192 from manifest)
 
----
+**Troubleshooting**:
+- If favicon not showing: Hard refresh browser (Ctrl+Shift+R)
+- If still not showing: Clear browser cache
+- Verify file paths (must be in root: `/favicon.ico`)
 
-#### Task 6: Accessibility Audit ⏱️ 5 min
-
-**Checklist**:
-- [ ] `<footer>` é landmark semântico
-- [ ] Todas as imagens têm `alt` text descritivo
-- [ ] `aria-label="Parceiros"` na grid de logos
-- [ ] Contraste logos cinza vs fundo preto > 7:1 (WCAG AAA)
-- [ ] Navegação por Tab não foca logos (não são links)
-
-**Tools**:
-- Manual screen reader test (NVDA/VoiceOver se disponível)
-- DevTools Lighthouse accessibility score
-
-**Pass Criteria**: Sem violações de acessibilidade
-
-**Dependencies**: Tasks 1-4
+**Dependencies**: Tasks 1, 7, 8
 
 ---
 
-#### Task 7: Cross-Browser Testing ⏱️ 10 min
+#### Task 10: Test Social Sharing (Post-Deployment) ⏱️ 10 min
 
-**Browsers**:
-- Chrome/Edge: Visual consistency
-- Firefox: CSS filter rendering
-- Safari (se disponível): Flexbox + filter support
+**Prerequisites**: Deploy site to domain first, update absolute URLs
 
-**Test Cases**:
-- Logos renderizam em todos os browsers
-- Grayscale filter funciona
-- Hover effect smooth em desktop
-- Responsividade consistente
+**Facebook Sharing Debugger**:
+1. Go to https://developers.facebook.com/tools/debug/
+2. Paste your deployed URL
+3. Click "Debug"
+4. Verify:
+   - [ ] Title: "Manda no WhatsApp com IA"
+   - [ ] Description visible
+   - [ ] Image preview shows hero section (1200×630)
+   - [ ] No errors or warnings
+5. If issues: Click "Scrape Again" to force refresh
 
-**Pass Criteria**: Visual consistency across browsers
+**Twitter Card Validator**:
+1. Go to https://cards-dev.twitter.com/validator
+2. Paste your deployed URL
+3. Click "Preview card"
+4. Verify:
+   - [ ] Card type: "summary_large_image"
+   - [ ] Title and description visible
+   - [ ] Image renders correctly
 
-**Dependencies**: Tasks 1-4
+**WhatsApp Test**:
+1. Share deployed URL in WhatsApp (message to yourself)
+2. Verify preview appears:
+   - [ ] Image shows
+   - [ ] Title shows
+   - [ ] Description shows
+3. Note: WhatsApp caches for ~7 days
+
+**Dependencies**: All previous tasks, deployment complete
 
 ---
 
-### 2.2 Task Dependency Graph
+### Task Dependency Graph
 
 ```
-Task 1 (CSS Variables)
-  └─→ Task 2 (HTML Structure)
-       └─→ Task 3 (Base CSS)
-            └─→ Task 4 (Responsive CSS)
-                 ├─→ Task 5 (Visual Testing)
-                 ├─→ Task 6 (Accessibility)
-                 └─→ Task 7 (Cross-browser)
+Task 1 (Favicon Files) [INDEPENDENT]
+  └─→ Task 7 (Favicon Links)
+       └─→ Task 8 (Verify Manifest)
+            └─→ Task 9 (Test Favicon)
+
+Task 2 (Social Image) [INDEPENDENT]
+  └─→ Task 5 (Open Graph)
+       └─→ Task 6 (Twitter Card)
+
+Task 3 (Page Title) [INDEPENDENT]
+  └─→ Task 4 (Meta Description)
+
+Task 9 (Favicon Test) [AFTER TASKS 1,7,8]
+Task 10 (Social Test) [AFTER DEPLOYMENT]
 ```
 
-**Critical Path**: Tasks 1-4 devem ser sequenciais
-**Parallel Tasks**: Tasks 5-7 podem ser executados em paralelo após Task 4
+**Parallel Execution**:
+- Tasks 1, 2, 3 can run in parallel (independent)
+- Task 10 must wait for deployment + URL updates
 
-**Estimated Total Time**: 50 minutes (~0.8 horas)
-
----
-
-### 2.3 Implementation Sequence
-
-**Recommended Order**:
-
-1. **Foundation** (Tasks 1-2) - 8 min
-   - Adicionar CSS variables
-   - Adicionar HTML structure
-   - Quick validation: logos aparecem (sem estilo)
-
-2. **Styling** (Tasks 3-4) - 17 min
-   - Implementar base CSS
-   - Implementar responsive CSS
-   - Quick validation: visual check em 3 viewports
-
-3. **Validation** (Tasks 5-7) - 25 min
-   - Visual regression testing
-   - Accessibility audit
-   - Cross-browser testing
-
-4. **Final Sign-off**
-   - Comparar com Figma screenshot
-   - Verificar constitution compliance
-   - Preparar commit
+**Estimated Total Time**: 45-60 minutes
 
 ---
 
 ## Testing Strategy
 
-### Visual Regression Testing
+### Pre-Deployment Testing
 
-**Baseline**: Screenshot Figma node 2043-191
+**HTML Validation**:
+- [ ] W3C HTML Validator (https://validator.w3.org/)
+- [ ] No errors, warnings acceptable
 
-**Method**: Side-by-side comparison
+**Visual Inspection**:
+- [ ] Page title shows correctly in browser tab
+- [ ] Favicon appears in browser tab
+- [ ] All files present in project structure
 
-**Checklist**:
-- [ ] 5 logos em ordem correta
-- [ ] Estilo minimalista (cinza monocromático)
-- [ ] Espaçamento horizontal balanceado
-- [ ] Alinhamento vertical centralizado
-- [ ] Responsive layout matching Figma intent
+**File Verification**:
+- [ ] All favicon files in root (7 files)
+- [ ] Social preview image in assets/ (1 file)
+- [ ] HTML meta tags all present (15+ tags)
 
-### Responsive Testing
+### Post-Deployment Testing
 
-**Devices** (simulated in DevTools):
-- iPhone SE (375px)
-- iPad (768px)
-- MacBook (1440px)
-- Large Desktop (1920px)
+**Social Sharing**:
+- [ ] Facebook Sharing Debugger: Preview renders
+- [ ] Twitter Card Validator: Card renders
+- [ ] WhatsApp: Share link, preview appears
 
-**Test Matrix**:
+**Cross-Browser Favicon**:
+- [ ] Chrome: Favicon visible
+- [ ] Firefox: Favicon visible
+- [ ] Safari: Favicon visible (if available)
 
-| Viewport | Logos/Row | Justification | Logo Height | Status |
-|----------|-----------|---------------|-------------|--------|
-| 375px    | 2         | center        | 18px        | [ ]    |
-| 768px    | 3         | center        | 20px        | [ ]    |
-| 1440px   | 5         | space-between | auto        | [ ]    |
-
-### Accessibility Testing
-
-**Manual Tests**:
-- [ ] Screen reader announces "Parceiros" section
-- [ ] Each logo alt text read correctly
-- [ ] Footer is recognized as landmark
-- [ ] No focus trap (logos não são interativos)
-
-**Automated**:
-- [ ] Lighthouse Accessibility score ≥ 95
-- [ ] No WCAG violations
-
-### Cross-Browser Compatibility
-
-**Matrix**:
-
-| Browser | Version | Filter Support | Flexbox | Status |
-|---------|---------|----------------|---------|--------|
-| Chrome  | Latest  | ✅             | ✅      | [ ]    |
-| Edge    | Latest  | ✅             | ✅      | [ ]    |
-| Firefox | Latest  | ✅             | ✅      | [ ]    |
-| Safari  | Latest  | ✅             | ✅      | [ ]    |
+**Mobile Testing**:
+- [ ] iOS Safari: Favicon visible
+- [ ] iOS: Add to home screen → icon correct
+- [ ] Android Chrome: Add to home screen → icon correct
 
 ---
 
@@ -755,84 +658,88 @@ Task 1 (CSS Variables)
 
 ### Pre-Deployment Checklist
 
-- [ ] All 7 tasks completed
-- [ ] Visual regression testing passed (3 breakpoints)
-- [ ] Accessibility audit passed (Lighthouse ≥ 95)
-- [ ] Cross-browser testing passed (Chrome, Firefox minimum)
-- [ ] CSS validation passed (W3C)
-- [ ] Git commit prepared with descriptive message
+- [ ] Task 1: Favicon files generated and in root
+- [ ] Task 2: Social preview image created in assets/
+- [ ] Task 3: Page title updated
+- [ ] Task 4: Meta description added
+- [ ] Task 5: Open Graph tags added
+- [ ] Task 6: Twitter Card tags added
+- [ ] Task 7: Favicon links added
+- [ ] Task 8: site.webmanifest verified
+- [ ] Task 9: Favicon tested in browsers
+- [ ] HTML validated (W3C)
 
 ### Deployment Steps
 
 **Step 1: Commit Changes**
 
 ```bash
-git add styles/variables.css styles/main.css index.html assets/footer-*.svg
-git commit -m "$(cat <<'EOF'
-feat: adiciona seção footer com logos de parceiros
+git add index.html assets/social-preview.png favicon.* site.webmanifest *.png
+git commit -m "feat: adiciona meta tags sociais, favicon e melhora título
 
-- Implementa rodapé semântico com 5 logos minimalistas
-- Logos de parceiros: IC Cosmetologia, Hi Nutrition, Integra, IA Magistral, CSF
-- Estilo cinza monocromático (grayscale + brightness + opacity)
-- Layout responsivo: mobile 2/linha, tablet 3/linha, desktop 5/linha
-- Hover effect desktop: logos recolorizam (grayscale → cor original)
-- Adiciona 10 design tokens footer-specific em variables.css
-- Baixa 9 assets SVG do Figma node 2043-191 via MCP
-- HTML semântico: <footer role="contentinfo"> com aria-label
-- Acessibilidade: alt text, landmark, WCAG AAA contrast
+- Adiciona Open Graph tags para Facebook/WhatsApp/LinkedIn
+- Adiciona Twitter Card tags para compartilhamento
+- Cria favicon completo (ICO, SVG, PNG, Apple Touch Icon)
+- Gera social preview image (1200×630) do hero section
+- Melhora título da página: 'Manda no WhatsApp com IA | webdev_'
+- Adiciona meta description para SEO
+- Cria web manifest para Android icons (PWA-ready)
 
-Layout:
-- Mobile-first flexbox com justify-center base
-- Desktop justify-between para espaçamento máximo
-- Gap responsivo: 24px mobile, 32px tablet, 0 desktop
-- Logo max-height: 18px mobile, 20px tablet, auto desktop
+Assets criados:
+- assets/social-preview.png (1200×630)
+- favicon.ico, favicon.svg (root)
+- favicon-16x16.png, favicon-32x32.png (root)
+- apple-touch-icon.png (180×180, root)
+- android-chrome-192x192.png, android-chrome-512x512.png (root)
+- site.webmanifest (root)
 
-Testes: Chrome, Firefox em 375px, 768px, 1440px
-Contraste: ~12:1 (logos cinza em fundo preto, exceeds WCAG AAA)
-Figma node: 2043-191
+Meta tags:
+- og:title, og:description, og:image, og:url, og:type, og:locale
+- twitter:card, twitter:title, twitter:description, twitter:image
+- Favicon links (6 formats) para cross-browser/device support
+
+Título otimizado:
+- Antes: 'webdev_ - Automação WhatsApp com IA' (brand-first)
+- Depois: 'Manda no WhatsApp com IA | webdev_' (benefit-first)
+- Consistente com hero title 'MANDA NO'
+- 35 chars (SEO ideal)
+
+Constituição:
+- Melhora HTML semântico (meta tags essenciais) ✅
+- Segue padrões web (Open Graph, Twitter Card) ✅
+- Compatibilidade cross-browser/device ✅
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
-Co-Authored-By: Claude <noreply@anthropic.com>
-EOF
-)"
+Co-Authored-By: Claude <noreply@anthropic.com>"
 ```
 
-**Step 2: Deploy**
+**Step 2: Deploy to Hosting**
 
-- Para hospedagem estática: Upload arquivos modificados + assets
-- Para desenvolvimento local: Mudanças visíveis com refresh
+- Push to Git repository (if auto-deploy)
+- Or upload files to hosting (FTP/SFTP)
 
-**Step 3: Post-Deployment Verification**
+**Step 3: Update Absolute URLs**
 
-- [ ] Site carrega sem erros (console limpo)
-- [ ] Footer renderiza corretamente
-- [ ] Assets SVG carregam
-- [ ] Responsividade funciona em device real (se possível)
+After deployment, edit `index.html` meta tags:
 
-### Rollback Plan
+Replace `[REPLACE-WITH-YOUR-DOMAIN]` with actual domain:
+- `og:url` (line ~23): `https://yourdomain.com/`
+- `og:image` (line ~24): `https://yourdomain.com/assets/social-preview.png`
+- `twitter:image` (line ~32): `https://yourdomain.com/assets/social-preview.png`
 
-**Scenario 1: Visual regression detectada**
-
+Commit and redeploy:
 ```bash
-git revert HEAD
-# OU (se não commitado ainda)
-git reset --hard HEAD~1
+git add index.html
+git commit -m "fix: atualiza URLs absolutos nas meta tags para domínio real"
+git push
 ```
 
-**Scenario 2: SVG assets não carregam**
+**Step 4: Clear Social Caches**
 
-- Verificar caminhos relativos corretos
-- Confirmar assets/ directory no servidor
-- Testar localmente primeiro
-
-**Scenario 3: Layout quebrado em mobile**
-
-- Rollback para versão anterior
-- Investigar media query syntax
-- Re-testar em DevTools mobile emulation
-
-**Risk**: 🟢 LOW - Feature é adição isolada, não afeta código existente
+- Facebook Debugger: Click "Scrape Again"
+- Twitter: No manual cache clear needed (automatic)
+- WhatsApp: Wait 7 days OR use URL parameter trick
 
 ---
 
@@ -840,126 +747,81 @@ git reset --hard HEAD~1
 
 ### Acceptance Criteria
 
-✅ **AC-1: Visual Fidelity**
-- [ ] 5 logos visíveis e legíveis
-- [ ] Estilo minimalista alinhado com screenshot Figma
-- [ ] Espaçamento horizontal balanceado em desktop
+✅ **AC-1: Meta Tags Complete** (CRITICAL)
+- [ ] All Open Graph required tags present and correct
+- [ ] All Twitter Card required tags present and correct
+- [ ] Meta description present (150 chars)
+- [ ] HTML validates with W3C
 
-✅ **AC-2: Responsive**
-- [ ] Layout adapta graciosamente em 4 breakpoints
-- [ ] Sem overflow horizontal
-- [ ] Logos mantêm proporções (aspect ratio)
+✅ **AC-2: Favicon Working** (CRITICAL)
+- [ ] Favicon appears in browser tabs (Chrome, Firefox, Safari)
+- [ ] iOS bookmark icon shows correctly (apple-touch-icon)
+- [ ] Android home screen icon shows correctly (manifest icons)
 
-✅ **AC-3: Code Quality**
-- [ ] HTML semântico (footer, alt text)
-- [ ] CSS usa variáveis (não hardcoded)
-- [ ] Mobile-first media queries
-- [ ] Comentários explicativos
+✅ **AC-3: Social Sharing** (HIGH)
+- [ ] Facebook Sharing Debugger: Preview renders correctly
+- [ ] Twitter Card Validator: Card renders correctly
+- [ ] WhatsApp: Link preview shows image + title + description
 
-✅ **AC-4: Accessibility**
-- [ ] Alt text em todas as imagens
-- [ ] Footer é landmark
-- [ ] Contraste WCAG AAA (>7:1)
+✅ **AC-4: Page Title Improved** (HIGH)
+- [ ] New title: "Manda no WhatsApp com IA | webdev_"
+- [ ] Length 35 chars (optimal for SEO)
+- [ ] Consistent with hero section ("MANDA NO")
 
-✅ **AC-5: Performance**
-- [ ] Assets SVG otimizados (<50KB cada)
-- [ ] Sem layout shifts (width/height attributes)
-- [ ] CSS filter não causa jank
+✅ **AC-5: Social Preview Image** (HIGH)
+- [ ] Image dimensions 1200×630 pixels
+- [ ] Hero content visible (MANDA NO + WhatsApp logo)
+- [ ] File size < 1 MB
+- [ ] Renders correctly in social platforms
 
 ### Definition of Done
 
 **Code Complete**:
-- All 4 implementation tasks finished
-- CSS variables para todos os valores
-- HTML semântico com data attributes
+- All 10 tasks executed
+- HTML meta tags added
+- Favicon files generated and linked
+- Social preview image created
+- Page title updated
 
 **Testing Complete**:
-- Visual regression passed (3 breakpoints)
-- Accessibility audit passed
-- 2+ browsers tested
+- HTML validated (W3C)
+- Favicon tested in browsers
+- Social sharing tested (post-deployment)
+- Mobile icons tested (iOS, Android)
 
 **Documentation Complete**:
-- Git commit message descritivo
-- [plan.md](cci:7:///c%3A/Users/roger/OneDrive/%C3%81rea%20de%20Trabalho/Work/New%20year%20shit/projeto_b/specs/master/plan.md:0:0-0:0) reflete implementação real
-- [research.md](cci:7:///c%3A/Users/roger/OneDrive/%C3%81rea%20de%20Trabalho/Work/New%20year%20shit/projeto_b/specs/master/research.md:0:0-0:0) e [data-model.md](cci:7:///c%3A/Users/roger/OneDrive/%C3%81rea%20de%20Trabalho/Work/New%20year%20shit/projeto_b/specs/master/data-model.md:0:0-0:0) completos
+- Quickstart guide available (quickstart.md)
+- Data model documented (data-model.md)
+- Research decisions documented (research.md)
+- Commit message detailed
 
 **Deployment Complete**:
-- Mudanças commitadas no branch master
-- Site acessível e funcional
-- Console sem erros
-
----
-
-## Appendix
-
-### A. File Change Summary
-
-| File | Lines Added | Lines Modified | Risk | Testing Priority |
-|------|-------------|----------------|------|------------------|
-| styles/variables.css | ~15 | 0 | Low | P2 (syntax check) |
-| styles/main.css | ~80 | 0 | Low | P0 (visual regression) |
-| index.html | ~35 | 0 | Low | P1 (rendering) |
-| assets/*.svg | 9 files | N/A | Low | P2 (loading) |
-
-**Total Impact**: ~130 lines, 9 assets, 3 files
-
-### B. Design Token Complete Reference
-
-```css
-/* Footer Tokens (novos) */
---footer-padding-vertical: var(--space-80);
---footer-padding-horizontal: var(--page-padding);
---logo-opacity-base: 0.7;
---logo-opacity-hover: 1.0;
---logo-filter-grayscale: 1;
---logo-filter-brightness: 1.5;
---logo-gap-mobile: 24px;
---logo-gap-tablet: 32px;
---logo-gap-desktop: 0;
---logo-max-height-mobile: 18px;
---logo-max-height-tablet: 20px;
---logo-max-height-desktop: auto;
-```
-
-### C. Figma Reference
-
-**Node**: https://www.figma.com/design/ztyeKTFgyJJT6nnpXyyM2i/claude_code?node-id=2043-191
-**Extracted via**: Figma MCP Server (`mcp__figma__get_design_context`)
-**Screenshot**: Captured via `mcp__figma__get_screenshot`
-
-**Assets Downloaded**:
-- footer-ic-logo.svg (IC Cosmetologia)
-- footer-hi-logo-[1-5].svg (Hi Nutrition - 5 partes)
-- footer-integra-logo.svg (Integra)
-- footer-iamagistral-logo.svg (IA Magistral)
-- footer-csf-logo-main.svg (Consultório São Francisco)
+- Files deployed to hosting
+- Absolute URLs updated with real domain
+- Social caches cleared (Facebook Debugger)
+- Post-deployment verification passed
 
 ---
 
 ## Plan Metadata
 
 **Plan Version**: 1.0
-**Created**: 2025-10-27
-**Feature Branch**: master (direct commit)
-**Estimated Effort**: 50 minutes (~0.8 horas)
+**Feature Branch**: master
+**Estimated Effort**: 45-60 minutes
 **Risk Level**: 🟢 LOW
-**Status**: ✅ READY FOR IMPLEMENTATION
+**Status**: ✅ PHASE 1 COMPLETE - READY FOR IMPLEMENTATION
 
-**User Requirements**:
-> "precisamos dar um jeito de colocar no rodapé uma section bem no rodapé do site com esses logos minimalistas" - Figma node 2043-191
-
-**Deliverables**:
-1. ✅ Footer section com 5 logos de parceiros
-2. ✅ Estilo minimalista (grayscale + opacity)
-3. ✅ Layout responsivo (mobile-first)
-4. ✅ HTML semântico e acessível
-5. ✅ Assets SVG otimizados
+**Artifacts**:
+- ✅ research.md (Phase 0)
+- ✅ data-model.md (Phase 1)
+- ✅ quickstart.md (Phase 1)
+- ✅ plan.md (Phase 2 - this document)
 
 **Next Steps**:
-1. ⏭️ Execute Tasks 1-4 (implementation)
-2. ⏭️ Execute Tasks 5-7 (testing)
-3. ✅ Commit changes with descriptive message
-4. ✅ Deploy to production
+1. ⏭️ Execute Tasks 1-9 (implementation)
+2. ⏭️ Deploy to hosting
+3. ⏭️ Execute Task 10 (post-deployment testing)
+4. ✅ Mark feature complete
 
 ---
 
