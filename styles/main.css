@@ -18,7 +18,9 @@ body {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: auto;  /* Mobile-first: allows contraction to fit content */
+  /* Mobile: Ensures minimum 680px height, but uses full viewport (100vh) if larger.
+     Desktop overrides via media queries (700px tablet, 800px desktop). */
+  min-height: max(680px, 100vh);
   display: flex;
   flex-direction: column;
   align-items: center;

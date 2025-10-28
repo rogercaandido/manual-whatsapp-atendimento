@@ -1,290 +1,330 @@
-# Implementation Tasks: GitHub & Netlify Deployment
+# Implementation Tasks: Mobile Header min-height Optimization
 
-**Feature**: GitHub Repository Publication & Netlify Deployment
+**Feature**: Mobile Header Height Refinement
 **Branch**: master
-**Status**: In Progress
-**Generated**: 2025-10-27
+**Status**: Ready for Execution
+**Created**: 2025-10-28
 
 ---
 
-## Task Execution Plan
+## Overview
 
-**Total Tasks**: 15
-**Estimated Time**: 45 minutes
-**Approach**: Sequential setup, then parallel verification
+This document contains the actionable task list for implementing responsive `min-height` optimization for the mobile header. The solution uses CSS `max(680px, 100vh)` to ensure a minimum height of 680px while adapting to larger viewports.
 
----
+**Implementation Strategy**: Sequential execution with testing validation at each critical stage.
 
-## Phase 1: Setup & Configuration
-
-**Goal**: Prepare project for deployment with proper configuration files
-
-### Completed Tasks
-
-- [x] T001 Verify git repository initialization and remote configuration at C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b
-- [x] T002 Create netlify.toml configuration file in project root with security headers and cache policies
-- [x] T003 Create comprehensive README.md with deployment instructions and project documentation
-- [x] T004 Commit configuration files (netlify.toml, README.md) to git repository
-
-**Status**: ✅ COMPLETE
+**Estimated Total Time**: 28 minutes
 
 ---
 
-## Phase 2: GitHub Repository Publication
+## Task Summary
 
-**Goal**: Publish all commits to GitHub repository
-
-**User Story 1 (P1)**: As a developer, I want all project files published to GitHub so the repository is up-to-date and ready for Netlify integration.
-
-### Completed Tasks
-
-- [x] T005 [US1] Push master branch to GitHub remote at https://github.com/rogercaandido/manual-whatsapp-atendimento/
-- [x] T006 [US1] Verify all commits visible on GitHub web interface including spec docs and config files
-- [x] T007 [US1] Confirm repository structure matches local (index.html, styles/, assets/, videos/, specs/)
-
-**Test Criteria**:
-- ✅ Repository accessible at GitHub URL
-- ✅ All commits visible in commit history (10+ commits)
-- ✅ Files browseable: index.html, README.md, netlify.toml, styles/, assets/
-
-**Status**: ✅ COMPLETE
+| Phase | Task Count | Estimated Time | Can Parallelize |
+|-------|-----------|----------------|-----------------|
+| Phase 1: Setup | 0 tasks | 0 min | N/A |
+| Phase 2: Implementation | 2 tasks | 3 min | No (sequential) |
+| Phase 3: Testing | 5 tasks | 25 min | Partially |
+| **Total** | **7 tasks** | **28 min** | Mixed |
 
 ---
 
-## Phase 3: Netlify Deployment Setup
+## Phase 1: Setup & Prerequisites
 
-**Goal**: Connect GitHub repository to Netlify and configure automatic deployment
+**Status**: ✅ Complete (No setup required)
 
-**User Story 2 (P1)**: As a product owner, I want the site deployed to Netlify with automatic updates on every push, so changes go live immediately.
-
-### Pending Tasks
-
-- [ ] T008 [US2] Sign in to Netlify at https://app.netlify.com/ using GitHub authentication
-- [ ] T009 [US2] Click "Add new site" → "Import an existing project" → Select GitHub
-- [ ] T010 [US2] Authorize Netlify GitHub app and select repository rogercaandido/manual-whatsapp-atendimento
-- [ ] T011 [US2] Configure build settings in Netlify: Build command (empty), Publish directory (.)
-- [ ] T012 [US2] Click "Deploy site" and wait for initial deployment to complete (typically < 1 minute)
-
-**Dependencies**: Phase 2 complete (GitHub repository published)
-
-**Estimated Time**: 10 minutes
-
-**Test Criteria**:
-- Netlify dashboard shows site connected to GitHub repository master branch
-- Initial deploy status: "Published"
-- Netlify provides live URL (format: https://*.netlify.app)
-- Site loads without errors (HTTP 200 status code)
-
-**Status**: ⏳ PENDING USER ACTION
+**Rationale**: Project structure already exists. CSS files are in place. No dependencies to install.
 
 ---
 
-## Phase 4: Deployment Verification
+## Phase 2: Implementation
 
-**Goal**: Verify site is live and functioning correctly on Netlify
+### Goal
+Update header CSS to use responsive `min-height` with CSS `max()` function and add inline documentation.
 
-**User Story 2 (P1)**: Continued - Verify deployment is successful and functional
+### Tasks
 
-### Pending Tasks
+- [X] T001 Update header min-height from `auto` to `max(680px, 100vh)` in styles/main.css line 21
+  - **File**: `styles/main.css`
+  - **Location**: Line 21 (`.header` class)
+  - **Change**: Replace `min-height: auto;` with `min-height: max(680px, 100vh);`
+  - **Rationale**: Guarantees minimum 680px height while adapting to larger viewports
+  - **Estimated Time**: 2 min
 
-- [ ] T013 [P] [US2] Access Netlify-provided URL and verify homepage loads correctly in browser
-- [ ] T014 [P] [US2] Test site on mobile viewport (375px) using DevTools - verify responsive layout works
-- [ ] T015 [P] [US2] Test site on desktop viewport (1440px) - verify all sections visible (hero, CTAs, footer)
-- [ ] T016 [P] [US2] Verify video background loads and plays in hero section in index.html
-- [ ] T017 [P] [US2] Verify all assets load correctly (SVG icons in assets/, footer logos, fonts from Google)
-- [ ] T018 [P] [US2] Check browser console for errors (should be 0 errors, 0 warnings)
-- [ ] T019 [P] [US2] Test WhatsApp CTA links open correctly to WhatsApp web/app
+- [X] T002 Add explanatory inline comment for min-height behavior in styles/main.css line 21
+  - **File**: `styles/main.css`
+  - **Location**: Line 21 (above `min-height` property)
+  - **Change**: Add multi-line comment explaining `max()` function behavior
+  - **Comment Text**: `/* Mobile: Ensures minimum 680px height, but uses full viewport (100vh) if larger. Desktop overrides via media queries (700px tablet, 800px desktop). */`
+  - **Rationale**: Code clarity for future developers
+  - **Dependencies**: T001
+  - **Estimated Time**: 1 min
 
-**Dependencies**: T012 complete (initial deployment successful)
-
-**Estimated Time**: 15 minutes
-
-**Test Criteria**:
-- Page loads in < 3 seconds (First Contentful Paint)
-- All 5 footer partner logos visible and styled minimalistically
-- Video background-hero.mp4 plays automatically on desktop
-- CTAs styled correctly with green primary color and hover effects
-- No 404 errors in Network tab
-- No console errors or warnings
-
-**Parallel Execution**: ✅ Tasks T013-T019 can be executed in parallel (independent verification checks)
-
-**Status**: ⏳ PENDING (blocked by T012)
+### Success Criteria
+- ✅ `min-height: max(680px, 100vh)` applied to `.header` class
+- ✅ Inline documentation added and clear
+- ✅ CSS syntax valid (no parse errors)
 
 ---
 
-## Phase 5: Performance Optimization (Optional)
+## Phase 3: Testing & Validation
 
-**Goal**: Optimize site performance and monitor metrics
+### Goal
+Validate responsive behavior across mobile, tablet, and desktop viewports. Ensure no visual regressions and cross-browser compatibility.
 
-**User Story 3 (P2)**: As a user, I want the landing page to load quickly on all devices for a better experience.
+### Tasks
 
-### Pending Tasks
+- [ ] T003 [P] Perform mobile visual regression testing in Chrome DevTools Responsive Mode
+  - **Viewports to Test**:
+    - 375×667 (iPhone SE): Verify min-height = 680px via computed styles
+    - 390×844 (iPhone 12): Verify min-height = 844px (uses 100vh)
+    - 430×932 (iPhone 14 Pro Max): Verify min-height = 932px (uses 100vh)
+  - **Test Checklist**:
+    - [ ] Header min-height computed values match expected
+    - [ ] Hero title + features + CTAs visible without forced scroll
+    - [ ] Content not cut off or squeezed
+    - [ ] `justify-content: space-between` distributes space naturally
+    - [ ] Small scroll acceptable on iPhone SE (13px overflow)
+  - **Method**: DevTools → Responsive Mode → Inspect computed styles
+  - **Dependencies**: T001, T002
+  - **Estimated Time**: 10 min
 
-- [ ] T020 [P] [US3] Run Lighthouse audit on deployed Netlify URL and capture Performance score
-- [ ] T021 [P] [US3] Run Lighthouse Accessibility audit and verify score ≥ 90 (target: 95+)
-- [ ] T022 [P] [US3] Run Lighthouse Best Practices audit and verify score ≥ 90
-- [ ] T023 [P] [US3] Run Lighthouse SEO audit and verify score ≥ 90
-- [ ] T024 [US3] If any scores below target, document optimization opportunities in specs/master/research.md
+- [ ] T004 [P] Perform desktop/tablet visual regression testing in Chrome DevTools
+  - **Viewports to Test**:
+    - 768×1024 (iPad): Verify min-height = 700px (media query override)
+    - 1440×900 (Desktop): Verify min-height = 800px (media query override)
+  - **Test Checklist**:
+    - [ ] Tablet: min-height = 700px applied correctly (media query)
+    - [ ] Desktop: min-height = 800px applied correctly
+    - [ ] **CRITICAL**: Zero visual changes vs baseline on desktop
+    - [ ] Gaps and spacing preserved (80px header gap desktop)
+    - [ ] Hero vertically centered on desktop
+  - **Method**: Side-by-side screenshot comparison (before/after)
+  - **Dependencies**: T001, T002
+  - **Estimated Time**: 5 min
 
-**Dependencies**: Phase 4 complete (site verified working)
+- [ ] T005 [P] Validate cross-browser compatibility for CSS max() function
+  - **Browsers to Test**:
+    - Chrome (latest): Verify computed min-height values
+    - Safari (macOS/iOS Simulator): Verify `max()` function works (Safari 11.1+ support)
+    - Firefox (latest): Verify responsive mode behavior
+    - Edge (Chromium): Verify same as Chrome
+  - **Test Checklist**:
+    - [ ] Chrome: Mobile 375×667 = 680px, Desktop 1440×900 = 800px
+    - [ ] Safari iOS Simulator (iPhone SE): Layout correct
+    - [ ] Firefox: Responsive mode 375×667 → min-height 680px
+    - [ ] No console errors in any browser
+  - **Method**: Local browsers + BrowserStack (if available)
+  - **Dependencies**: T003, T004
+  - **Estimated Time**: 5 min
 
-**Estimated Time**: 10 minutes
+- [ ] T006 [P] Validate accessibility compliance (no regressions)
+  - **Checks**:
+    - Touch Targets: Primary CTA ≥ 44px height (already implemented)
+    - Touch Targets: Secondary CTA ≥ 44px height (already implemented)
+    - Touch Targets: Gap between CTAs ≥ 8px (16px current)
+    - Legibility: Font sizes maintained (48px hero title mobile)
+    - Legibility: Contrast WCAG AA maintained
+    - Keyboard Navigation: Tab order functional
+    - Keyboard Navigation: Focus visible styles applied
+  - **Method**: Visual inspection + Lighthouse audit (optional)
+  - **Dependencies**: T005
+  - **Estimated Time**: 3 min
 
-**Test Criteria**:
-- Lighthouse Performance ≥ 90 (target: 95+)
-- Lighthouse Accessibility ≥ 90 (target: 95+)
-- First Contentful Paint < 1.5s
-- Largest Contentful Paint < 2.5s
-- Cumulative Layout Shift < 0.1
+- [ ] T007 [P] Perform performance check (no degradation)
+  - **Validation**:
+    - [ ] CSS `max()` function does not cause layout thrashing
+    - [ ] Rendering smooth (no jank during resize)
+    - [ ] Paint time not degraded
+    - [ ] No new console warnings/errors
+  - **Optional**: Lighthouse performance audit (baseline comparison)
+  - **Method**: Chrome DevTools → Performance tab + visual inspection
+  - **Dependencies**: T005
+  - **Estimated Time**: 2 min
 
-**Parallel Execution**: ✅ Tasks T020-T023 can run in parallel (independent Lighthouse audits)
-
-**Status**: ⏳ PENDING (optional enhancement)
+### Success Criteria
+- ✅ Mobile viewports (375px-430px): min-height behaves as expected
+- ✅ Desktop/Tablet: Zero visual regressions (screenshots match)
+- ✅ Cross-browser: `max()` function works in Chrome, Safari, Firefox, Edge
+- ✅ Accessibility: No regressions (touch targets, legibility, keyboard nav)
+- ✅ Performance: No degradation (smooth rendering, no console errors)
 
 ---
 
-## Phase 6: Continuous Deployment Verification (Optional)
+## Dependencies & Execution Order
 
-**Goal**: Verify automatic deployments work on future commits
-
-**User Story 4 (P2)**: As a developer, I want to verify that pushing to GitHub automatically triggers Netlify deployments.
-
-### Pending Tasks
-
-- [ ] T025 [US4] Make a small test change to index.html (e.g., update meta description)
-- [ ] T026 [US4] Commit and push test change to GitHub master branch
-- [ ] T027 [US4] Navigate to Netlify dashboard and verify new deployment triggered automatically
-- [ ] T028 [US4] Wait for deployment to complete (typically < 1 minute for static site)
-- [ ] T029 [US4] Verify test change is live on Netlify URL by refreshing browser
-- [ ] T030 [US4] (Optional) Revert test change if it was only for CI/CD verification
-
-**Dependencies**: Phase 3 complete (Netlify connected to GitHub)
-
-**Estimated Time**: 5 minutes
-
-**Test Criteria**:
-- Netlify detects GitHub push within 10 seconds
-- New deployment starts automatically without manual trigger
-- Deployment completes successfully with no build errors
-- Changes reflected on live site within 2 minutes of git push
-
-**Status**: ⏳ PENDING (to be tested after initial deployment)
-
----
-
-## Dependency Graph
-
+### Sequential Tasks (Must Complete in Order)
 ```
-Phase 1 (Setup) ✅
-  └─→ Phase 2 (GitHub Push) ✅
-       └─→ Phase 3 (Netlify Setup) ⏳
-            └─→ Phase 4 (Verification) ⏳
-                 ├─→ Phase 5 (Performance - Optional) ⏳
-                 └─→ Phase 6 (CI/CD Test - Optional) ⏳
+T001 (Update min-height)
+  └─→ T002 (Add documentation)
+       └─→ [Testing Phase: T003-T007 can run in parallel after T002]
 ```
 
-**Critical Path**: Phases 1-4 (Setup → GitHub → Netlify → Verification)
+### Parallel Execution Opportunities
 
-**Parallel Opportunities**:
-- Phase 4: Tasks T013-T019 (all verification checks)
-- Phase 5: Tasks T020-T023 (all Lighthouse audits)
+**After T002 completes**, the following tasks can run in parallel:
 
----
+- **Group A** (Visual Testing): T003, T004
+- **Group B** (Browser/Validation): T005, T006, T007
 
-## Progress Summary
+**Parallelization Example**:
+```bash
+# Sequential implementation
+Execute T001 → Execute T002
 
-### Completed
+# Parallel testing (after T002)
+Execute T003 (Mobile testing) || Execute T004 (Desktop testing) || Execute T005 (Cross-browser)
+Execute T006 (Accessibility) || Execute T007 (Performance)
+```
 
-✅ **Phase 1: Setup** (4/4 tasks)
-- Created netlify.toml with security headers and cache policies
-- Created comprehensive README.md with deployment instructions
-- Committed configuration files to repository
-
-✅ **Phase 2: GitHub Publication** (3/3 tasks)
-- Pushed all commits to GitHub master branch
-- Repository structure verified and accessible
-- URL: https://github.com/rogercaandido/manual-whatsapp-atendimento/
-
-### In Progress
-
-🔄 **Phase 3: Netlify Setup** (0/5 tasks)
-- Awaiting user action to complete Netlify UI setup
-- Next step: T008 - Sign in to Netlify
-
-### Pending
-
-⏳ **Phase 4: Verification** (0/7 tasks) - Blocked by Phase 3
-⏳ **Phase 5: Performance** (0/5 tasks) - Optional
-⏳ **Phase 6: CI/CD Test** (0/6 tasks) - Optional
-
-**Total Progress**: 7/30 tasks complete (23%)
-**Critical Path Progress**: 7/19 tasks complete (37% - MVP scope)
+**Critical Path**: T001 → T002 → T003 → T004 (must pass before deployment)
 
 ---
 
-## Implementation Strategy
+## Testing Matrix
 
-### MVP Scope (Minimum Viable Product)
-
-**Required Phases**: 1-4
-- ✅ Setup configuration files
-- ✅ Publish to GitHub
-- ⏳ Deploy to Netlify
-- ⏳ Verify deployment working
-
-**Time**: ~25 minutes remaining
-**Deliverable**: Live site at *.netlify.app URL
-
-### Full Scope (with Optional Enhancements)
-
-**All Phases**: 1-6
-- MVP +
-- Performance optimization (Lighthouse audits)
-- CI/CD verification (auto-deploy testing)
-
-**Time**: ~40 minutes remaining
-**Deliverable**: Fully optimized production site with verified automated deployments
+| Viewport | Expected min-height | Actual | Scroll Required | Status |
+|----------|-------------------|--------|-----------------|--------|
+| 375×667 (iPhone SE) | 680px | [Test T003] | ~13px (acceptable) | [ ] |
+| 390×844 (iPhone 12) | 844px | [Test T003] | NO | [ ] |
+| 430×932 (iPhone 14 Pro Max) | 932px | [Test T003] | NO | [ ] |
+| 768×1024 (iPad) | 700px | [Test T004] | NO | [ ] |
+| 1440×900 (Desktop) | 800px | [Test T004] | NO | [ ] |
 
 ---
 
-## Next Steps
+## Acceptance Criteria
 
-**Immediate Action Required**:
-1. User navigates to https://app.netlify.com/
-2. Sign in with GitHub authentication
-3. Follow tasks T008-T012 to complete Netlify setup
-4. Obtain live deployment URL
-5. Execute verification tasks T013-T019
+### AC-1: Implementation Complete
+- [ ] Task T001: `min-height: max(680px, 100vh)` applied to `.header` in styles/main.css
+- [ ] Task T002: Inline documentation added explaining behavior
+- [ ] CSS syntax valid (W3C or similar validator)
 
-**Expected Outcome**: Live WhatsApp automation landing page deployed to Netlify with automatic deployments configured.
+### AC-2: Mobile Responsiveness (CRITICAL)
+- [ ] iPhone SE (375×667): min-height = 680px (computed)
+- [ ] iPhone 12 (390×844): min-height = 844px (computed)
+- [ ] iPhone 14 Pro Max (430×932): min-height = 932px (computed)
+- [ ] All mobile viewports: Content visible, no forced scroll (13px overflow acceptable on SE)
+
+### AC-3: Desktop/Tablet Unchanged (CRITICAL)
+- [ ] Tablet (768-1023px): min-height = 700px (media query override)
+- [ ] Desktop (1024px+): min-height = 800px (media query override)
+- [ ] Desktop 1440×900: Zero visual regression (screenshot comparison)
+- [ ] Gaps and spacing preserved (80px, 40px)
+
+### AC-4: Cross-Browser Compatibility
+- [ ] Chrome (latest): `max()` works correctly
+- [ ] Safari iOS 11.3+: `max()` works correctly
+- [ ] Firefox 75+: `max()` works correctly
+- [ ] Edge (Chromium): `max()` works correctly
+
+### AC-5: No Regressions
+- [ ] Accessibility: Touch targets ≥ 44px, contrast WCAG AA, keyboard nav functional
+- [ ] Performance: No layout thrashing, smooth rendering, no new console errors
+- [ ] Constitution compliance: Mobile-first approach maintained
 
 ---
 
-## Success Metrics
+## Rollback Plan
 
-### Deployment Success Criteria
+**If issues detected during testing:**
 
-- [x] Repository published to GitHub ✅
-- [x] netlify.toml and README.md committed ✅
-- [ ] Site deployed to Netlify (*.netlify.app URL active)
-- [ ] All pages load without errors (HTTP 200)
-- [ ] Automatic deployments configured from GitHub master branch
+### Scenario 1: max() not working in target browsers
+```bash
+git revert HEAD
+# Fallback: Use fixed min-height: 680px; (less responsive but compatible)
+```
 
-### Performance Benchmarks (Optional)
+### Scenario 2: Unwanted scroll on small devices
+**Option A**: Reduce min-height threshold
+```css
+min-height: max(650px, 100vh);  /* Lower from 680px to 650px */
+```
 
-- [ ] Lighthouse Performance: 90+ (target: 95+)
-- [ ] Lighthouse Accessibility: 90+ (target: 95+)
-- [ ] First Contentful Paint: < 1.5s
-- [ ] Time to Interactive: < 3.5s
-- [ ] Total page size: < 2MB
+**Option B**: Use `min()` to cap at viewport (allows header < 680px)
+```css
+min-height: min(680px, 100vh);  /* Never exceeds viewport */
+```
+
+**Option C**: Revert to original
+```css
+min-height: auto;  /* Original behavior */
+```
+
+### Scenario 3: Desktop layout affected
+```bash
+# Verify media queries ordering in styles/main.css
+# Ensure @media (min-width: 1024px) comes AFTER base styles
+git revert HEAD  # If incorrect
+```
+
+---
+
+## Post-Implementation Checklist
+
+### Before Git Commit
+- [ ] All 7 tasks completed (T001-T007)
+- [ ] Mobile testing passed (T003)
+- [ ] Desktop testing passed (T004) - **CRITICAL**
+- [ ] Cross-browser validation passed (T005)
+- [ ] Accessibility validation passed (T006)
+- [ ] Performance check passed (T007)
+- [ ] CSS valid (no syntax errors)
+
+### Git Commit
+- [ ] Stage changes: `git add styles/main.css`
+- [ ] Commit with descriptive message (template provided in plan.md)
+- [ ] Verify commit includes only modified lines (1 line change + comment)
+
+### Deployment
+- [ ] Local: Refresh browser (Ctrl+Shift+R / Cmd+Shift+R)
+- [ ] Static hosting: Upload `styles/main.css`
+- [ ] Git-based hosting: `git push` (auto-deploy)
+
+### Post-Deployment Verification
+- [ ] Site loads without CSS errors (console clean)
+- [ ] Mobile 375px: Header min-height = 680px (DevTools computed)
+- [ ] Desktop 1440px: Header min-height = 800px (via media query)
+- [ ] No console warnings/errors
+- [ ] Optional: Lighthouse audit green (if baseline available)
+
+---
+
+## Implementation Notes
+
+### Key Files Modified
+- `styles/main.css` (line 21): 1 line modified + 3 lines comment
+
+### Browser Support
+- **CSS `max()` function**: Chrome 79+, Safari 11.1+, Firefox 75+, Edge 79+ (96.5% coverage)
+- **Polyfill**: Not needed (target browsers all support it)
+- **IE 11**: Not supported (out of scope per constitution)
+
+### Constitution Compliance
+- ✅ Mobile-first approach maintained (base styles are mobile)
+- ✅ CSS variables used (existing tokens reused)
+- ✅ Progressive enhancement (tablet/desktop via media queries)
+- ✅ No HTML changes (CSS-only solution)
+
+---
+
+## Task Execution Log
+
+Track progress by checking off tasks as completed:
+
+| Task ID | Description | Status | Completed By | Notes |
+|---------|-------------|--------|--------------|-------|
+| T001 | Update min-height to max(680px, 100vh) | [ ] | | |
+| T002 | Add inline documentation | [ ] | | |
+| T003 | Mobile visual regression testing | [ ] | | |
+| T004 | Desktop/Tablet visual regression testing | [ ] | | |
+| T005 | Cross-browser validation | [ ] | | |
+| T006 | Accessibility validation | [ ] | | |
+| T007 | Performance check | [ ] | | |
 
 ---
 
 **Document Version**: 1.0
-**Last Updated**: 2025-10-27
-**Status**: In Progress (Phases 1-2 complete, Phase 3 pending user action)
+**Last Updated**: 2025-10-28
+**Ready for Execution**: ✅ YES
 
----
-
-**End of Tasks**
+**Next Action**: Execute Task T001 (Update min-height in styles/main.css)
