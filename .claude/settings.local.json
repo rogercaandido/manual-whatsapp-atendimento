@@ -10,7 +10,20 @@
       "Bash(curl:*)",
       "Bash(echo:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: adiciona integração Figma MCP e landing page WhatsApp\n\n- Integra Figma MCP Server para extração automatizada de designs\n- Cria estrutura do projeto (assets/, styles/, components/)\n- Implementa header hero completo da landing page em HTML/CSS puro\n- Converte design React+Tailwind do Figma para HTML semântico\n- Adiciona design tokens em CSS Custom Properties (variables.css)\n- Implementa layout responsivo com 4 breakpoints (mobile-first)\n- Baixa e organiza 5 assets SVG do Figma (WhatsApp logo, ícones)\n- Cria sistema de estilos moderno com Flexbox\n- Adiciona CTAs estilizados e features pills\n- Documenta plano de integração Figma MCP\n\nComponentes implementados:\n- Header com vídeo de fundo e overlay\n- Logo \"webdev_\" no header\n- Hero section com título \"MANDA NO\" + logo WhatsApp\n- Pills de funcionalidades (Texto, Imagem, Documento)\n- 2 CTAs: \"Começar agora\" (primário) e \"Preciso de ajuda\" (secundário)\n- Disclaimer de uso\n\nNode extraído do Figma: 2014-191\nArquivo Figma: claude_code (ztyeKTFgyJJT6nnpXyyM2i)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(git commit:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
+      "Bash(git rev-parse:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".specify/scripts/powershell/update-agent-context.ps1\" -AgentType claude)",
+      "Bash(copy \"C:\\Users\\roger\\OneDrive\\Área de Trabalho\\Work\\Trash\\video-ia-.mp4\" \"C:\\Users\\roger\\OneDrive\\Área de Trabalho\\Work\\New year shit\\projeto_b\\videos\\background-hero.mp4\")",
+      "Bash(cmd /c copy:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(git restore:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(cmd /c dir /b)"
     ],
     "deny": [],
     "ask": []
