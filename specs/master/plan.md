@@ -1,19 +1,19 @@
-# Implementation Plan: Modern Effects & Microinteractions
+# Implementation Plan: Animation & Link Refinements
 
-**Feature**: Add Elegant Modern Effects (Hover Parallax, Scroll Reveals, Microinteractions)
+**Feature**: Fix Animation Scaling Issues & Update CTA Links
 **Created**: 2025-10-27 (Updated)
 **Branch**: master
 **Status**: Ready for Implementation
 
 ## Change Summary
 
-This plan implements modern animation effects and microinteractions to enhance the landing page experience:
+This plan refines existing animations and updates CTA button links based on user feedback:
 
-1. **Hover Parallax**: Subtle depth effects on buttons, pills, and logo
-2. **Scroll Reveals**: Progressive content disclosure with Intersection Observer
-3. **Microinteractions**: Button feedback, icon bounces, glow effects
-4. **Accessibility**: Full reduced-motion support and keyboard navigation
-5. **Performance**: GPU-accelerated animations, 60 FPS target
+1. **Animation Fixes**: Remove unwanted scale transforms from feature pills (fix "grow size" issue)
+2. **Spacing Update**: Add 18px margin below "Funciona com" label
+3. **Cursor Update**: Remove pointer cursor from feature pills (non-interactive styling)
+4. **CTA Links**: Connect buttons to WhatsApp links for real functionality
+5. **Preserve**: Keep existing scroll reveals, button hovers, and accessibility features
 
 ---
 
@@ -376,237 +376,250 @@ Ensure all letter-spacing values match Figma:
 
 ### 2.1 Implementation Tasks
 
-#### Task 1: Create Videos Directory and Copy Video File ⏱️ 2 min
-**Location**: Project root
+#### Task 1: Remove Scale Transform from Feature Pill Hover ⏱️ 2 min
+**File**: `styles/main.css` (lines 199-210)
 
-**Commands**:
-```bash
-mkdir "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos"
+**Issue**: Feature pills currently have a `scale(1.02)` transform on hover, causing unwanted "grow size" effect
 
-copy "C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4" ^
-     "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos\background-hero.mp4"
+**Changes**:
+```css
+/* BEFORE */
+@media (hover: hover) and (min-width: 1024px) {
+  .feature-pill:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 16px rgba(116, 210, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);  /* ❌ Remove scale */
+  }
+
+  .feature-pill:hover .feature-pill__icon {
+    transform: scale(1.1);  /* ❌ Remove this too */
+    transition: transform var(--duration-fast) var(--ease-bounce);
+  }
+}
+
+/* AFTER */
+@media (hover: hover) and (min-width: 1024px) {
+  .feature-pill:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 16px rgba(116, 210, 0, 0.3);
+    transform: translateY(-2px);  /* ✅ Only vertical lift */
+  }
+
+  /* ✅ Remove icon scale entirely - let it move with parent */
+}
 ```
 
-**Testing**: Verify file exists and is playable
+**Testing**:
+- Hover over feature pills on desktop
+- Should lift vertically without growing
+- Icons should NOT scale independently
 
 **Dependencies**: None
 
 ---
 
-#### Task 2: Update Video Source Path ⏱️ 2 min
-**File**: `index.html` (line 29)
+#### Task 2: Add 18px Margin Below "Funciona com" Label ⏱️ 2 min
+**File**: `styles/main.css` (lines 170-177)
+
+**Changes**:
+```css
+/* BEFORE */
+.features__label {
+  font-family: var(--font-inter);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-zinc-300);
+  line-height: 0;
+  white-space: nowrap;
+}
+
+/* AFTER */
+.features__label {
+  font-family: var(--font-inter);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-zinc-300);
+  line-height: 0;
+  white-space: nowrap;
+  margin-bottom: 18px;  /* ✅ ADDED */
+}
+```
+
+**Testing**:
+- Verify 18px space between "Funciona com:" and feature pills
+- Check responsive breakpoints maintain spacing
+
+**Dependencies**: None
+
+---
+
+#### Task 3: Remove Cursor Pointer from Feature Pills ⏱️ 1 min
+**File**: `styles/main.css` (line 196)
+
+**Rationale**: Feature pills are not clickable/interactive, should not show pointer cursor
+
+**Changes**:
+```css
+/* BEFORE */
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--color-zinc-500);
+  border-radius: 33px;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  cursor: pointer;  /* ❌ REMOVE THIS LINE */
+}
+
+/* AFTER */
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--color-zinc-500);
+  border-radius: 33px;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  /* ✅ No cursor property - default cursor */
+}
+```
+
+**Testing**:
+- Hover over pills: default cursor, not pointer
+- Visual hover effects still work
+
+**Dependencies**: None
+
+---
+
+#### Task 4: Update Primary CTA WhatsApp Link ⏱️ 1 min
+**File**: `index.html` (line 108)
 
 **Changes**:
 ```html
 <!-- BEFORE -->
-<source src="/_videos/v1/1147b903a6da790fcd8f61c410a7f0e3191a14a3" type="video/mp4">
+<a href="#" class="btn btn--primary" data-node-id="2014:297">
 
 <!-- AFTER -->
-<source src="videos/background-hero.mp4" type="video/mp4">
-```
-
-**Enhanced Version (Recommended)**:
-```html
-<!-- Update entire video element (lines 21-31) -->
-<video
-  class="header__video"
-  autoplay
-  loop
-  muted
-  playsinline
-  controlsList="nodownload"
-  preload="auto"
-  aria-hidden="true"
->
-  <source src="videos/background-hero.mp4" type="video/mp4">
-  Seu navegador não suporta vídeos em HTML5.
-</video>
+<a href="https://wa.me/5519953330043?text=Opa!" class="btn btn--primary" data-node-id="2014:297">
 ```
 
 **Testing**:
-- Open index.html in browser
-- Video plays automatically
-- Video loops seamlessly
-- Overlay opacity (0.2) renders correctly
-
-**Dependencies**: Task 1 (video file must exist)
-
----
-
-#### Task 3: Update Hero Subtitle Font Weight ⏱️ 3 min
-**File**: `styles/main.css` (lines 95-103)
-
-**Changes**:
-```css
-.hero__subtitle {
-  font-family: var(--font-inter);
-  font-weight: var(--font-weight-light);    /* CHANGED: was var(--font-weight-regular) */
-  font-size: var(--font-size-medium);
-  color: var(--color-zinc-200);
-  text-align: center;
-  line-height: 1.5;
-  letter-spacing: -0.18px;
-  -webkit-font-smoothing: antialiased;      /* ADDED for optimal rendering */
-  -moz-osx-font-smoothing: grayscale;       /* ADDED for optimal rendering */
-}
-```
-
-**Specific Modifications**:
-1. Line 97: Change `var(--font-weight-regular)` → `var(--font-weight-light)`
-2. Add `-webkit-font-smoothing: antialiased;` after line 102
-3. Add `-moz-osx-font-smoothing: grayscale;` after line 102
-
-**Testing**:
-- Hero subtitle appears lighter than before
-- Text remains crisp and readable
-- Test on macOS if available (antialiasing most visible)
-
-**Dependencies**: None (font-weight-light variable already exists in variables.css line 38)
-
----
-
-#### Task 4: Add Reduced Motion Accessibility Support ⏱️ 3 min
-**File**: `styles/main.css` (add at end of file)
-
-**Changes**:
-```css
-/* Video Accessibility - Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .header__video {
-    display: none;
-  }
-
-  .header {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                #000 center/cover no-repeat;
-  }
-}
-```
-
-**Testing**:
-- Enable "Reduce Motion" in OS settings
-- Verify video doesn't play
-- Solid background displays instead
-
-**Dependencies**: Task 2 (video element must exist)
-
----
-
-#### Task 5: Visual Verification - Video Background ⏱️ 5 min
-
-**Test Cases**:
-1. Video loads and plays automatically
-2. Video loops seamlessly (no visible gap)
-3. Video remains muted
-4. Opacity overlay (0.2) renders correctly
-5. Content remains visible over video
-6. Video doesn't cover navigation or text
-
-**Browsers**: Chrome (minimum), Firefox (recommended)
-
-**Pass Criteria**: Video plays smoothly without breaking layout
-
-**Dependencies**: Tasks 1-2 complete
-
----
-
-#### Task 6: Visual Verification - Typography ⏱️ 5 min
-
-**Test Cases**:
-1. Hero subtitle appears lighter than previous version
-2. Font weight visibly 300 (Light) vs 400 (Regular)
-3. Text remains readable at 18px
-4. Antialiasing renders crisply (especially on macOS)
-5. Color (#e4e4e7) remains correct
-
-**Tools**:
-- Browser DevTools → Inspect Element
-- Check computed font-weight: 300
-- Visual comparison before/after
-
-**Pass Criteria**: Subtitle visibly lighter, still readable
-
-**Dependencies**: Task 3 complete
-
----
-
-#### Task 7: Color Verification - Figma Node 2019-47 ⏱️ 3 min
-
-**Verification**: Confirm feature pill colors match Figma node 2019-47
-
-**Expected Values**:
-```css
-.feature-pill {
-  border: 1px solid #71717a; /* zinc-500 */
-}
-
-.feature-pill__text {
-  color: #d4d4d8; /* zinc-300 */
-}
-```
-
-**Testing**:
-- Inspect feature pill "Imagem" in browser
-- Verify border color: #71717a
-- Verify text color: #d4d4d8
-
-**Pass Criteria**: Colors match exactly (already implemented)
+- Click button in browser
+- Opens WhatsApp with number +55 19 95333-0043
+- Message pre-filled: "Opa!"
 
 **Dependencies**: None
 
 ---
 
-#### Task 8: Responsive Testing ⏱️ 10 min
+#### Task 5: Update Secondary CTA WhatsApp Link ⏱️ 1 min
+**File**: `index.html` (line 116)
+
+**Changes**:
+```html
+<!-- BEFORE -->
+<a href="#" class="btn btn--secondary" data-node-id="2014:301">
+
+<!-- AFTER -->
+<a href="https://wa.me/5519995492389?text=Vim%20do%20web_agent%20quero%20adicionar%20meu%20n%C3%BAmero%20na%20lista%2Fpreciso%20de%20ajuda!" class="btn btn--secondary" data-node-id="2014:301">
+```
+
+**Decoded Message**: "Vim do web_agent quero adicionar meu número na lista/preciso de ajuda!"
+
+**Testing**:
+- Click "Preciso de ajuda" button
+- Opens WhatsApp with number +55 19 99549-2389
+- Message correctly pre-filled and URL-encoded
+
+**Dependencies**: None
+
+---
+
+#### Task 6: Visual Verification - Animations ⏱️ 5 min
+
+**Test Cases**:
+1. Feature pills lift vertically on hover (no scaling)
+2. Feature pill icons don't scale independently
+3. Mobile touch feedback still works (scale 0.98 on :active)
+4. Button hovers still work normally
+5. Scroll reveal animations unchanged
+
+**Pass Criteria**: Animations feel smooth without unwanted growth
+
+**Dependencies**: Tasks 1-3 complete
+
+---
+
+#### Task 7: Visual Verification - Spacing ⏱️ 3 min
+
+**Test Cases**:
+1. "Funciona com:" label has 18px margin below
+2. Visual balance maintained
+3. Spacing consistent across breakpoints
+
+**Pass Criteria**: Spacing looks intentional and balanced
+
+**Dependencies**: Task 2 complete
+
+---
+
+#### Task 8: Functional Testing - WhatsApp Links ⏱️ 5 min
+
+**Test Cases**:
+1. Primary button opens correct WhatsApp number
+2. Primary button pre-fills "Opa!" message
+3. Secondary button opens correct WhatsApp number
+4. Secondary button pre-fills long message correctly
+5. Links work on mobile and desktop
+
+**Pass Criteria**: Both links open WhatsApp with correct data
+
+**Dependencies**: Tasks 4-5 complete
+
+---
+
+#### Task 9: Responsive & Cross-Browser Testing ⏱️ 10 min
 
 **Breakpoints**: 480px, 768px, 1024px, 1440px
 
 **Test Cases**:
-1. Video scales correctly (object-fit: cover)
-2. Hero subtitle remains readable at all sizes
-3. Layout integrity preserved
-4. No horizontal scroll
-5. Video doesn't break responsive behavior
-
-**Pass Criteria**: All breakpoints render correctly
-
-**Dependencies**: Tasks 1-4 complete
-
----
-
-#### Task 9: Cross-Browser Testing ⏱️ 10 min
-
-**Browsers**: Chrome, Firefox (Safari if available)
-
-**Test Cases**:
-1. Video autoplay works (with muted attribute)
-2. Font weight 300 renders correctly
-3. Font-smoothing renders correctly on macOS
+1. Animation fixes work at all breakpoints
+2. Spacing maintained responsively
+3. WhatsApp links work in Chrome, Firefox
 4. No console errors
+5. Touch devices: pills don't show pointer cursor
 
-**Pass Criteria**: Consistent behavior across browsers
+**Pass Criteria**: All changes work across devices/browsers
 
-**Dependencies**: Tasks 1-4 complete
+**Dependencies**: All tasks 1-8 complete
 
 ---
 
 ### 2.2 Task Dependency Graph
 
 ```
-Task 1 (Create Videos Directory & Copy File)
-  └─→ Task 2 (Update Video Source Path)
-       └─→ Task 4 (Reduced Motion Support)
-            └─→ Task 5 (Video Verification)
+Task 1 (Remove Scale Transform) [PARALLEL]
+  └─→ Task 6 (Visual Verification - Animations)
 
-Task 3 (Update Hero Subtitle Font Weight) [PARALLEL]
-  └─→ Task 6 (Typography Verification)
+Task 2 (Add 18px Margin) [PARALLEL]
+  └─→ Task 7 (Visual Verification - Spacing)
 
-Task 7 (Color Verification) [PARALLEL - no dependencies]
+Task 3 (Remove Cursor Pointer) [PARALLEL]
+  └─→ Task 6 (Visual Verification - Animations)
 
-Task 8, 9 (Responsive & Cross-Browser Testing) [After all implementation tasks]
+Task 4 (Primary CTA Link) [PARALLEL]
+  └─→ Task 8 (Functional Testing - WhatsApp)
+
+Task 5 (Secondary CTA Link) [PARALLEL]
+  └─→ Task 8 (Functional Testing - WhatsApp)
+
+Task 9 (Responsive & Cross-Browser) [After all implementation tasks]
 ```
 
-**Critical Path**: Task 1 → Task 2 → Task 4 → Task 5
-**Estimated Total Time**: 45 minutes (~0.75 hours)
+**Critical Path**: All tasks can run in parallel, then verification tasks
+**Estimated Total Time**: 30 minutes (~0.5 hours)
 
 ---
 
@@ -614,26 +627,26 @@ Task 8, 9 (Responsive & Cross-Browser Testing) [After all implementation tasks]
 
 **Recommended Order**:
 
-1. **Video Setup** (Tasks 1-2)
-   - Create directory and copy video file
-   - Update HTML source path
-   - Immediate validation: Video plays in browser
+1. **CSS Animation Fixes** (Tasks 1-3) - Run in parallel
+   - Remove scale transform from feature pills (Task 1)
+   - Add 18px margin below label (Task 2)
+   - Remove cursor pointer (Task 3)
+   - Quick validation: Test hover states
 
-2. **Typography Update** (Task 3) [Can run parallel with Task 1-2]
-   - Update hero subtitle font-weight to 300
-   - Add font-smoothing properties
-   - Validation: Subtitle appears lighter
+2. **HTML Link Updates** (Tasks 4-5) - Run in parallel
+   - Update primary CTA to WhatsApp (Task 4)
+   - Update secondary CTA to WhatsApp (Task 5)
+   - Quick validation: Click links
 
-3. **Accessibility Enhancement** (Task 4)
-   - Add reduced motion support
-   - Validation: Respects user preferences
+3. **Visual Verification** (Tasks 6-7)
+   - Verify animation improvements (Task 6)
+   - Verify spacing adjustments (Task 7)
 
-4. **Verification** (Tasks 5-7)
-   - Visual verification of video
-   - Visual verification of typography
-   - Color verification (confirm no changes needed)
+4. **Functional Testing** (Task 8)
+   - Test WhatsApp links on desktop
+   - Test WhatsApp links on mobile
 
-5. **Final Validation** (Tasks 8-9)
+5. **Final Validation** (Task 9)
    - Responsive testing across breakpoints
    - Cross-browser compatibility
    - Final sign-off
@@ -879,33 +892,35 @@ git reset --hard HEAD~1 (if not pushed)
 
 ## Plan Metadata
 
-**Plan Version**: 2.0 (Updated for video background & typography)
+**Plan Version**: 3.0 (Updated for animation fixes & CTA links)
 **Created**: 2025-10-27 (Updated)
 **Feature Branch**: master (direct commit)
-**Estimated Effort**: 45 minutes (~0.75 hours)
+**Estimated Effort**: 30 minutes (~0.5 hours)
 **Risk Level**: 🟢 LOW
 **Status**: ✅ READY FOR IMPLEMENTATION
 
-**Changes from v1.0**:
-- Focus narrowed to 3 specific updates (video, font-weight, color verification)
-- Reduced from 8 tasks to 9 focused tasks
-- Added video background implementation (Tasks 1-2, 4-5)
-- Added hero subtitle font-weight change (Task 3, 6)
-- Added accessibility enhancements (reduced motion support)
-- Simplified from general style refinement to targeted updates
+**Changes from v2.0**:
+- Focus shifted to animation refinements and link updates
+- 5 implementation tasks + 4 verification tasks
+- Remove scale transforms from feature pills (fix "grow size" issue)
+- Add 18px margin below "Funciona com" label
+- Remove cursor pointer from non-interactive pills
+- Connect CTA buttons to real WhatsApp numbers
+- Preserve existing scroll reveals and button animations
 
 **User Requirements**:
-1. Video: `C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4` as background
-2. Colors: Retomar do Figma node 2019-47 (verification confirmed: already correct)
-3. Typography: Hero subtitle usar fonte light (300 instead of 400)
+1. Remove scale animation from feature pills (they have a "grow size" that shouldn't happen)
+2. Add 18px margin below "Funciona com:" text
+3. Remove pointer cursor from feature pills
+4. Primary CTA → https://wa.me/5519953330043?text=Opa!
+5. Secondary CTA → https://wa.me/5519995492389?text=Vim%20do%20web_agent%20quero%20adicionar%20meu%20n%C3%BAmero%20na%20lista%2Fpreciso%20de%20ajuda!
 
 **Next Steps**:
 1. ✅ Read this plan
-2. ⏭️ Execute Task 1 (Create videos directory & copy file)
-3. ⏭️ Execute Task 2 (Update video source path)
-4. ⏭️ Execute Task 3 (Update hero subtitle font-weight) [parallel]
-5. ⏭️ Execute Task 4-9 (accessibility, verification, testing)
-6. ✅ Commit changes with descriptive message
+2. ⏭️ Execute Tasks 1-5 (CSS & HTML updates)
+3. ⏭️ Execute Tasks 6-8 (Visual & functional verification)
+4. ⏭️ Execute Task 9 (Responsive testing)
+5. ✅ Commit changes with descriptive message
 
 ---
 
