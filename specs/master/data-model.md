@@ -1,585 +1,396 @@
-# Data Model: Animation Configuration
+# Data Model: Footer Section with Partner Logos
 
-**Feature**: Modern Effects and Microinteractions
+**Feature**: Footer Partner Logos Section
 **Created**: 2025-10-27
-**Status**: Draft
+**Status**: Complete
+
+---
 
 ## Overview
 
-This document defines the data structures and configuration models for animation effects on the landing page. Since animations are CSS/JavaScript-based with no server-side data storage, this model focuses on configuration patterns and CSS token schemas.
+Esta feature não possui um data model tradicional (sem entidades de banco de dados ou state management). O documento descreve a estrutura de configuração dos logos de parceiros para fácil manutenção futura.
 
 ---
 
-## 1. Animation Tokens Schema
+## Logo Configuration Schema
 
-### 1.1 Duration Tokens
+### Partner Logo Entity
 
-**Entity**: Animation Duration Constants
-**Type**: CSS Custom Properties
-**Location**: `styles/variables.css`
+**Purpose**: Define os metadados de cada logo de parceiro para referência e documentação
 
 ```typescript
-// TypeScript representation for documentation
-interface AnimationDurations {
-  '--duration-instant': '100ms';    // Button press, instant feedback
-  '--duration-fast': '200ms';        // Quick hover transitions
-  '--duration-normal': '300ms';      // Standard state changes
-  '--duration-slow': '600ms';        // Content reveals, scroll animations
-  '--duration-ambient': '3s';        // Ambient loops (pulse effects)
+interface PartnerLogo {
+  id: string;              // Identificador único (kebab-case)
+  name: string;            // Nome completo da empresa
+  dimensions: {
+    width: number;         // Largura em pixels (Figma spec)
+    height: number;        // Altura em pixels (Figma spec)
+    aspectRatio: number;   // Proporção calculada
+  };
+  assets: {
+    primary: string;       // Caminho para SVG principal
+    composite?: string[];  // Caminhos opcionais para partes compostas
+  };
+  metadata: {
+    figmaNode: string;     // Node ID no Figma
+    isComposite: boolean;  // Se tem múltiplas partes
+    displayOrder: number;  // Ordem de exibição (1-5)
+  };
 }
 ```
 
-**Usage Rules**:
-- Instant (100ms): Button `:active` states only
-- Fast (200ms): Hover micro-transitions
-- Normal (300ms): Default hover effects, state changes
-- Slow (600ms): Scroll reveals, content entrances
-- Ambient (3s): Looping animations (subtle, non-intrusive)
-
-**Validation**:
-- All values must end in 'ms' or 's'
-- Must be valid CSS time units
-- No negative durations
-
----
-
-### 1.2 Easing Function Tokens
-
-**Entity**: Animation Timing Functions
-**Type**: CSS Custom Properties (cubic-bezier)
-**Location**: `styles/variables.css`
+### Logo Collection
 
 ```typescript
-interface AnimationEasing {
-  '--ease-smooth': 'cubic-bezier(0.33, 1, 0.68, 1)';    // Smooth acceleration
-  '--ease-bounce': 'cubic-bezier(0.34, 1.56, 0.64, 1)'; // Bouncy overshoot
-  '--ease-sharp': 'cubic-bezier(0.4, 0, 0.2, 1)';       // Material Design sharp
-}
-```
-
-**Application Matrix**:
-| Easing | Use Case | Effect |
-|--------|----------|--------|
-| `--ease-smooth` | Scroll reveals, fade-ins | Natural deceleration |
-| `--ease-bounce` | Micro-interactions, playful effects | Springy overshoot |
-| `--ease-sharp` | Quick feedback, button press | Snappy response |
-
-**Constraints**:
-- All values must be valid cubic-bezier functions
-- Format: `cubic-bezier(x1, y1, x2, y2)` where 0 ≤ x ≤ 1
-- Y values can exceed 0-1 range for bounce effects
-
----
-
-## 2. Animation State Model
-
-### 2.1 Scroll Reveal State Machine
-
-**Entity**: Element Animation State
-**Type**: DOM Class-based State
-**Location**: `index.html` (data attributes) + `scripts/animations.js` (state management)
-
-```typescript
-enum AnimationState {
-  PENDING = 'pending',      // Initial state, not yet visible
-  ANIMATING = 'animating',  // Animation in progress (optional intermediate state)
-  VISIBLE = 'visible'       // Animation complete, element fully visible
-}
-
-interface AnimatableElement {
-  element: HTMLElement;
-  state: AnimationState;
-  delay?: number;           // Stagger delay in ms (0, 100, 200, 300)
-  animationType?: 'fade-up' | 'fade-in' | 'scale'; // Default: 'fade-up'
-}
-```
-
-**State Transitions**:
-```
-PENDING --[enters viewport]--> VISIBLE
-(no transition back, one-time animation)
-```
-
-**HTML Attribute API**:
-```html
-<!-- Basic reveal -->
-<div data-animate>Content</div>
-
-<!-- Reveal with delay (stagger) -->
-<div data-animate data-animate-delay="1">First</div>
-<div data-animate data-animate-delay="2">Second</div>
-<div data-animate data-animate-delay="3">Third</div>
-
-<!-- Custom animation type (future extension) -->
-<div data-animate data-animate-type="scale">Scales in</div>
-```
-
-**Attribute Schema**:
-- `data-animate`: Boolean presence attribute (no value)
-- `data-animate-delay`: String enum: "1" | "2" | "3" | "4" | "5"
-- `data-animate-type`: String enum: "fade-up" | "fade-in" | "scale" (future)
-
-**Validation Rules**:
-- `data-animate` must be present for element to be observed
-- `data-animate-delay` only effective if `data-animate` present
-- Delay values map to 100ms increments (1=100ms, 2=200ms, etc.)
-
----
-
-### 2.2 Hover State Model
-
-**Entity**: Interactive Element Hover State
-**Type**: CSS Pseudo-class (`:hover`, `:active`, `:focus-visible`)
-**Location**: `styles/main.css`
-
-```typescript
-interface HoverState {
-  idle: CSSProperties;           // Default state
-  hover: CSSProperties;          // Mouse over (desktop only)
-  active: CSSProperties;         // Click/touch pressed
-  focusVisible: CSSProperties;   // Keyboard focus
-}
-
-interface CSSProperties {
-  transform?: string;    // translateY, scale, rotate
-  opacity?: number;      // 0 to 1
-  borderColor?: string;  // CSS color
-  boxShadow?: string;    // Box shadow definition
-  backgroundColor?: string;
-}
-```
-
-**State Priority** (CSS cascade order):
-1. `:idle` (base state)
-2. `:hover` (applies on desktop hover)
-3. `:focus-visible` (applies on keyboard Tab focus)
-4. `:active` (applies on click/touch, highest priority)
-
-**Example State Definition** (Button):
-```css
-/* Idle state */
-.btn {
-  transform: scale(1);
-  box-shadow: none;
-}
-
-/* Hover state (desktop) */
-@media (hover: hover) {
-  .btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-}
-
-/* Active state (all devices) */
-.btn:active {
-  transform: scale(0.98);
-}
-
-/* Focus state (keyboard navigation) */
-.btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 4px;
-}
-```
-
----
-
-## 3. Animation Configuration Objects
-
-### 3.1 Intersection Observer Config
-
-**Entity**: Scroll Observation Configuration
-**Type**: JavaScript Object (IntersectionObserverInit)
-**Location**: `scripts/animations.js`
-
-```typescript
-interface IntersectionObserverConfig {
-  threshold: number | number[];  // Visibility percentage to trigger
-  rootMargin: string;            // Margin around root (viewport)
-  root?: Element | null;         // Scroll container (null = viewport)
-}
-
-const DEFAULT_OBSERVER_CONFIG: IntersectionObserverConfig = {
-  threshold: 0.1,                      // Trigger at 10% visibility
-  rootMargin: '0px 0px -50px 0px',     // Trigger 50px before element enters
-  root: null                           // Use viewport as root
-};
-```
-
-**Configuration Rationale**:
-- `threshold: 0.1`: Animations start when 10% of element is visible (early trigger for smooth entrance)
-- `rootMargin: '0px 0px -50px 0px'`: Negative bottom margin delays trigger slightly (prevents premature animation)
-- `root: null`: Observe relative to viewport (standard for landing pages)
-
-**Alternative Configs** (future customization):
-```typescript
-// Aggressive reveal (animates immediately)
-const EARLY_REVEAL_CONFIG = {
-  threshold: 0,
-  rootMargin: '100px',
-};
-
-// Conservative reveal (waits until mostly visible)
-const LATE_REVEAL_CONFIG = {
-  threshold: 0.5,
-  rootMargin: '0px',
-};
-```
-
----
-
-### 3.2 Component Animation Mappings
-
-**Entity**: Component-to-Animation Map
-**Type**: Configuration Object
-**Location**: Documented in `research.md`, implemented in CSS classes
-
-```typescript
-interface ComponentAnimation {
-  selector: string;           // CSS selector
-  effects: EffectDefinition[];
-  priority: 'P0' | 'P1' | 'P2';
-  implementation: 'CSS' | 'JS' | 'CSS+JS';
-}
-
-interface EffectDefinition {
-  name: string;
-  trigger: 'hover' | 'active' | 'scroll' | 'ambient';
-  properties: CSSProperties;
-  duration: string;  // Reference to --duration-* variable
-  easing: string;    // Reference to --ease-* variable
-}
-
-const ANIMATION_MAP: ComponentAnimation[] = [
+const PARTNER_LOGOS: PartnerLogo[] = [
   {
-    selector: '.btn--primary',
-    effects: [
-      {
-        name: 'hover-lift',
-        trigger: 'hover',
-        properties: { transform: 'translateY(-2px) scale(1.02)' },
-        duration: '--duration-normal',
-        easing: '--ease-smooth'
-      },
-      {
-        name: 'press-feedback',
-        trigger: 'active',
-        properties: { transform: 'scale(0.98)' },
-        duration: '--duration-instant',
-        easing: '--ease-sharp'
-      }
-    ],
-    priority: 'P0',
-    implementation: 'CSS'
+    id: "ic-cosmetologia",
+    name: "IC Cosmetologia",
+    dimensions: {
+      width: 147.712,
+      height: 27.841,
+      aspectRatio: 5.3
+    },
+    assets: {
+      primary: "assets/footer-ic-logo.svg"
+    },
+    metadata: {
+      figmaNode: "I2043:193;1906:438",
+      isComposite: false,
+      displayOrder: 1
+    }
   },
   {
-    selector: '.feature-pill',
-    effects: [
-      {
-        name: 'glow-on-hover',
-        trigger: 'hover',
-        properties: {
-          borderColor: 'var(--color-primary)',
-          boxShadow: '0 0 20px rgba(116, 210, 0, 0.3)',
-          transform: 'translateY(-2px) scale(1.02)'
-        },
-        duration: '--duration-normal',
-        easing: '--ease-smooth'
-      },
-      {
-        name: 'scroll-reveal',
-        trigger: 'scroll',
-        properties: { opacity: '1', transform: 'translateY(0)' },
-        duration: '--duration-slow',
-        easing: '--ease-smooth'
-      }
-    ],
-    priority: 'P0',
-    implementation: 'CSS+JS'
+    id: "hi-nutrition",
+    name: "Hi Nutrition",
+    dimensions: {
+      width: 101.31,
+      height: 17.787,
+      aspectRatio: 5.7
+    },
+    assets: {
+      primary: "assets/footer-hi-logo-5.svg",
+      composite: [
+        "assets/footer-hi-logo-1.svg",
+        "assets/footer-hi-logo-2.svg",
+        "assets/footer-hi-logo-3.svg",
+        "assets/footer-hi-logo-4.svg",
+        "assets/footer-hi-logo-5.svg"
+      ]
+    },
+    metadata: {
+      figmaNode: "I2043:195",
+      isComposite: true,
+      displayOrder: 2
+    }
   },
   {
-    selector: '.header__logo-accent',
-    effects: [
-      {
-        name: 'pulse',
-        trigger: 'ambient',
-        properties: { opacity: '0.6' },  // Keyframe: 0%=1, 50%=0.6, 100%=1
-        duration: '--duration-ambient',
-        easing: 'ease-in-out'
-      }
-    ],
-    priority: 'P2',
-    implementation: 'CSS'
+    id: "integra",
+    name: "Integra",
+    dimensions: {
+      width: 91.257,
+      height: 11.6,
+      aspectRatio: 7.9
+    },
+    assets: {
+      primary: "assets/footer-integra-logo.svg"
+    },
+    metadata: {
+      figmaNode: "I2043:196;1906:516",
+      isComposite: false,
+      displayOrder: 3
+    }
+  },
+  {
+    id: "ia-magistral",
+    name: "IA Magistral",
+    dimensions: {
+      width: 104.404,
+      height: 20.881,
+      aspectRatio: 5.0
+    },
+    assets: {
+      primary: "assets/footer-iamagistral-logo.svg"
+    },
+    metadata: {
+      figmaNode: "I2043:197;1906:472",
+      isComposite: false,
+      displayOrder: 4
+    }
+  },
+  {
+    id: "csf",
+    name: "Consultório São Francisco",
+    dimensions: {
+      width: 119.871,
+      height: 19.334,
+      aspectRatio: 6.2
+    },
+    assets: {
+      primary: "assets/footer-csf-logo-main.svg",
+      composite: [
+        "assets/footer-csf-logo-main.svg"
+        // Additional composite parts available but not used in v1
+      ]
+    },
+    metadata: {
+      figmaNode: "I2043:198;1906:540",
+      isComposite: true,
+      displayOrder: 5
+    }
   }
 ];
 ```
 
 ---
 
-## 4. Data Flow
+## HTML Data Attributes
 
-### 4.1 Scroll Reveal Flow
+### data-logo Attribute
 
-```
-[Page Load]
-    ↓
-[DOM Ready] → Initialize IntersectionObserver
-    ↓
-[Query elements with [data-animate]]
-    ↓
-[Observe each element]
-    ↓
-[Wait for scroll...]
-    ↓
-[Element enters viewport] → IntersectionObserver callback fires
-    ↓
-[Check entry.isIntersecting === true]
-    ↓
-[Add class 'animate-visible' to element]
-    ↓
-[CSS transition executes] → Element fades up from opacity:0, translateY(30px) to opacity:1, translateY(0)
-    ↓
-[Unobserve element] → (one-time animation)
-    ↓
-[Animation complete]
-```
+**Purpose**: Identificar o logo para estilização específica via CSS
 
-### 4.2 Hover Effect Flow
+**Values**: `"ic"`, `"hi"`, `"integra"`, `"ia-magistral"`, `"csf"`
 
-```
-[User hovers over element] (Desktop only)
-    ↓
-[:hover pseudo-class activates]
-    ↓
-[CSS transition begins]
-    ↓
-[Properties animate over --duration-normal (300ms)]
-    ↓
-[Hover state fully applied]
-    ↓
-[User moves cursor away]
-    ↓
-[:hover deactivates]
-    ↓
-[CSS transition reverses]
-    ↓
-[Element returns to idle state]
-```
-
----
-
-## 5. Accessibility Data Model
-
-### 5.1 Reduced Motion Override
-
-**Entity**: Motion Preference State
-**Type**: CSS Media Query (user system preference)
-**Location**: `styles/main.css` (global override)
-
-```typescript
-interface MotionPreference {
-  prefersReducedMotion: boolean;  // User OS setting
-}
-
-// CSS implementation
-@media (prefers-reduced-motion: reduce) {
-  // All animations disabled or reduced to instant transitions
-}
-```
-
-**Override Rules**:
-- When `prefers-reduced-motion: reduce` is active:
-  - All `animation-duration` → 0.01ms
-  - All `transition-duration` → 0.01ms
-  - All `[data-animate]` elements → `opacity: 1 !important`, `transform: none !important`
-  - Scroll reveals become instant (content always visible)
-  - Hover effects become instant state changes (no animation)
-
-### 5.2 Focus State Model
-
-**Entity**: Keyboard Navigation Focus State
-**Type**: CSS Pseudo-class (`:focus-visible`)
-
-```typescript
-interface FocusState {
-  hasFocus: boolean;
-  isKeyboardFocus: boolean;  // true if Tab key used, false if clicked
-}
-
-// Only show focus ring for keyboard navigation
-.btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 4px;
-}
-```
-
----
-
-## 6. Performance Constraints
-
-### 6.1 Animation Budget
-
-**Entity**: Performance Limits
-**Type**: Configuration Constants
-
-```typescript
-interface PerformanceBudget {
-  maxConcurrentAnimations: number;    // 10 (avoid overload)
-  targetFPS: number;                  // 60 FPS
-  maxFrameTime: number;               // 16.67ms per frame
-  maxTotalJSSize: number;             // 5KB (animations.js)
-  maxTotalCSSSize: number;            // 3KB (animation rules)
-}
-
-const PERFORMANCE_LIMITS: PerformanceBudget = {
-  maxConcurrentAnimations: 10,   // Stagger reveals to stay under this
-  targetFPS: 60,
-  maxFrameTime: 16.67,            // 1000ms / 60fps
-  maxTotalJSSize: 5 * 1024,       // 5KB bytes
-  maxTotalCSSSize: 3 * 1024       // 3KB bytes
-};
-```
-
-**Validation**:
-- Monitor Chrome DevTools Performance tab during animation
-- If FPS drops below 60, reduce concurrent animations or simplify effects
-- Use GPU-accelerated properties only (transform, opacity)
-
----
-
-## 7. Validation Rules
-
-### 7.1 CSS Token Validation
-
-**Required Tokens** (must exist in `variables.css`):
-```css
-/* Durations */
---duration-instant: 100ms;
---duration-fast: 200ms;
---duration-normal: 300ms;
---duration-slow: 600ms;
---duration-ambient: 3s;
-
-/* Easing */
---ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
---ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
---ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
-```
-
-**Validation Rules**:
-- All duration variables must parse as valid CSS time values
-- All easing variables must parse as valid cubic-bezier or keyword values
-- No undefined variable references in `main.css`
-
-### 7.2 HTML Attribute Validation
-
-**Valid Attribute Combinations**:
+**Usage**:
 ```html
-<!-- ✅ Valid -->
-<div data-animate></div>
-<div data-animate data-animate-delay="1"></div>
-<div data-animate data-animate-delay="3"></div>
-
-<!-- ❌ Invalid -->
-<div data-animate-delay="1"></div>  <!-- Missing data-animate -->
-<div data-animate data-animate-delay="999"></div>  <!-- Invalid delay value -->
+<div class="footer-logo" data-logo="ic">
+  <img src="assets/footer-ic-logo.svg" alt="IC Cosmetologia">
+</div>
 ```
 
-**Constraints**:
-- `data-animate-delay` requires `data-animate` to be present
-- `data-animate-delay` must be "1", "2", "3", "4", or "5" (string values)
-- No other values allowed
-
----
-
-## 8. Extension Points
-
-### 8.1 Future Animation Types
-
-Currently only `fade-up` is implemented. Future extensions could add:
-
-```typescript
-enum AnimationType {
-  FADE_UP = 'fade-up',        // Current: opacity + translateY
-  FADE_IN = 'fade-in',        // Future: opacity only
-  SCALE = 'scale',            // Future: opacity + scale
-  SLIDE_LEFT = 'slide-left',  // Future: translateX from right
-  SLIDE_RIGHT = 'slide-right' // Future: translateX from left
-}
-```
-
-**Implementation Pattern**:
+**CSS Targeting**:
 ```css
-[data-animate-type="fade-in"] {
-  opacity: 0;
-  /* No transform */
-}
-
-[data-animate-type="scale"] {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-[data-animate-type="slide-left"] {
-  opacity: 0;
-  transform: translateX(30px);
+/* Estilização específica por logo se necessário */
+.footer-logo[data-logo="ic"] {
+  /* Styles específicos para IC Cosmetologia */
 }
 ```
 
-### 8.2 Dynamic Animation Configuration
+---
 
-**Future Enhancement**: JavaScript API for runtime config
+## CSS Custom Properties for Footer
+
+### Design Tokens
+
+```css
+:root {
+  /* Footer Spacing */
+  --footer-padding-vertical: var(--space-80);  /* 80px */
+  --footer-padding-horizontal: var(--page-padding);  /* 64px */
+
+  /* Logo Styling */
+  --logo-opacity-base: 0.7;
+  --logo-opacity-hover: 1.0;
+  --logo-filter-grayscale: 1;  /* Full grayscale */
+  --logo-filter-brightness: 1.5;  /* Lighten for visibility */
+
+  /* Logo Spacing (Responsive) */
+  --logo-gap-mobile: 24px;
+  --logo-gap-tablet: 32px;
+  --logo-gap-desktop: 0;  /* justify-between handles spacing */
+
+  /* Logo Max Dimensions (Responsive Scaling) */
+  --logo-max-height-mobile: 18px;
+  --logo-max-height-tablet: 20px;
+  --logo-max-height-desktop: auto;  /* Use Figma exact dimensions */
+}
+```
+
+---
+
+## State Management
+
+**Not Applicable**: Esta feature é 100% estática. Sem state, sem interatividade JavaScript.
+
+### Future Considerations
+
+Se a feature evoluir para incluir:
+- **Links clicáveis**: Adicionar campo `url: string` ao schema
+- **Analytics tracking**: Adicionar campo `trackingId: string`
+- **Dynamic loading**: Converter para JSON config file
+- **CMS integration**: API endpoint para buscar logos
+
+---
+
+## Validation Rules
+
+### Logo Asset Requirements
+
+1. **File Format**: SVG apenas (escalável, pequeno)
+2. **Max File Size**: 50KB por SVG (ideal <20KB)
+3. **Viewbox**: Deve ter `viewBox` definido para escalabilidade
+4. **Accessibility**: Nenhum texto embutido (usar alt text HTML)
+
+### Dimensions Constraints
 
 ```typescript
-// Potential future API
-AnimationController.configure({
-  scrollRevealThreshold: 0.2,
-  staggerDelay: 150,
-  disableOnMobile: true
-});
+interface DimensionConstraints {
+  maxWidth: 150;   // Pixels (maior logo: IC 147.712px)
+  maxHeight: 30;   // Pixels (maior logo: IC 27.841px)
+  minAspectRatio: 4.0;  // Mínimo horizontal (prevenir logos verticais)
+}
 ```
 
-**Status**: Not implemented in v1, designed for future extensibility
+---
+
+## Migration Path
+
+### Adding a New Partner Logo
+
+**Steps**:
+1. Obter SVG do logo do parceiro (ou extrair do Figma)
+2. Otimizar SVG (remover metadata desnecessário)
+3. Salvar em `assets/footer-{partner-slug}-logo.svg`
+4. Adicionar entrada ao array `PARTNER_LOGOS` (documentação)
+5. Adicionar HTML em `index.html` na seção `.footer__logos`
+6. Testar responsividade em 4 breakpoints
+
+**Example HTML**:
+```html
+<div class="footer-logo" data-logo="new-partner">
+  <img src="assets/footer-new-partner-logo.svg" alt="New Partner Name">
+</div>
+```
+
+### Removing a Partner Logo
+
+**Steps**:
+1. Remover elemento HTML do `index.html`
+2. (Opcional) Deletar arquivo SVG de `assets/`
+3. Atualizar documentação `PARTNER_LOGOS`
+4. Re-testar layout responsivo (logos remanescentes)
 
 ---
 
-## 9. Data Integrity
+## API Contract (None)
 
-### 9.1 No Server-Side Data
-
-**Important**: This animation system has NO server-side data model. All configuration is:
-- **Static**: Defined in CSS variables and HTML attributes
-- **Client-side**: Executed entirely in browser
-- **Stateless**: No persistence, resets on page reload
-
-### 9.2 State Management
-
-**Animation state is ephemeral**:
-- Scroll reveal state stored in DOM classes (`.animate-visible`)
-- Hover state managed by CSS pseudo-classes (`:hover`)
-- No localStorage, no cookies, no server state
-
-**Implication**: Refreshing page resets all animations (by design for landing page)
+Esta feature não consome nem expõe APIs. É 100% markup estático.
 
 ---
 
-## Summary
+## Performance Considerations
 
-This data model defines:
-1. ✅ Animation token schemas (duration, easing)
-2. ✅ State models (scroll reveal, hover, focus)
-3. ✅ Configuration objects (Intersection Observer, component mappings)
-4. ✅ Data flow patterns (scroll reveal, hover effect)
-5. ✅ Accessibility models (reduced motion, focus)
-6. ✅ Performance constraints (budget, limits)
-7. ✅ Validation rules (tokens, attributes)
-8. ✅ Extension points (future animation types)
+### Asset Loading
 
-**Status**: Ready for contract definition (Phase 1 continued)
+**Strategy**: Eager loading (logos são visíveis "above the fold" em mobile)
+
+**Optimization**:
+- SVGs são inline-cacheable
+- Total estimated size: 9 SVGs × ~15KB = ~135KB
+- Gzip compression reduces to ~40KB
+- HTTP/2 multiplexing minimizes waterfall
+
+### Rendering Performance
+
+**Layout Shifts**: None (dimensions fixed per Figma)
+
+**Paint Cost**: Low (flat SVG graphics, no gradients)
+
+**Composite Cost**: Minimal (CSS filter on static images)
+
+---
+
+## Accessibility Model
+
+### ARIA Attributes
+
+**Not Required**: Logos are decorative, `alt` text sufficient
+
+### Semantic HTML
+
+```html
+<footer class="footer" role="contentinfo">
+  <!-- role="contentinfo" auto-implied by <footer>, explicit for clarity -->
+  <div class="footer__logos" aria-label="Parceiros">
+    <!-- aria-label describes the section purpose -->
+    <div class="footer-logo">
+      <img src="..." alt="IC Cosmetologia">
+      <!-- alt provides screen reader context -->
+    </div>
+  </div>
+</footer>
+```
+
+### Keyboard Navigation
+
+**Not Applicable**: Logos não são interativos (sem links, sem botões)
+
+### Color Contrast
+
+**WCAG Compliance**: AAA
+- Logos cinza (`filter: grayscale(1) brightness(1.5)`) em fundo preto
+- Estimativa de contraste: ~12:1 (exceeds WCAG AAA 7:1)
+
+---
+
+## Testing Data
+
+### Test Cases
+
+```typescript
+interface FooterTestCase {
+  id: string;
+  description: string;
+  viewport: { width: number; height: number };
+  expectedLayout: {
+    logosPerRow: number;
+    justification: "center" | "space-between";
+    logoMaxHeight: number;
+  };
+}
+
+const FOOTER_TEST_CASES: FooterTestCase[] = [
+  {
+    id: "mobile-small",
+    description: "iPhone SE viewport",
+    viewport: { width: 375, height: 667 },
+    expectedLayout: {
+      logosPerRow: 2,
+      justification: "center",
+      logoMaxHeight: 18
+    }
+  },
+  {
+    id: "tablet",
+    description: "iPad viewport",
+    viewport: { width: 768, height: 1024 },
+    expectedLayout: {
+      logosPerRow: 3,
+      justification: "center",
+      logoMaxHeight: 20
+    }
+  },
+  {
+    id: "desktop",
+    description: "MacBook viewport",
+    viewport: { width: 1440, height: 900 },
+    expectedLayout: {
+      logosPerRow: 5,
+      justification: "space-between",
+      logoMaxHeight: null  // Use Figma exact dimensions
+    }
+  }
+];
+```
+
+---
+
+## Version History
+
+**v1.0** (2025-10-27):
+- Initial data model
+- 5 partner logos defined
+- Static implementation (no links)
+- Decorative display only
+
+**Future Versions**:
+- v1.1: Add partner links (if URLs provided)
+- v1.2: Add hover tooltips with partner descriptions
+- v2.0: Convert to JSON config for CMS integration
 
 ---
 
 **Document Version**: 1.0
 **Created**: 2025-10-27
-**Next**: Define API contracts in `contracts/` directory
+**Next Document**: Quickstart Guide (quickstart.md)
