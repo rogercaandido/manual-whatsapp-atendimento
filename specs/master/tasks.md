@@ -1,6 +1,6 @@
-# Implementation Tasks: Mobile Header min-height Optimization
+# Tasks: Mobile Button Interaction Effects Removal
 
-**Feature**: Mobile Header Height Refinement
+**Feature**: Remove mobile button touch feedback to improve scroll UX
 **Branch**: master
 **Status**: Ready for Execution
 **Created**: 2025-10-28
@@ -9,11 +9,11 @@
 
 ## Overview
 
-This document contains the actionable task list for implementing responsive `min-height` optimization for the mobile header. The solution uses CSS `max(680px, 100vh)` to ensure a minimum height of 680px while adapting to larger viewports.
+This document contains the actionable task list for removing `:active` effects from mobile devices while preserving desktop interactions. The solution uses `@media (hover: hover) and (min-width: 1024px)` to target only hover-capable devices.
 
-**Implementation Strategy**: Sequential execution with testing validation at each critical stage.
+**Implementation Strategy**: Sequential implementation, parallel testing, comprehensive validation
 
-**Estimated Total Time**: 28 minutes
+**Estimated Total Time**: 60 minutes (1 hour)
 
 ---
 
@@ -21,310 +21,488 @@ This document contains the actionable task list for implementing responsive `min
 
 | Phase | Task Count | Estimated Time | Can Parallelize |
 |-------|-----------|----------------|-----------------|
-| Phase 1: Setup | 0 tasks | 0 min | N/A |
-| Phase 2: Implementation | 2 tasks | 3 min | No (sequential) |
-| Phase 3: Testing | 5 tasks | 25 min | Partially |
-| **Total** | **7 tasks** | **28 min** | Mixed |
+| Phase 1: CSS Refactoring | 3 tasks | 7 min | No (sequential) |
+| Phase 2: Visual Regression | 7 tasks | 35 min | Yes (10 tasks [P]) |
+| Phase 3: Accessibility/Performance | 5 tasks | 8 min | Yes (partially) |
+| Phase 4: Deployment | 6 tasks | 10 min | No (sequential) |
+| **Total** | **21 tasks** | **60 min** | Mixed |
 
 ---
 
-## Phase 1: Setup & Prerequisites
+## Format Legend
 
-**Status**: ✅ Complete (No setup required)
-
-**Rationale**: Project structure already exists. CSS files are in place. No dependencies to install.
+- **[P]**: Task can run in parallel with other [P] tasks
+- **File paths**: Exact locations for all code changes
+- **Dependencies**: Listed where tasks must complete sequentially
 
 ---
 
-## Phase 2: Implementation
+## Phase 1: CSS Refactoring (Implementation)
 
-### Goal
-Update header CSS to use responsive `min-height` with CSS `max()` function and add inline documentation.
+**Goal**: Remove universal `:active` effects and move to desktop-only media query
+
+**User Story**:
+> Como usuário mobile, quero scrollar suavemente sobre os botões CTA sem feedback visual indesejado, para que a experiência de navegação seja natural e não confusa.
 
 ### Tasks
 
-- [X] T001 Update header min-height from `auto` to `max(680px, 100vh)` in styles/main.css line 21
+- [X] T001 Move button `:active` effect to desktop-only media query in styles/main.css
   - **File**: `styles/main.css`
-  - **Location**: Line 21 (`.header` class)
-  - **Change**: Replace `min-height: auto;` with `min-height: max(680px, 100vh);`
-  - **Rationale**: Guarantees minimum 680px height while adapting to larger viewports
-  - **Estimated Time**: 2 min
+  - **Current location**: Lines 353-357 (universal `.btn:active` rule)
+  - **Action**: Remove universal rule, add within `@media (hover: hover) and (min-width: 1024px)` block after line 350
+  - **Change**:
+    - Remove: `.btn:active { transform: scale(0.98) !important; ... }`
+    - Add inside desktop media query: `.btn:active { transform: scale(0.98); transition: ... }`
+  - **Rationale**: Exclude touch-only devices from :active effects, preserve desktop
+  - **Estimated Time**: 3 min
+  - **✅ COMPLETED**
 
-- [X] T002 Add explanatory inline comment for min-height behavior in styles/main.css line 21
+- [X] T002 Move feature pill `:active` effect to desktop-only media query in styles/main.css
   - **File**: `styles/main.css`
-  - **Location**: Line 21 (above `min-height` property)
-  - **Change**: Add multi-line comment explaining `max()` function behavior
-  - **Comment Text**: `/* Mobile: Ensures minimum 680px height, but uses full viewport (100vh) if larger. Desktop overrides via media queries (700px tablet, 800px desktop). */`
-  - **Rationale**: Code clarity for future developers
-  - **Dependencies**: T001
-  - **Estimated Time**: 1 min
+  - **Current location**: Lines 210-214 (universal `.feature-pill:active` rule)
+  - **Action**: Remove universal rule, add within `@media (hover: hover) and (min-width: 1024px)` block after line 206
+  - **Change**:
+    - Remove: `.feature-pill:active { transform: scale(0.98); border-color: ...; ... }`
+    - Add inside desktop media query: Same rule within media query
+  - **Rationale**: Consistency with buttons, same touch interference issue
+  - **Dependencies**: T001 (logical grouping)
+  - **Estimated Time**: 2 min
+  - **✅ COMPLETED**
+
+- [X] T003 Update CSS comments for clarity in styles/main.css
+  - **File**: `styles/main.css`
+  - **Location 1**: Line 332 (button media query comment)
+  - **Location 2**: Line 201 (feature pill media query comment)
+  - **Change**: Update both comments to: `/* Desktop: Full hover and active effects (hover-capable devices only) */`
+  - **Rationale**: Clarify mobile exclusion is intentional, not oversight
+  - **Dependencies**: T001, T002
+  - **Estimated Time**: 2 min
+  - **✅ COMPLETED**
 
 ### Success Criteria
-- ✅ `min-height: max(680px, 100vh)` applied to `.header` class
-- ✅ Inline documentation added and clear
+- ✅ Universal `:active` rules removed (lines 210-214, 353-357)
+- ✅ `:active` rules added inside desktop media queries
+- ✅ `!important` flag removed (no longer needed)
 - ✅ CSS syntax valid (no parse errors)
 
 ---
 
-## Phase 3: Testing & Validation
+## Phase 2: Visual Regression Testing
 
-### Goal
-Validate responsive behavior across mobile, tablet, and desktop viewports. Ensure no visual regressions and cross-browser compatibility.
+**Goal**: Validate CSS changes work correctly across all devices and browsers
 
-### Tasks
+###Mobile Testing
 
-- [ ] T003 [P] Perform mobile visual regression testing in Chrome DevTools Responsive Mode
-  - **Viewports to Test**:
-    - 375×667 (iPhone SE): Verify min-height = 680px via computed styles
-    - 390×844 (iPhone 12): Verify min-height = 844px (uses 100vh)
-    - 430×932 (iPhone 14 Pro Max): Verify min-height = 932px (uses 100vh)
-  - **Test Checklist**:
-    - [ ] Header min-height computed values match expected
-    - [ ] Hero title + features + CTAs visible without forced scroll
-    - [ ] Content not cut off or squeezed
-    - [ ] `justify-content: space-between` distributes space naturally
-    - [ ] Small scroll acceptable on iPhone SE (13px overflow)
-  - **Method**: DevTools → Responsive Mode → Inspect computed styles
-  - **Dependencies**: T001, T002
+- [ ] T004 Test mobile scroll experience at 375×667 (iPhone SE) - **CRITICAL**
+  - **Method**: Chrome DevTools → Responsive mode → Enable touch simulation
+  - **Test Cases**:
+    - [ ] Scroll down slowly, finger touching button area → ✅ Button does NOT scale
+    - [ ] Tap primary button deliberately → ✅ Button navigates, no scale effect
+    - [ ] Scroll over feature pills → ✅ Pills do NOT scale
+  - **Validation**: Inspect `.btn` computed styles → `:active` rule should NOT appear
+  - **Pass Criteria**: Zero transform/scale effects during scroll or tap
+  - **Dependencies**: T001, T002, T003
   - **Estimated Time**: 10 min
 
-- [ ] T004 [P] Perform desktop/tablet visual regression testing in Chrome DevTools
-  - **Viewports to Test**:
-    - 768×1024 (iPad): Verify min-height = 700px (media query override)
-    - 1440×900 (Desktop): Verify min-height = 800px (media query override)
-  - **Test Checklist**:
-    - [ ] Tablet: min-height = 700px applied correctly (media query)
-    - [ ] Desktop: min-height = 800px applied correctly
-    - [ ] **CRITICAL**: Zero visual changes vs baseline on desktop
-    - [ ] Gaps and spacing preserved (80px header gap desktop)
-    - [ ] Hero vertically centered on desktop
-  - **Method**: Side-by-side screenshot comparison (before/after)
-  - **Dependencies**: T001, T002
+- [ ] T005 [P] Test mobile scroll experience at 390×844 (iPhone 12)
+  - **Method**: Chrome DevTools → Responsive mode
+  - **Test Cases**:
+    - [ ] Scroll gesture smooth, no visual glitches
+    - [ ] All elements visible, layout não quebrou
+  - **Pass Criteria**: Identical to current behavior except no :active effects
+  - **Dependencies**: T003
   - **Estimated Time**: 5 min
 
-- [ ] T005 [P] Validate cross-browser compatibility for CSS max() function
-  - **Browsers to Test**:
-    - Chrome (latest): Verify computed min-height values
-    - Safari (macOS/iOS Simulator): Verify `max()` function works (Safari 11.1+ support)
-    - Firefox (latest): Verify responsive mode behavior
-    - Edge (Chromium): Verify same as Chrome
-  - **Test Checklist**:
-    - [ ] Chrome: Mobile 375×667 = 680px, Desktop 1440×900 = 800px
-    - [ ] Safari iOS Simulator (iPhone SE): Layout correct
-    - [ ] Firefox: Responsive mode 375×667 → min-height 680px
-    - [ ] No console errors in any browser
-  - **Method**: Local browsers + BrowserStack (if available)
-  - **Dependencies**: T003, T004
+- [ ] T006 [P] Test mobile scroll experience at 768×1024 (iPad touch-only)
+  - **Method**: Chrome DevTools → Responsive mode or real iPad device
+  - **Test Cases**:
+    - [ ] Scroll sobre botões → sem scale effect
+    - [ ] Tap funcionamento normal
+  - **Pass Criteria**: Touch-only iPad excluded from :active effects
+  - **Dependencies**: T003
   - **Estimated Time**: 5 min
 
-- [ ] T006 [P] Validate accessibility compliance (no regressions)
-  - **Checks**:
-    - Touch Targets: Primary CTA ≥ 44px height (already implemented)
-    - Touch Targets: Secondary CTA ≥ 44px height (already implemented)
-    - Touch Targets: Gap between CTAs ≥ 8px (16px current)
-    - Legibility: Font sizes maintained (48px hero title mobile)
-    - Legibility: Contrast WCAG AA maintained
-    - Keyboard Navigation: Tab order functional
-    - Keyboard Navigation: Focus visible styles applied
-  - **Method**: Visual inspection + Lighthouse audit (optional)
-  - **Dependencies**: T005
+### Desktop Testing
+
+- [ ] T007 Test desktop interactions at 1440×900 (MacBook viewport) - **CRITICAL**
+  - **Method**: Chrome DevTools → Desktop viewport (1440×900)
+  - **Test Cases**:
+    - [ ] Hover primary button → ✅ Lift + scale + shadow appears
+    - [ ] Click and HOLD primary button → ✅ Scale down to 0.98 (:active state)
+    - [ ] Release mouse → ✅ Returns to hover state
+    - [ ] Hover secondary button → ✅ Border + background change
+    - [ ] Hover feature pill → ✅ Border + shadow + translateY
+    - [ ] Click and hold feature pill → ✅ Scale down + border color change
+  - **Pass Criteria**: ALL desktop effects identical to previous behavior (zero regression)
+  - **Dependencies**: T004
+  - **Estimated Time**: 10 min
+
+### Cross-Browser Testing
+
+- [ ] T008 [P] Validate Chrome Mobile (Android) behavior
+  - **Method**: Chrome DevTools → Android device emulation
+  - **Test**: Scroll + tap → sem :active effects
+  - **Pass**: `:active` rule not applied in computed styles
+  - **Dependencies**: T007
+  - **Estimated Time**: 2 min
+
+- [ ] T009 [P] Validate Safari iOS behavior - **CRITICAL for iOS users**
+  - **Method**: Safari iOS simulator or real iPhone
+  - **Test**: Scroll + tap → sem :active effects
+  - **Pass**: Smooth scroll, no scale effects
+  - **Dependencies**: T007
   - **Estimated Time**: 3 min
 
-- [ ] T007 [P] Perform performance check (no degradation)
-  - **Validation**:
-    - [ ] CSS `max()` function does not cause layout thrashing
-    - [ ] Rendering smooth (no jank during resize)
-    - [ ] Paint time not degraded
-    - [ ] No new console warnings/errors
-  - **Optional**: Lighthouse performance audit (baseline comparison)
-  - **Method**: Chrome DevTools → Performance tab + visual inspection
-  - **Dependencies**: T005
+- [ ] T010 [P] Validate Chrome Desktop behavior
+  - **Method**: Chrome desktop browser (Windows/Mac)
+  - **Test**: Hover + click → :active effect funciona
+  - **Pass**: `:active` applies with scale(0.98) on mouse press
+  - **Dependencies**: T007
+  - **Estimated Time**: 2 min
+
+- [ ] T011 [P] Validate Safari Desktop (macOS) behavior
+  - **Method**: Safari macOS
+  - **Test**: Hover + click → :active effect funciona
+  - **Pass**: Same as Chrome desktop
+  - **Dependencies**: T007
+  - **Estimated Time**: 2 min
+
+- [ ] T012 [P] Validate Firefox Desktop behavior
+  - **Method**: Firefox desktop browser
+  - **Test**: Hover + click → :active effect funciona
+  - **Pass**: `@media (hover: hover)` supported (Firefox 64+)
+  - **Dependencies**: T007
   - **Estimated Time**: 2 min
 
 ### Success Criteria
-- ✅ Mobile viewports (375px-430px): min-height behaves as expected
-- ✅ Desktop/Tablet: Zero visual regressions (screenshots match)
-- ✅ Cross-browser: `max()` function works in Chrome, Safari, Firefox, Edge
-- ✅ Accessibility: No regressions (touch targets, legibility, keyboard nav)
-- ✅ Performance: No degradation (smooth rendering, no console errors)
+- ✅ Mobile (< 1024px): Zero :active effects, smooth scroll
+- ✅ Desktop (≥ 1024px): All hover + active effects preserved
+- ✅ Cross-browser: Chrome, Safari, Firefox validated
+- ✅ Touch devices excluded, hover devices included
+
+---
+
+## Phase 3: Accessibility & Performance
+
+**Goal**: Ensure no regressions in accessibility or performance
+
+### Accessibility Testing
+
+- [ ] T013 Test keyboard navigation functionality
+  - **Test Cases**:
+    - [ ] Tab to primary button → ✅ Focus visible (outline ring)
+    - [ ] Press Enter → ✅ Navigates to WhatsApp link
+    - [ ] Press Space → ✅ Navigates to WhatsApp link
+    - [ ] Tab to secondary button → ✅ Same behavior
+  - **Pass Criteria**: Focus-visible styles maintained (lines 405-418 in main.css)
+  - **Dependencies**: T012
+  - **Estimated Time**: 3 min
+
+- [ ] T014 [P] Validate touch target sizes unchanged
+  - **Test Cases**:
+    - [ ] Primary button height ≥ 44px ✅ (already implemented)
+    - [ ] Secondary button height ≥ 44px ✅
+    - [ ] Gap entre buttons ≥ 8px ✅ (16px atual)
+  - **Pass Criteria**: No changes to button dimensions or spacing
+  - **Dependencies**: T012
+  - **Estimated Time**: 1 min
+
+- [ ] T015 [P] Verify screen reader compatibility (optional)
+  - **Method**: VoiceOver (iOS) or TalkBack (Android) - se disponível
+  - **Test**: Buttons announced as "link, button text"
+  - **Pass Criteria**: No changes to semantic HTML, alt text preserved
+  - **Dependencies**: T012
+  - **Estimated Time**: 2 min
+
+### Performance Testing
+
+- [ ] T016 [P] Validate CSS performance
+  - **Method**: Chrome DevTools → Performance tab → Record scroll
+  - **Test Cases**:
+    - [ ] Mobile scroll frame rate estável (60fps target)
+    - [ ] Nenhum layout thrashing
+    - [ ] Paint time não degradado
+  - **Expected**: Scroll performance possivelmente MELHORADO (fewer transitions)
+  - **Dependencies**: T012
+  - **Estimated Time**: 2 min
+
+- [ ] T017 [P] Run Lighthouse audit (optional)
+  - **Method**: Chrome DevTools → Lighthouse → Mobile + Desktop
+  - **Test Cases**:
+    - [ ] Accessibility score ≥ 95 (mantido)
+    - [ ] Performance score mantido ou melhorado
+  - **Pass Criteria**: No new warnings/errors
+  - **Dependencies**: T012
+  - **Estimated Time**: 3 min
+
+### Success Criteria
+- ✅ Keyboard navigation functional
+- ✅ Touch targets ≥ 44px maintained
+- ✅ Screen reader compatible (if tested)
+- ✅ CSS performance no degradation
+- ✅ Lighthouse audit passed (if run)
+
+---
+
+## Phase 4: Deployment
+
+**Goal**: Commit changes and deploy to production
+
+### Pre-Deployment
+
+- [ ] T018 Validate CSS syntax
+  - **Method**: W3C CSS Validator (online) or IDE linter
+  - **Test**: styles/main.css válido
+  - **Pass Criteria**: Zero syntax errors
+  - **Dependencies**: T001-T017 (all testing complete)
+  - **Estimated Time**: 1 min
+
+### Commit & Deploy
+
+- [ ] T019 Create git commit with detailed message
+  - **Method**: Run `git add styles/main.css` then `git commit` with message from plan.md
+  - **Commit Message Structure**:
+    - Title: `feat: remove mobile button interaction effects para melhorar scroll UX`
+    - Body: Problem, Changes, Technique, Behavior by Device
+    - Footer: Tests, Impact UX, Constitution compliance
+    - Generated tag: `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
+    - Co-authored: `Co-Authored-By: Claude <noreply@anthropic.com>`
+  - **Dependencies**: T018
+  - **Estimated Time**: 3 min
+
+- [ ] T020 Deploy to production
+  - **Method** (depends on hosting):
+    - **Local**: Refresh browser (Ctrl+Shift+R / Cmd+Shift+R)
+    - **Static hosting**: Upload styles/main.css
+    - **Git-based** (Netlify, Vercel): `git push` (auto-deploy)
+  - **Dependencies**: T019
+  - **Estimated Time**: 2 min
+
+### Post-Deployment Verification
+
+- [ ] T021 Verify site loads without CSS errors
+  - **Method**: Open site, check browser console
+  - **Test**: Console limpo, sem erros CSS
+  - **Pass Criteria**: No console warnings/errors
+  - **Dependencies**: T020
+  - **Estimated Time**: 1 min
+
+- [ ] T022 Test mobile 375px viewport on real device (high priority)
+  - **Method**: Real iPhone SE ou Android phone
+  - **Test**: Scroll sobre botões → sem scale effect
+  - **Pass Criteria**: Smooth scroll, no visual feedback on button touch
+  - **Dependencies**: T021
+  - **Estimated Time**: 2 min
+
+- [ ] T023 Test desktop 1440px on real device
+  - **Method**: Desktop browser (Chrome, Safari, or Firefox)
+  - **Test**: Hover + click → effects funcionam
+  - **Pass Criteria**: DevTools computed styles show `:active` applies with scale(0.98)
+  - **Dependencies**: T021
+  - **Estimated Time**: 1 min
+
+### Success Criteria
+- ✅ CSS validated, no syntax errors
+- ✅ Git commit created with detailed message
+- ✅ Site deployed successfully
+- ✅ Post-deployment verification passed
+- ✅ Real device testing confirms behavior
 
 ---
 
 ## Dependencies & Execution Order
 
-### Sequential Tasks (Must Complete in Order)
+### Phase Dependencies
+
+- **Phase 1 (Implementation)**: Can start immediately - T001 → T002 → T003 (sequential, 7 min)
+- **Phase 2 (Visual Regression)**: Depends on Phase 1 - T004-T012 (35 min, partially parallel)
+- **Phase 3 (Accessibility/Performance)**: Depends on Phase 2 - T013-T017 (8 min, mostly parallel)
+- **Phase 4 (Deployment)**: Depends on all testing phases - T018-T023 (10 min, sequential)
+
+### Task Dependencies
+
+**Sequential (Critical Path)**:
 ```
-T001 (Update min-height)
-  └─→ T002 (Add documentation)
-       └─→ [Testing Phase: T003-T007 can run in parallel after T002]
+T001 (Move button :active)
+  → T002 (Move pill :active)
+  → T003 (Update comments)
+  → T004 (Mobile 375px) [CRITICAL]
+  → T007 (Desktop 1440px) [CRITICAL]
+  → T008-T012 (Cross-browser)
+  → T013-T017 (Accessibility/Performance)
+  → T018 (Validate CSS)
+  → T019 (Git commit)
+  → T020 (Deploy)
+  → T021-T023 (Verify)
 ```
 
-### Parallel Execution Opportunities
+**Parallel Opportunities**:
 
-**After T002 completes**, the following tasks can run in parallel:
+**After T003** (Mobile testing can start):
+- T005, T006 can run in parallel (different mobile viewports)
 
-- **Group A** (Visual Testing): T003, T004
-- **Group B** (Browser/Validation): T005, T006, T007
+**After T007** (Cross-browser can start):
+- T008, T009, T010, T011, T012 can all run in parallel [P]
 
-**Parallelization Example**:
+**After T012** (Accessibility/Performance can start):
+- T013-T017 can partially run in parallel [P]
+
+### Minimum Viable Testing
+
+If time constrained, prioritize:
+- **MUST DO**: T001-T003 (implementation), T004 (mobile 375px), T007 (desktop), T010 (Chrome Desktop), T018-T020 (deploy)
+- **SHOULD DO**: T008-T009 (Safari iOS/Mobile), T013 (keyboard nav)
+- **NICE TO HAVE**: All others (comprehensive validation)
+
+---
+
+## Parallel Execution Examples
+
+### Example 1: Mobile Testing (After T003)
 ```bash
-# Sequential implementation
-Execute T001 → Execute T002
+# Launch all mobile viewport tests in parallel:
+Task T005: "Test mobile 390×844"
+Task T006: "Test mobile 768×1024"
 
-# Parallel testing (after T002)
-Execute T003 (Mobile testing) || Execute T004 (Desktop testing) || Execute T005 (Cross-browser)
-Execute T006 (Accessibility) || Execute T007 (Performance)
+# While T004 (375px) runs sequentially as baseline
 ```
 
-**Critical Path**: T001 → T002 → T003 → T004 (must pass before deployment)
+### Example 2: Cross-Browser Testing (After T007)
+```bash
+# Launch all browser tests in parallel:
+Task T008: "Chrome Mobile"
+Task T009: "Safari iOS"
+Task T010: "Chrome Desktop"
+Task T011: "Safari Desktop"
+Task T012: "Firefox Desktop"
+```
 
----
-
-## Testing Matrix
-
-| Viewport | Expected min-height | Actual | Scroll Required | Status |
-|----------|-------------------|--------|-----------------|--------|
-| 375×667 (iPhone SE) | 680px | [Test T003] | ~13px (acceptable) | [ ] |
-| 390×844 (iPhone 12) | 844px | [Test T003] | NO | [ ] |
-| 430×932 (iPhone 14 Pro Max) | 932px | [Test T003] | NO | [ ] |
-| 768×1024 (iPad) | 700px | [Test T004] | NO | [ ] |
-| 1440×900 (Desktop) | 800px | [Test T004] | NO | [ ] |
-
----
-
-## Acceptance Criteria
-
-### AC-1: Implementation Complete
-- [ ] Task T001: `min-height: max(680px, 100vh)` applied to `.header` in styles/main.css
-- [ ] Task T002: Inline documentation added explaining behavior
-- [ ] CSS syntax valid (W3C or similar validator)
-
-### AC-2: Mobile Responsiveness (CRITICAL)
-- [ ] iPhone SE (375×667): min-height = 680px (computed)
-- [ ] iPhone 12 (390×844): min-height = 844px (computed)
-- [ ] iPhone 14 Pro Max (430×932): min-height = 932px (computed)
-- [ ] All mobile viewports: Content visible, no forced scroll (13px overflow acceptable on SE)
-
-### AC-3: Desktop/Tablet Unchanged (CRITICAL)
-- [ ] Tablet (768-1023px): min-height = 700px (media query override)
-- [ ] Desktop (1024px+): min-height = 800px (media query override)
-- [ ] Desktop 1440×900: Zero visual regression (screenshot comparison)
-- [ ] Gaps and spacing preserved (80px, 40px)
-
-### AC-4: Cross-Browser Compatibility
-- [ ] Chrome (latest): `max()` works correctly
-- [ ] Safari iOS 11.3+: `max()` works correctly
-- [ ] Firefox 75+: `max()` works correctly
-- [ ] Edge (Chromium): `max()` works correctly
-
-### AC-5: No Regressions
-- [ ] Accessibility: Touch targets ≥ 44px, contrast WCAG AA, keyboard nav functional
-- [ ] Performance: No layout thrashing, smooth rendering, no new console errors
-- [ ] Constitution compliance: Mobile-first approach maintained
+### Example 3: Accessibility + Performance (After T012)
+```bash
+# Launch in parallel (independent concerns):
+Task T013-T015: "Accessibility tests"
+Task T016-T017: "Performance tests"
+```
 
 ---
 
 ## Rollback Plan
 
-**If issues detected during testing:**
+**If any CRITICAL test fails (T004, T007, T010):**
 
-### Scenario 1: max() not working in target browsers
+### Scenario 1: Mobile still has :active effects
+**Diagnosis**: Media query not matching
+
 ```bash
+# Check browser DevTools → Media queries panel
+# Verify (hover: hover) detection
+
+# Quick fix if needed:
+@media (max-width: 1023px) {
+  .btn:active, .feature-pill:active {
+    transform: none !important;
+  }
+}
+```
+
+### Scenario 2: Desktop lost :active effects
+**Diagnosis**: Media query too restrictive
+
+```bash
+# Check DevTools → Computed styles
+# Verify media query matching
+
+# Full rollback:
 git revert HEAD
-# Fallback: Use fixed min-height: 680px; (less responsive but compatible)
 ```
 
-### Scenario 2: Unwanted scroll on small devices
-**Option A**: Reduce min-height threshold
-```css
-min-height: max(650px, 100vh);  /* Lower from 680px to 650px */
-```
+### Scenario 3: Cross-browser compatibility issue
+**Diagnosis**: `(hover: hover)` not supported
 
-**Option B**: Use `min()` to cap at viewport (allows header < 680px)
-```css
-min-height: min(680px, 100vh);  /* Never exceeds viewport */
-```
-
-**Option C**: Revert to original
-```css
-min-height: auto;  /* Original behavior */
-```
-
-### Scenario 3: Desktop layout affected
 ```bash
-# Verify media queries ordering in styles/main.css
-# Ensure @media (min-width: 1024px) comes AFTER base styles
-git revert HEAD  # If incorrect
+# Fallback strategy (very unlikely):
+# Use viewport-based media query instead
+@media (min-width: 1024px) {
+  .btn:active { ... }
+}
 ```
 
 ---
 
-## Post-Implementation Checklist
+## Acceptance Criteria
 
-### Before Git Commit
-- [ ] All 7 tasks completed (T001-T007)
-- [ ] Mobile testing passed (T003)
-- [ ] Desktop testing passed (T004) - **CRITICAL**
-- [ ] Cross-browser validation passed (T005)
-- [ ] Accessibility validation passed (T006)
-- [ ] Performance check passed (T007)
-- [ ] CSS valid (no syntax errors)
+### AC-1: Mobile Clean Touch Experience (CRITICAL)
+- [ ] Viewport 375px (iPhone SE): Scroll sobre botões sem :active effect
+- [ ] Viewport 390px (iPhone 12): Scroll sobre botões sem :active effect
+- [ ] Viewport 768px (iPad): Scroll sobre botões sem :active effect
+- [ ] Real device test: Touch scroll gesture smooth sem visual feedback
 
-### Git Commit
-- [ ] Stage changes: `git add styles/main.css`
-- [ ] Commit with descriptive message (template provided in plan.md)
-- [ ] Verify commit includes only modified lines (1 line change + comment)
+### AC-2: Desktop Rich Interactions Preserved (CRITICAL)
+- [ ] Viewport 1440px: Hover effects funcionam (lift, scale, shadow)
+- [ ] Viewport 1440px: :active effect funciona (scale 0.98 on click)
+- [ ] All button types: Primary + secondary mantêm interatividade
+- [ ] Feature pills: Hover + active effects mantidos
 
-### Deployment
-- [ ] Local: Refresh browser (Ctrl+Shift+R / Cmd+Shift+R)
-- [ ] Static hosting: Upload `styles/main.css`
-- [ ] Git-based hosting: `git push` (auto-deploy)
+### AC-3: Media Query Targeting Correct
+- [ ] `@media (hover: hover) and (min-width: 1024px)` aplica apenas em desktop
+- [ ] Touch devices (mobile/tablet) corretamente excluídos
+- [ ] Hybrid devices (iPad + mouse) corretamente incluídos
 
-### Post-Deployment Verification
-- [ ] Site loads without CSS errors (console clean)
-- [ ] Mobile 375px: Header min-height = 680px (DevTools computed)
-- [ ] Desktop 1440px: Header min-height = 800px (via media query)
-- [ ] No console warnings/errors
-- [ ] Optional: Lighthouse audit green (if baseline available)
+### AC-4: Cross-Browser Compatibility
+- [ ] Chrome Mobile (Android): Sem :active effects
+- [ ] Safari iOS: Sem :active effects
+- [ ] Chrome Desktop: :active effects funcionam
+- [ ] Safari Desktop: :active effects funcionam
+- [ ] Firefox Desktop: :active effects funcionam
 
----
-
-## Implementation Notes
-
-### Key Files Modified
-- `styles/main.css` (line 21): 1 line modified + 3 lines comment
-
-### Browser Support
-- **CSS `max()` function**: Chrome 79+, Safari 11.1+, Firefox 75+, Edge 79+ (96.5% coverage)
-- **Polyfill**: Not needed (target browsers all support it)
-- **IE 11**: Not supported (out of scope per constitution)
-
-### Constitution Compliance
-- ✅ Mobile-first approach maintained (base styles are mobile)
-- ✅ CSS variables used (existing tokens reused)
-- ✅ Progressive enhancement (tablet/desktop via media queries)
-- ✅ No HTML changes (CSS-only solution)
+### AC-5: Code Quality
+- [ ] CSS válido (W3C)
+- [ ] Comments atualizados (clarity sobre mobile exclusion)
+- [ ] Logical grouping: Interactive effects dentro de media query desktop
+- [ ] Git commit message descritivo e completo
+- [ ] Constitution compliance mantido (mobile-first)
 
 ---
 
-## Task Execution Log
+## Quick Reference
 
-Track progress by checking off tasks as completed:
+**Feature Goal**: Improve mobile scroll UX by removing `:active` effects that interfere with scroll gestures
 
-| Task ID | Description | Status | Completed By | Notes |
-|---------|-------------|--------|--------------|-------|
-| T001 | Update min-height to max(680px, 100vh) | [ ] | | |
-| T002 | Add inline documentation | [ ] | | |
-| T003 | Mobile visual regression testing | [ ] | | |
-| T004 | Desktop/Tablet visual regression testing | [ ] | | |
-| T005 | Cross-browser validation | [ ] | | |
-| T006 | Accessibility validation | [ ] | | |
-| T007 | Performance check | [ ] | | |
+**Problem**: Universal `.btn:active` with `transform: scale(0.98)` triggers on touchstart during scroll, causing unwanted visual feedback
+
+**Solution**: Move `:active` effects to desktop-only media query `@media (hover: hover) and (min-width: 1024px)`
+
+**Impact**:
+- 📱 Mobile: Smooth scroll, no visual interference
+- 🖥️ Desktop: Rich interactions preserved (zero regression)
+- ♿ Accessibility: Maintained (keyboard nav, focus states)
+- ⚡ Performance: Improved (fewer unnecessary transitions on mobile)
+
+**Files Changed**: `styles/main.css` (lines 201-214, 332-357 refactored)
+
+**Total Tasks**: 23 tasks
+**Estimated Time**: ~60 minutes (1 hour)
+**Parallel Opportunities**: 10 tasks can run in parallel
+**Minimum Viable**: 10 critical tasks (implementation + basic testing + deploy)
+
+---
+
+## Notes
+
+- **No automated tests**: CSS visual change, manual testing sufficient
+- **[P] markers**: Indicate tasks that can run in parallel
+- **Single story**: No [US#] labels needed (single-feature implementation)
+- **File paths**: All changes in `styles/main.css` only
+- **Risk level**: 🟢 LOW - Isolated CSS change, reversible, desktop inalterado
+- **Mobile-first**: Constitution compliant (Principle III)
+- **Commit strategy**: Single commit after implementation and testing complete
+- **Deployment**: Depends on hosting (static upload, git push, or manual)
 
 ---
 
 **Document Version**: 1.0
-**Last Updated**: 2025-10-28
-**Ready for Execution**: ✅ YES
+**Generated**: 2025-10-28
+**Source Documents**: [plan.md](plan.md), [spec.md](spec.md)
+**Ready for Implementation**: ✅ YES
 
-**Next Action**: Execute Task T001 (Update min-height in styles/main.css)
+**Next Action**: Execute Phase 1 tasks (T001-T003) - CSS refactoring (~7 min)
