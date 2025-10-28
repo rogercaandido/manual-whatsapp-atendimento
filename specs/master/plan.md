@@ -1,9 +1,17 @@
-# Implementation Plan: Style Refinement and Figma Design Alignment
+# Implementation Plan: Video Background & Typography Updates
 
-**Feature**: Style Refinement (style-refinement-v1)
-**Created**: 2025-10-27
+**Feature**: Video Background Integration & Hero Subtitle Font Weight Update
+**Created**: 2025-10-27 (Updated)
 **Branch**: master
 **Status**: Ready for Implementation
+
+## Change Summary
+
+This plan covers TWO specific updates based on user requirements:
+
+1. **Video Background**: Replace placeholder video path with local video file
+2. **Hero Subtitle Typography**: Change font-weight from 400 (Regular) to 300 (Light) with rendering enhancements
+3. **Color Verification**: Confirm Figma node 2019-47 colors are correctly implemented
 
 ---
 
@@ -366,163 +374,237 @@ Ensure all letter-spacing values match Figma:
 
 ### 2.1 Implementation Tasks
 
-#### Task 1: Extend Design Tokens ⏱️ 5 min
-**File**: `styles/variables.css`
+#### Task 1: Create Videos Directory and Copy Video File ⏱️ 2 min
+**Location**: Project root
 
-**Changes**:
-```css
-/* Add after existing spacing variables */
---space-10: 10px;
+**Commands**:
+```bash
+mkdir "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos"
 
-/* Add new section: Font Weights */
---font-weight-light: 300;
---font-weight-regular: 400;
---font-weight-medium: 500;
---font-weight-semibold: 600;
-
-/* Add after existing colors */
---color-white: #ffffff;
-
-/* Add after existing font sizes */
---font-size-logo: 19.034px;
---font-size-regular: 16px; /* Alias for consistency */
+copy "C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4" ^
+     "C:\Users\roger\OneDrive\Área de Trabalho\Work\New year shit\projeto_b\videos\background-hero.mp4"
 ```
 
-**Testing**: Verify no syntax errors, CSS loads correctly
+**Testing**: Verify file exists and is playable
 
 **Dependencies**: None
 
 ---
 
-#### Task 2: Add Explicit Font Weights ⏱️ 10 min
-**File**: `styles/main.css`
-
-**Changes**: Add `font-weight: var(--font-weight-*)` to 8 components:
-1. `.header__logo`
-2. `.hero__subtitle`
-3. `.hero__title-text`
-4. `.features__label`
-5. `.feature-pill__text`
-6. `.btn--primary .btn__text`
-7. `.btn--secondary .btn__text`
-8. `.disclaimer`
-
-**Testing**: Visual inspection - typography should look identical
-
-**Dependencies**: Task 1 (requires font-weight variables)
-
----
-
-#### Task 3: Refine Icon Sizing ⏱️ 15 min
-**File**: `styles/main.css`
+#### Task 2: Update Video Source Path ⏱️ 2 min
+**File**: `index.html` (line 29)
 
 **Changes**:
-1. Update `.feature-pill__icon` base styles
-2. Add data-attribute selectors for each icon type
-3. Ensure img inherits dimensions correctly
-
-**Testing**:
-- Measure icon dimensions in DevTools (should match Figma exactly)
-- Verify alignment within pills
-
-**Dependencies**: Task 4 (HTML must have data attributes)
-
----
-
-#### Task 4: Add Icon Data Attributes ⏱️ 5 min
-**File**: `index.html`
-
-**Changes**: Add `data-icon="text|image|document"` to 3 feature pill icons
-
-**Example**:
 ```html
-<span class="feature-pill__icon" data-icon="text">
-  <img src="assets/text-icon.svg" alt="">
-</span>
+<!-- BEFORE -->
+<source src="/_videos/v1/1147b903a6da790fcd8f61c410a7f0e3191a14a3" type="video/mp4">
+
+<!-- AFTER -->
+<source src="videos/background-hero.mp4" type="video/mp4">
 ```
 
-**Testing**: Visual inspection - icons render correctly
+**Enhanced Version (Recommended)**:
+```html
+<!-- Update entire video element (lines 21-31) -->
+<video
+  class="header__video"
+  autoplay
+  loop
+  muted
+  playsinline
+  controlsList="nodownload"
+  preload="auto"
+  aria-hidden="true"
+>
+  <source src="videos/background-hero.mp4" type="video/mp4">
+  Seu navegador não suporta vídeos em HTML5.
+</video>
+```
 
-**Dependencies**: None (can be done in parallel with Task 3)
+**Testing**:
+- Open index.html in browser
+- Video plays automatically
+- Video loops seamlessly
+- Overlay opacity (0.2) renders correctly
+
+**Dependencies**: Task 1 (video file must exist)
 
 ---
 
-#### Task 5: Replace Hardcoded Spacing ⏱️ 5 min
-**File**: `styles/main.css`
+#### Task 3: Update Hero Subtitle Font Weight ⏱️ 3 min
+**File**: `styles/main.css` (lines 95-103)
 
 **Changes**:
 ```css
-.feature-pill {
-  gap: var(--space-10); /* Was: gap: 10px */
+.hero__subtitle {
+  font-family: var(--font-inter);
+  font-weight: var(--font-weight-light);    /* CHANGED: was var(--font-weight-regular) */
+  font-size: var(--font-size-medium);
+  color: var(--color-zinc-200);
+  text-align: center;
+  line-height: 1.5;
+  letter-spacing: -0.18px;
+  -webkit-font-smoothing: antialiased;      /* ADDED for optimal rendering */
+  -moz-osx-font-smoothing: grayscale;       /* ADDED for optimal rendering */
 }
 ```
 
-**Testing**: Visual inspection - spacing unchanged
+**Specific Modifications**:
+1. Line 97: Change `var(--font-weight-regular)` → `var(--font-weight-light)`
+2. Add `-webkit-font-smoothing: antialiased;` after line 102
+3. Add `-moz-osx-font-smoothing: grayscale;` after line 102
 
-**Dependencies**: Task 1 (requires --space-10 variable)
+**Testing**:
+- Hero subtitle appears lighter than before
+- Text remains crisp and readable
+- Test on macOS if available (antialiasing most visible)
+
+**Dependencies**: None (font-weight-light variable already exists in variables.css line 38)
 
 ---
 
-#### Task 6: Cross-Browser Testing ⏱️ 20 min
-**Browsers**: Chrome, Firefox, Safari (if available)
+#### Task 4: Add Reduced Motion Accessibility Support ⏱️ 3 min
+**File**: `styles/main.css` (add at end of file)
+
+**Changes**:
+```css
+/* Video Accessibility - Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .header__video {
+    display: none;
+  }
+
+  .header {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                #000 center/cover no-repeat;
+  }
+}
+```
+
+**Testing**:
+- Enable "Reduce Motion" in OS settings
+- Verify video doesn't play
+- Solid background displays instead
+
+**Dependencies**: Task 2 (video element must exist)
+
+---
+
+#### Task 5: Visual Verification - Video Background ⏱️ 5 min
 
 **Test Cases**:
-1. Font rendering (especially weights 300, 600)
-2. Icon sizing and alignment
-3. Letter-spacing consistency
-4. Overall visual fidelity vs Figma
+1. Video loads and plays automatically
+2. Video loops seamlessly (no visible gap)
+3. Video remains muted
+4. Opacity overlay (0.2) renders correctly
+5. Content remains visible over video
+6. Video doesn't cover navigation or text
 
-**Pass Criteria**: No major visual regressions, minor rendering differences acceptable
+**Browsers**: Chrome (minimum), Firefox (recommended)
 
-**Dependencies**: Tasks 1-5 complete
+**Pass Criteria**: Video plays smoothly without breaking layout
+
+**Dependencies**: Tasks 1-2 complete
 
 ---
 
-#### Task 7: Responsive Testing ⏱️ 15 min
+#### Task 6: Visual Verification - Typography ⏱️ 5 min
+
+**Test Cases**:
+1. Hero subtitle appears lighter than previous version
+2. Font weight visibly 300 (Light) vs 400 (Regular)
+3. Text remains readable at 18px
+4. Antialiasing renders crisply (especially on macOS)
+5. Color (#e4e4e7) remains correct
+
+**Tools**:
+- Browser DevTools → Inspect Element
+- Check computed font-weight: 300
+- Visual comparison before/after
+
+**Pass Criteria**: Subtitle visibly lighter, still readable
+
+**Dependencies**: Task 3 complete
+
+---
+
+#### Task 7: Color Verification - Figma Node 2019-47 ⏱️ 3 min
+
+**Verification**: Confirm feature pill colors match Figma node 2019-47
+
+**Expected Values**:
+```css
+.feature-pill {
+  border: 1px solid #71717a; /* zinc-500 */
+}
+
+.feature-pill__text {
+  color: #d4d4d8; /* zinc-300 */
+}
+```
+
+**Testing**:
+- Inspect feature pill "Imagem" in browser
+- Verify border color: #71717a
+- Verify text color: #d4d4d8
+
+**Pass Criteria**: Colors match exactly (already implemented)
+
+**Dependencies**: None
+
+---
+
+#### Task 8: Responsive Testing ⏱️ 10 min
+
 **Breakpoints**: 480px, 768px, 1024px, 1440px
 
 **Test Cases**:
-1. Typography scales correctly
-2. Icons maintain proportions
+1. Video scales correctly (object-fit: cover)
+2. Hero subtitle remains readable at all sizes
 3. Layout integrity preserved
 4. No horizontal scroll
-5. Touch targets adequate (mobile)
+5. Video doesn't break responsive behavior
 
 **Pass Criteria**: All breakpoints render correctly
 
-**Dependencies**: Tasks 1-5 complete
+**Dependencies**: Tasks 1-4 complete
 
 ---
 
-#### Task 8: CSS Validation ⏱️ 5 min
-**Tool**: W3C CSS Validator (https://jigsaw.w3.org/css-validator/)
+#### Task 9: Cross-Browser Testing ⏱️ 10 min
 
-**Files**:
-- `styles/variables.css`
-- `styles/main.css`
+**Browsers**: Chrome, Firefox (Safari if available)
 
-**Pass Criteria**: 0 errors (warnings acceptable for CSS variables)
+**Test Cases**:
+1. Video autoplay works (with muted attribute)
+2. Font weight 300 renders correctly
+3. Font-smoothing renders correctly on macOS
+4. No console errors
 
-**Dependencies**: Tasks 1-5 complete
+**Pass Criteria**: Consistent behavior across browsers
+
+**Dependencies**: Tasks 1-4 complete
 
 ---
 
 ### 2.2 Task Dependency Graph
 
 ```
-Task 1 (Design Tokens)
-  ├─→ Task 2 (Font Weights)
-  ├─→ Task 5 (Spacing)
-  └─→ Task 6, 7, 8 (Testing)
+Task 1 (Create Videos Directory & Copy File)
+  └─→ Task 2 (Update Video Source Path)
+       └─→ Task 4 (Reduced Motion Support)
+            └─→ Task 5 (Video Verification)
 
-Task 3 (Icon CSS) ←─→ Task 4 (Icon HTML) [Parallel]
-  └─→ Task 6, 7, 8 (Testing)
+Task 3 (Update Hero Subtitle Font Weight) [PARALLEL]
+  └─→ Task 6 (Typography Verification)
 
-Task 6, 7, 8 (Testing) [Can run in parallel]
+Task 7 (Color Verification) [PARALLEL - no dependencies]
+
+Task 8, 9 (Responsive & Cross-Browser Testing) [After all implementation tasks]
 ```
 
-**Critical Path**: Task 1 → Task 2 → Task 6
-**Estimated Total Time**: 80 minutes (~1.5 hours)
+**Critical Path**: Task 1 → Task 2 → Task 4 → Task 5
+**Estimated Total Time**: 45 minutes (~0.75 hours)
 
 ---
 
@@ -530,24 +612,28 @@ Task 6, 7, 8 (Testing) [Can run in parallel]
 
 **Recommended Order**:
 
-1. **Foundation Layer** (Task 1)
-   - Lowest risk, enables all other tasks
-   - Immediate validation: CSS loads without errors
+1. **Video Setup** (Tasks 1-2)
+   - Create directory and copy video file
+   - Update HTML source path
+   - Immediate validation: Video plays in browser
 
-2. **Typography Layer** (Task 2)
-   - High impact, low risk
-   - Validation: No visual change expected
+2. **Typography Update** (Task 3) [Can run parallel with Task 1-2]
+   - Update hero subtitle font-weight to 300
+   - Add font-smoothing properties
+   - Validation: Subtitle appears lighter
 
-3. **Icon Layer** (Task 3 + 4 parallel)
-   - Medium complexity
-   - Validation: Icons maintain correct dimensions
+3. **Accessibility Enhancement** (Task 4)
+   - Add reduced motion support
+   - Validation: Respects user preferences
 
-4. **Refinement** (Task 5)
-   - Quick win
-   - Validation: No visual change expected
+4. **Verification** (Tasks 5-7)
+   - Visual verification of video
+   - Visual verification of typography
+   - Color verification (confirm no changes needed)
 
-5. **Validation** (Tasks 6, 7, 8 parallel)
-   - Comprehensive testing
+5. **Final Validation** (Tasks 8-9)
+   - Responsive testing across breakpoints
+   - Cross-browser compatibility
    - Final sign-off
 
 ---
@@ -625,17 +711,20 @@ Task 6, 7, 8 (Testing) [Can run in parallel]
 
 **Step 1: Commit Changes**
 ```bash
-git add styles/variables.css styles/main.css index.html
-git commit -m "feat: refine styles for Figma design alignment
+git add videos/ styles/main.css index.html
+git commit -m "feat: integra vídeo background local e ajusta tipografia hero
 
-- Add design token variables (font-weights, --space-10, --color-white)
-- Add explicit font-weight declarations for all typography
-- Refine icon sizing with data-attribute approach
-- Update spacing to use design tokens consistently
-- Verify cross-browser and responsive compatibility
+- Cria diretório videos/ e adiciona background-hero.mp4
+- Atualiza source path do vídeo de placeholder para caminho relativo
+- Adiciona atributos de acessibilidade (preload, aria-hidden)
+- Muda hero subtitle font-weight de 400 para 300 (Light)
+- Adiciona font-smoothing para renderização otimizada em macOS
+- Implementa suporte a prefers-reduced-motion
+- Verifica cores do Figma node 2019-47 (já implementadas)
 
-Figma node: 2014-191
-Testing: Chrome, Firefox at 480px, 768px, 1024px, 1440px
+Testes: Chrome, Firefox em 480px, 768px, 1024px, 1440px
+Acessibilidade: WCAG AAA (17.96:1 contrast), reduced motion
+Vídeo fonte: C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
@@ -788,18 +877,33 @@ git reset --hard HEAD~1 (if not pushed)
 
 ## Plan Metadata
 
-**Plan Version**: 1.0
-**Created**: 2025-10-27
+**Plan Version**: 2.0 (Updated for video background & typography)
+**Created**: 2025-10-27 (Updated)
 **Feature Branch**: master (direct commit)
-**Estimated Effort**: 1.5 hours
+**Estimated Effort**: 45 minutes (~0.75 hours)
 **Risk Level**: 🟢 LOW
 **Status**: ✅ READY FOR IMPLEMENTATION
 
+**Changes from v1.0**:
+- Focus narrowed to 3 specific updates (video, font-weight, color verification)
+- Reduced from 8 tasks to 9 focused tasks
+- Added video background implementation (Tasks 1-2, 4-5)
+- Added hero subtitle font-weight change (Task 3, 6)
+- Added accessibility enhancements (reduced motion support)
+- Simplified from general style refinement to targeted updates
+
+**User Requirements**:
+1. Video: `C:\Users\roger\OneDrive\Área de Trabalho\Work\Trash\video-ia-.mp4` as background
+2. Colors: Retomar do Figma node 2019-47 (verification confirmed: already correct)
+3. Typography: Hero subtitle usar fonte light (300 instead of 400)
+
 **Next Steps**:
 1. ✅ Read this plan
-2. ⏭️ Execute Task 1 (Design Tokens)
-3. ⏭️ Continue through Task 8 sequentially
-4. ✅ Commit changes
+2. ⏭️ Execute Task 1 (Create videos directory & copy file)
+3. ⏭️ Execute Task 2 (Update video source path)
+4. ⏭️ Execute Task 3 (Update hero subtitle font-weight) [parallel]
+5. ⏭️ Execute Task 4-9 (accessibility, verification, testing)
+6. ✅ Commit changes with descriptive message
 
 ---
 
