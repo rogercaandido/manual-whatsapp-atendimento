@@ -8,6 +8,7 @@
   --color-zinc-500: #71717a;
   --color-zinc-600: #52525b;
   --color-black: #000000;
+  --color-white: #ffffff;
 
   /* Brand Colors */
   --color-primary: #74d200;
@@ -15,7 +16,9 @@
 
   /* Spacing */
   --space-8: 8px;
+  --space-10: 10px;
   --space-16: 16px;
+  --space-18: 18px;
   --space-32: 32px;
   --space-40: 40px;
   --space-80: 80px;
@@ -26,8 +29,16 @@
   /* Typography - Font Sizes */
   --font-size-xs: 12px;
   --font-size-m: 16px;
+  --font-size-regular: 16px;
   --font-size-medium: 18px;
+  --font-size-logo: 19.034px;
   --font-size-8xl: 128px;
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
 
   /* Font Families */
   --font-jetbrains: 'JetBrains Mono', monospace;
