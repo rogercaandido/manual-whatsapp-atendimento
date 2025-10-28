@@ -94,12 +94,14 @@ body {
 
 .hero__subtitle {
   font-family: var(--font-inter);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-light);
   font-size: var(--font-size-medium);
   color: var(--color-zinc-200);
   text-align: center;
   line-height: 1.5;
   letter-spacing: -0.18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hero Title */
@@ -404,5 +406,17 @@ body {
   .hero__title-icon {
     width: 40px;
     height: 40px;
+  }
+}
+
+/* Video Accessibility - Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .header__video {
+    display: none;
+  }
+
+  .header {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                #000 center/cover no-repeat;
   }
 }
