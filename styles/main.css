@@ -398,6 +398,18 @@ body {
               transform var(--duration-slow) var(--ease-smooth);
 }
 
+/* Mobile: Disable scroll reveal on CTA section only */
+@media (max-width: 767px) {
+  .cta-section.animate-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .cta-section.is-visible {
+    transition: none !important;
+  }
+}
+
 /* ========================================
    ACCESSIBILITY: FOCUS VISIBLE
    ======================================== */
