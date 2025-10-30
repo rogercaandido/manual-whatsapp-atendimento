@@ -181,7 +181,7 @@ body {
 
 .features__list {
   width: 100%;
-  max-width: 76%;
+  max-width: 58%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -239,6 +239,11 @@ body {
 
 .feature-pill__icon[data-icon="document"] {
   width: 14.112px;
+  height: 16px;
+}
+
+.feature-pill__icon[data-icon="audio"] {
+  width: 16px;
   height: 16px;
 }
 
