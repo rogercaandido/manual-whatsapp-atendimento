@@ -1,0 +1,192 @@
+/* ========================================
+   FEATURES COMPONENT
+   Seção de funcionalidades com pills de tipos suportados
+   ======================================== */
+
+/* Features Section Container */
+.features {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  padding: 0 420px;
+}
+
+/* Features Label */
+.features__label {
+  font-family: var(--font-inter);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-zinc-300);
+  line-height: 0;
+  white-space: nowrap;
+  margin-bottom: 18px;
+}
+
+/* Features List Container */
+.features__list {
+  width: 100%;
+  max-width: 552px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Feature Pill */
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--color-zinc-500);
+  border-radius: 33px;
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+/* Desktop: Feature pill hover and active effects (hover-capable devices only) */
+@media (hover: hover) and (min-width: 1024px) {
+  .feature-pill:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 16px rgba(116, 210, 0, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Desktop-only: Feature pill active effect */
+  .feature-pill:active {
+    transform: scale(0.98);
+    border-color: var(--color-primary);
+    transition: transform var(--duration-instant) var(--ease-sharp);
+  }
+}
+
+/* Feature Pill Text */
+.feature-pill__text {
+  font-family: var(--font-inter);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-zinc-300);
+  line-height: 0;
+  white-space: nowrap;
+}
+
+/* Feature Pill Icon Container */
+.feature-pill__icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Icon Size Variants */
+.feature-pill__icon[data-icon="text"] {
+  width: 20px;
+  height: 16px;
+}
+
+.feature-pill__icon[data-icon="image"] {
+  width: 16px;
+  height: 14px;
+}
+
+.feature-pill__icon[data-icon="document"] {
+  width: 14.112px;
+  height: 16px;
+}
+
+.feature-pill__icon[data-icon="audio"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* Icon Image */
+.feature-pill__icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Large Desktops: 1440px and below */
+@media (max-width: 1440px) {
+  .features {
+    padding: 0 200px;
+  }
+}
+
+/* Tablets & Small Desktops: 1024px and below */
+@media (max-width: 1024px) {
+  .features {
+    padding: 0 100px;
+  }
+}
+
+/* Mobile & Small Tablets: 768px and below */
+@media (max-width: 768px) {
+  .features {
+    padding: 0 24px;
+  }
+
+  .features__list {
+    /* Layout horizontal com espaçamento entre itens (design Figma node 2049-83) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0px;
+    gap: 0; /* Remove gap, usa space-between */
+    max-width: 100%;
+  }
+
+  /* Feature pills em mobile: layout vertical compacto */
+  .feature-pill {
+    /* Remove borda e background no mobile */
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+
+    /* Layout vertical: ícone em cima, texto embaixo */
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    /* Remove efeitos de hover no mobile */
+    transition: none;
+  }
+
+  /* Ajusta texto para ficar centralizado */
+  .feature-pill__text {
+    text-align: center;
+    line-height: normal;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY: FOCUS VISIBLE
+   ======================================== */
+
+/* Focus ring for keyboard navigation */
+.feature-pill:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  transition: outline-offset var(--duration-fast) var(--ease-smooth);
+}
+
+/* Do NOT show focus ring on mouse click */
+.feature-pill:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ========================================
+   ACCESSIBILITY: REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-pill {
+    transition: none !important;
+  }
+
+  .feature-pill:hover {
+    transform: none !important;
+  }
+}
