@@ -146,7 +146,7 @@
     padding: 8px;
 
     /* Layout vertical: ícone em cima, texto embaixo */
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 10px;
     align-items: center;
 
